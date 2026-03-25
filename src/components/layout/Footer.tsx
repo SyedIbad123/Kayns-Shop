@@ -1,0 +1,79 @@
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import Container from "@/components/ui/Container";
+
+const quickLinks = [
+  { label: "Home", href: "#" },
+  { label: "Services", href: "#services" },
+  { label: "Portfolio", href: "#portfolio" },
+  { label: "About Us", href: "#about" },
+];
+
+const socialLinks = [
+  { icon: Facebook, href: "#", label: "Facebook" },
+  { icon: Twitter, href: "#", label: "Twitter" },
+  { icon: Instagram, href: "#", label: "Instagram" },
+  { icon: Linkedin, href: "#", label: "LinkedIn" },
+];
+
+export default function Footer() {
+  return (
+    <footer className="bg-[#0a1e36] text-gray-300">
+      <Container className="grid gap-10 py-16 md:grid-cols-3">
+        {/* Brand */}
+        <div>
+          <h3 className="mb-4 text-xl font-bold tracking-wide text-white">
+            XYZ&nbsp;<span className="text-[#D7262E]">DESIGNS</span>
+          </h3>
+          <p className="text-sm leading-relaxed">
+            We design your imagination. Premium design solutions crafted with
+            passion and precision.
+          </p>
+        </div>
+
+        {/* Quick Links */}
+        <div>
+          <h4 className="mb-4 text-lg font-semibold text-white">Quick Links</h4>
+          <ul className="space-y-2">
+            {quickLinks.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className="text-sm transition-colors hover:text-white"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Contact & Social */}
+        <div>
+          <h4 className="mb-4 text-lg font-semibold text-white">Contact Info</h4>
+          <address className="space-y-2 text-sm not-italic">
+            <p>123 Design Street, Creative City</p>
+            <p>Email: info@xyzdesigns.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+          </address>
+          <div className="mt-6 flex gap-4">
+            {socialLinks.map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                aria-label={social.label}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-[#D7262E]"
+              >
+                <social.icon size={16} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </Container>
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/10 py-4 text-center text-xs text-gray-500">
+        &copy; {new Date().getFullYear()} XYZ Designs. All rights reserved.
+      </div>
+    </footer>
+  );
+}
