@@ -22,7 +22,7 @@ export default function HotProducts() {
 
   return (
     <section className="bg-brand-red py-12" aria-label="Hot products">
-      <Container className="mx-0 px-0">
+      <Container className="mx-0 max-w-none px-0">
         <div className="mb-8 text-center text-3xl font-bold text-white sm:text-4xl lg:mb-12 lg:text-5xl">
           <h1>Hot Products</h1>
         </div>
