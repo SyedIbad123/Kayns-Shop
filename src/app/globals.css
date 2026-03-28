@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-dark-blue: #0F2B4C;
-  --color-brand-red: #D7262E;
-  --color-light-gray: #F3F4F6;
+  --color-dark-blue: #0f2b4c;
+  --color-brand-red: #d7262e;
+  --color-light-gray: #f3f4f6;
   --font-sans: var(--font-inter);
 }
 
@@ -23,4 +23,37 @@ body {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track-right {
+  animation: marquee-right 18s linear infinite;
+}
+
+.marquee-track-left {
+  animation: marquee-left 10s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track-right,
+  .marquee-track-left {
+    animation: none;
+  }
 }

@@ -5,9 +5,17 @@ import Image from "next/image";
 import type { CollectionItem } from "@/data/collection";
 
 const filterButtons = ["Size chart", "Available color", "Logo Location"];
+const filterImages: Record<string, string> = {
+  "Size chart":
+    "https://img.freepik.com/free-photo/beautiful-lake-mountains_395237-44.jpg?semt=ais_rp_50_assets&w=740&q=80",
+  "Available color":
+    "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_960_720.jpg",
+  "Logo Location":
+    "https://www.bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg",
+};
 
 export default function SingleProductQuote({ item }: { item: CollectionItem }) {
-  const [input, setInput] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   return (
     <section
@@ -30,6 +38,8 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
             {filterButtons.map((label) => (
               <button
                 key={label}
+                type="button"
+                onClick={() => setActiveFilter(label)}
                 className="rounded-full border border-white/30 px-4 py-1 text-xs font-medium text-white transition hover:bg-white/10"
               >
                 {label}
@@ -37,15 +47,14 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
             ))}
           </div>
 
-          {/* Input */}
-          <input
-            type="text"
-            placeholder="Your name or details..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="w-full rounded-full bg-white px-5 py-3 text-sm text-gray-900 placeholder-gray-400 outline-none focus:ring-2 focus:ring-brand-red"
+          {/* Quote action */}
+          <button
+            type="button"
+            className="w-full rounded-full bg-white px-5 py-3 text-sm font-semibold text-gray-900 outline-none transition hover:bg-gray-100 focus:ring-2 focus:ring-brand-red"
             aria-label="Quote details"
-          />
+          >
+            Quote Details
+          </button>
         </div>
 
         {/* Right — image */}
@@ -58,6 +67,36 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
           />
         </div>
       </div>
+
+      {activeFilter ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4"
+          onClick={() => setActiveFilter(null)}
+          role="presentation"
+        >
+          <div
+            className="relative h-[70vh] w-full max-w-3xl overflow-hidden rounded-2xl bg-black"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activeFilter} preview`}
+          >
+            <Image
+              src={filterImages[activeFilter] ?? item.image}
+              alt={`${activeFilter} preview`}
+              fill
+              className="object-cover"
+            />
+            <button
+              type="button"
+              onClick={() => setActiveFilter(null)}
+              className="absolute right-4 top-4 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold text-white transition hover:bg-black/80"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

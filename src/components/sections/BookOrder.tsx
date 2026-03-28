@@ -1,12 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import type { CollectionItem } from "@/data/collection";
 
 export default function BookOrder({ item }: { item: CollectionItem }) {
-  const [name, setName] = useState("");
-
   return (
     <section
       className="bg-neutral-800 px-6 py-12 text-white"
@@ -18,14 +15,13 @@ export default function BookOrder({ item }: { item: CollectionItem }) {
           <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
             Book Your Order
           </h2>
-          <input
-            type="text"
-            placeholder="Your name or order details..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-full bg-brand-red px-6 py-3 text-sm text-white placeholder-white/70 outline-none focus:ring-2 focus:ring-white/40"
-            aria-label="Order details"
-          />
+          <button
+            type="button"
+            className="w-full rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white outline-none transition hover:bg-red-700 focus:ring-2 focus:ring-white/40"
+            aria-label="Book your order"
+          >
+            Book Your Order
+          </button>
         </div>
 
         {/* Right — image */}

@@ -33,10 +33,7 @@ function ExpandCard({
       : baseFlex;
 
   return (
-    <Link
-      href={`/collection/${item.id}`}
-      onMouseEnter={() => onHover(item.id)}
-      onMouseLeave={() => onHover(null)}
+    <div
       style={{
         flexGrow,
         flexShrink: 1,
@@ -44,15 +41,34 @@ function ExpandCard({
         minWidth: 0,
         transition: "flex-grow 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
       }}
-      className={`relative overflow-hidden rounded-2xl bg-rose-50 cursor-pointer ${height}`}
+      className="flex min-w-0 flex-col"
     >
-      <Image
-        src={item.image}
-        alt={item.title}
-        fill
-        className="object-cover transition-transform duration-500"
-      />
-    </Link>
+      <Link
+        href={`/collection/${item.id}`}
+        onMouseEnter={() => onHover(item.id)}
+        onMouseLeave={() => onHover(null)}
+        className={`group relative cursor-pointer overflow-hidden rounded-2xl ${height}`}
+      >
+        <Image
+          src="/Product_Bg.svg"
+          alt=""
+          fill
+          aria-hidden
+          className="object-cover"
+        />
+        <div className="absolute inset-2 overflow-hidden rounded-xl">
+          <Image
+            src={item.image}
+            alt={item.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      </Link>
+      <p className="mt-2 px-1 text-center text-xs font-semibold uppercase tracking-wide text-white lg:text-sm">
+        {item.title}
+      </p>
+    </div>
   );
 }
 
@@ -68,20 +84,33 @@ export default function Collection() {
         <SectionTitle title="XYZ  COLLECTION" light className="mb-10" />
 
         {/* Mobile grid — 2 columns, shown below md */}
-        <div className="grid grid-cols-2 gap-3 md:hidden">
+        <div className="grid grid-cols-2 gap-4 md:hidden">
           {allItems.map((item) => (
-            <Link
-              key={item.id}
-              href={`/collection/${item.id}`}
-              className="relative h-40 overflow-hidden rounded-2xl bg-rose-50"
-            >
-              <Image
-                src={item.image}
-                alt={item.title}
-                fill
-                className="object-cover"
-              />
-            </Link>
+            <div key={item.id} className="flex min-w-0 flex-col">
+              <Link
+                href={`/collection/${item.id}`}
+                className="group relative h-48 overflow-hidden rounded-2xl"
+              >
+                <Image
+                  src="/Product_Bg.svg"
+                  alt=""
+                  fill
+                  aria-hidden
+                  className="object-cover"
+                />
+                <div className="absolute inset-2 overflow-hidden rounded-xl">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+              </Link>
+              <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-white">
+                {item.title}
+              </p>
+            </div>
           ))}
         </div>
 
@@ -95,13 +124,13 @@ export default function Collection() {
               baseFlex={i === 0 ? 2 : 1}
               activeId={activeRow1}
               onHover={setActiveRow1}
-              height="h-56"
+              height="h-64"
             />
           ))}
         </div>
 
         {/* Row 2: 5 equal */}
-        <div className="mt-4 hidden gap-4 md:flex">
+        <div className="mt-5 hidden gap-4 md:flex">
           {collectionRow2.map((item) => (
             <ExpandCard
               key={item.id}
@@ -109,7 +138,7 @@ export default function Collection() {
               baseFlex={1}
               activeId={activeRow2}
               onHover={setActiveRow2}
-              height="h-48"
+              height="h-56"
             />
           ))}
         </div>

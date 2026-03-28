@@ -1,8 +1,7 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import { hotProducts } from "@/data/products";
@@ -13,15 +12,13 @@ export default function HotProducts() {
     align: "start",
     slidesToScroll: 1,
   });
-
-  const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
-  const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || isPaused) return;
     const interval = setInterval(() => emblaApi.scrollNext(), 2000);
     return () => clearInterval(interval);
-  }, [emblaApi]);
+  }, [emblaApi, isPaused]);
 
   return (
     <section className="bg-brand-red py-12" aria-label="Hot products">
@@ -47,13 +44,20 @@ export default function HotProducts() {
           </div>
 
           {/* Slider */}
-          <div className="min-w-0 flex-1 overflow-hidden" ref={emblaRef}>
+          <div
+            className="min-w-0 flex-1 overflow-hidden"
+            ref={emblaRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <div className="flex gap-4 px-4">
               {hotProducts.map((product) => (
                 <div
                   key={product.id}
                   className="relative min-w-0 flex-[0_0_70%] overflow-hidden rounded-2xl sm:flex-[0_0_45%] lg:flex-[0_0_30%]"
-                  style={{ height: "220px" }}
+                  style={{ height: "300px" }}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
                 >
                   <Image
                     src={product.image}
@@ -61,6 +65,17 @@ export default function HotProducts() {
                     fill
                     className="object-cover"
                   />
+
+                  <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-black/45 py-2">
+                    <div className="marquee-track-left flex w-max items-center gap-8 px-4">
+                      <span className="whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] text-white">
+                        {product.title}
+                      </span>
+                      <span className="whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] text-white">
+                        {product.title}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

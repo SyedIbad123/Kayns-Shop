@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -43,7 +43,6 @@ const slides = [
 
 export default function Hero() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -52,25 +51,18 @@ export default function Hero() {
     [emblaApi],
   );
 
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, [emblaApi]);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
-
   return (
     <section className="bg-dark-blue text-white" aria-label="Hero">
       {/* Marquee-style tagline */}
       <div className="overflow-hidden bg-brand-red py-2">
-        <p className="whitespace-nowrap text-center text-md font-bold tracking-[0.35em] uppercase">
-          KAYNS HERE WE DESIGN YOUR IMAGINATION
-        </p>
+        <div className="marquee-track-right flex w-max items-center gap-10 pr-10">
+          <p className="whitespace-nowrap text-md font-bold uppercase tracking-[0.35em]">
+            KAYNS HERE WE DESIGN YOUR IMAGINATION
+          </p>
+          <p className="whitespace-nowrap text-md font-bold uppercase tracking-[0.35em]">
+            KAYNS HERE WE DESIGN YOUR IMAGINATION
+          </p>
+        </div>
       </div>
 
       <Container className="pb-8 px-0">
