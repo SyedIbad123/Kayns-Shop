@@ -66,15 +66,10 @@ export default function HotProducts() {
                     className="object-cover"
                   />
 
-                  <div className="absolute inset-x-0 bottom-0 overflow-hidden bg-black/45 py-2">
-                    <div className="marquee-track-left flex w-max items-center gap-8 px-4">
-                      <span className="whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                        {product.title}
-                      </span>
-                      <span className="whitespace-nowrap text-xs font-semibold uppercase tracking-[0.2em] text-white">
-                        {product.title}
-                      </span>
-                    </div>
+                  <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/60 to-transparent px-4 py-3">
+                    <h3 className="truncate text-sm font-semibold uppercase tracking-[0.12em] text-white sm:text-base">
+                      {product.title}
+                    </h3>
                   </div>
                 </div>
               ))}

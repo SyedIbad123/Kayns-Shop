@@ -39,11 +39,23 @@ export default function DesignsIntro() {
         >
           We believe great design speaks for itself. Our team blends creativity
           and precision to deliver unique visual experiences that elevate brands
+          and inspire audiences. We believe great design speaks for itself. Our
+          team blends creativity and precision to deliver unique visual
+          experiences that elevate brands and inspire audiences. We believe
+          great design speaks for itself. Our team blends creativity and
+          precision to deliver unique visual experiences that elevate brands and
+          inspire audiences. We believe great design speaks for itself. Our team
+          blends creativity and precision to deliver unique visual experiences
+          that elevate brands and inspire audiences. We believe great design
+          speaks for itself. Our team blends creativity and precision to deliver
+          unique visual experiences that elevate brands and inspire audiences.
+          We believe great design speaks for itself. Our team blends creativity
+          and precision to deliver unique visual experiences that elevate brands
           and inspire audiences.
         </motion.p>
 
-        <div className="mt-16 text-center">
-          <div className="mt-6">
+        <div className="mt-8 text-center">
+          <div className="mt-2">
             <Button
               variant="primary"
               size="md"

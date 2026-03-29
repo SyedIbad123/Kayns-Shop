@@ -41,6 +41,12 @@ const slides = [
   },
 ];
 
+const marqueeItems = [
+  "KAYNS HERE WE DESIGN YOUR IMAGINATION",
+  "PREMIUM PRINTS FOR EVERY STYLE",
+  "CUSTOM MERCH, BUILT TO LAST",
+];
+
 export default function Hero() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
@@ -55,13 +61,23 @@ export default function Hero() {
     <section className="bg-dark-blue text-white" aria-label="Hero">
       {/* Marquee-style tagline */}
       <div className="overflow-hidden bg-brand-red py-2">
-        <div className="marquee-track-right flex w-max items-center gap-10 pr-10">
-          <p className="whitespace-nowrap text-md font-bold uppercase tracking-[0.35em]">
-            KAYNS HERE WE DESIGN YOUR IMAGINATION
-          </p>
-          <p className="whitespace-nowrap text-md font-bold uppercase tracking-[0.35em]">
-            KAYNS HERE WE DESIGN YOUR IMAGINATION
-          </p>
+        <div className="marquee-track-right flex w-max items-center">
+          {[0, 1].map((set) => (
+            <div
+              key={set}
+              className="marquee-content flex items-center gap-10 pr-10"
+              aria-hidden={set === 1}
+            >
+              {marqueeItems.map((item) => (
+                <p
+                  key={`${set}-${item}`}
+                  className="whitespace-nowrap text-sm font-bold uppercase tracking-[0.28em] sm:text-base"
+                >
+                  {item}
+                </p>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -135,28 +151,6 @@ export default function Hero() {
               />
             </motion.div>
           ))}
-        </div>
-
-        {/* Heading & text */}
-        <div className="mt-16 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl font-bold tracking-wide md:text-5xl"
-          >
-            XYZ&ensp;DESIGNS
-          </motion.h1>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-gray-300">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy
-            text ever since the 1500s.
-          </p>
-          <div className="mt-6">
-            <Button variant="primary" size="md">
-              Read More &darr;
-            </Button>
-          </div>
         </div>
       </Container>
     </section>

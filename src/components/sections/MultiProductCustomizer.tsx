@@ -1,21 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import CapSVG, { DEFAULT_CAP_COLORS } from "@/components/ui/customize/CapSVG";
-import type { CapColors } from "@/components/ui/customize/CapSVG";
+
+import ProductDropdown from "@/components/ui/customize/ProductDropdown";
 import CustomizePanel from "@/components/ui/customize/CustomizePanel";
+import {
+  getCapByLabel,
+  DEFAULT_CAP,
+} from "@/components/ui/customize/CapRegistry";
+import type { CapColors } from "@/types/cap.types";
 
-interface Props {
-  productName: string;
-}
+export default function MultiProductCustomizer() {
+  // ── active cap config ─────────────────────────────────────
+  const [capConfig, setCapConfig] = useState(DEFAULT_CAP);
 
-export default function MultiProductCustomizer({ productName }: Props) {
-  const [colors, setColors] = useState<CapColors>(DEFAULT_CAP_COLORS);
-  const [logoFile, setLogoFile] = useState<File | null>(null);
+  // ── colours — re-seeded whenever cap changes ──────────────
+  const [colors, setColors] = useState<CapColors>(DEFAULT_CAP.defaultColors);
 
-  function handleColorChange(key: keyof CapColors, value: string | boolean) {
+  // ─── ProductDropdown selection ───────────────────────────
+  function handleProductSelect(label: string) {
+    const config = getCapByLabel(label);
+    if (!config) return; // label not registered — do nothing
+    setCapConfig(config);
+    setColors(config.defaultColors); // reset colours to new cap defaults
+  }
+
+  // ─── CustomizePanel colour change ────────────────────────
+  function handleColorChange(value: string, panelKey?: string) {
+    const key = panelKey ?? "solid";
     setColors((prev) => ({ ...prev, [key]: value }));
   }
+
+  // ─── dynamic SVG ─────────────────────────────────────────
+  const { SVGComponent } = capConfig;
 
   return (
     <section
@@ -28,21 +45,34 @@ export default function MultiProductCustomizer({ productName }: Props) {
       }}
       aria-label="Customize product"
     >
-      <div className="mx-auto flex max-w-3xl flex-col items-start gap-6 lg:flex-row lg:gap-8">
-        {/* Left — editing panel */}
-        <div className="w-full lg:w-72 lg:shrink-0">
-          <CustomizePanel
-            colors={colors}
-            logoFile={logoFile}
-            onColorChange={handleColorChange}
-            onLogoUpload={setLogoFile}
+      <div className="mx-auto flex max-w-3xl flex-col gap-6">
+        {/* ── 1. Product Dropdown (top) ────────────────── */}
+        <div className="w-full">
+          <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-gray-500">
+            Select Product
+          </label>
+          <ProductDropdown
+            selected={capConfig.label}
+            onSelect={handleProductSelect}
           />
         </div>
 
-        {/* Right — live SVG cap preview */}
-        <div className="flex w-full flex-1 items-center justify-center">
-          <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl bg-gray-300 shadow-2xl sm:h-72 sm:w-72 md:h-80 md:w-80">
-            <CapSVG colors={colors} />
+        {/* ── 2. Panel + Preview ──────────────────────── */}
+        <div className="flex flex-col items-start gap-6 lg:flex-row lg:gap-8">
+          {/* Left — customize panel (dynamic per cap type) */}
+          <div className="w-full lg:w-72 lg:shrink-0">
+            <CustomizePanel
+              capConfig={capConfig}
+              colors={colors}
+              onColorChange={handleColorChange}
+            />
+          </div>
+
+          {/* Right — live SVG preview (dynamic per cap) */}
+          <div className="flex w-full flex-1 items-center justify-center">
+            <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl bg-gray-300 shadow-2xl sm:h-72 sm:w-72 md:h-150 md:w-100">
+              <SVGComponent colors={colors} />
+            </div>
           </div>
         </div>
       </div>

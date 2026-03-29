@@ -20,7 +20,7 @@ export default async function CustomizePage({ params }: Props) {
 
   return (
     <main className="min-h-screen">
-      <MultiProductCustomizer productName={collection.title} />
+      <MultiProductCustomizer />
     </main>
   );
 }
