@@ -96,6 +96,20 @@ export default function CustomizePanel({
   colors,
   onColorChange,
 }: Props) {
+  const dynamicPanelRows =
+    capConfig.type === "panel"
+      ? capConfig.panels && capConfig.panels.length > 0
+        ? capConfig.panels
+        : Object.keys(capConfig.defaultColors).map((key) => ({
+            key,
+            label: key.startsWith("id_")
+              ? `Path ${key.replace("id_", "")}`
+              : key
+                  .replace(/[_-]/g, " ")
+                  .replace(/\b\w/g, (char) => char.toUpperCase()),
+          }))
+      : [];
+
   return (
     <div className="flex flex-col gap-3">
       {/* Product name */}
@@ -118,7 +132,7 @@ export default function CustomizePanel({
 
       {/* ── PANEL: one picker per section ───── */}
       {capConfig.type === "panel" &&
-        capConfig.panels?.map((panel) => (
+        dynamicPanelRows.map((panel) => (
           <ColorRow
             key={panel.key}
             label={panel.label}

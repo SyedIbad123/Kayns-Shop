@@ -3,8 +3,10 @@
 import type { CapColors } from "@/types/cap.types";
 
 // ─── defaults ────────────────────────────────
-export const DEFAULT_SOLID_COLORS: CapColors = {
-  solid: "#201E1E",
+export const DEFAULT_SUN_CRICKET_HAT_COLORS: CapColors = {
+  id_1: "#1D4ED8",
+  id_2: "#374151",
+  id_3: "#DC2626",
 };
 
 // ─── component ───────────────────────────────
@@ -14,7 +16,9 @@ export const DEFAULT_SOLID_COLORS: CapColors = {
  * with {colors.solid}.
  */
 export default function SunCricketHat({ colors }: { colors: CapColors }) {
-  const fill = colors.solid ?? "#201E1E";
+  const id1 = colors.id_1 ?? DEFAULT_SUN_CRICKET_HAT_COLORS.id_1;
+  const id2 = colors.id_2 ?? DEFAULT_SUN_CRICKET_HAT_COLORS.id_2;
+  const id3 = colors.id_3 ?? DEFAULT_SUN_CRICKET_HAT_COLORS.id_3;
 
   return (
     <svg
@@ -29,13 +33,13 @@ export default function SunCricketHat({ colors }: { colors: CapColors }) {
         <g id="_2014341052256">
           <path
             className="str0"
-            fill="#fff"
+            fill={id2}
             id="id_2"
             d="M139.12 37.09l3.3 15.08c0.15,0.36 0.24,0.73 0.24,1.1 0,6.16 -21.8,11.18 -49.07,11.41 -0.63,0.01 -1.26,0.01 -1.89,0.01 -28.14,0 -50.96,-5.11 -50.96,-11.41 0,-0.38 0.09,-0.74 0.24,-1.1l3.44 -15.74c-26.57,4.13 -44.41,11.78 -44.41,20.53 0,13.14 40.18,30.41 89.75,30.41 49.57,0 89.76,-17.27 89.76,-30.41 0,-8.31 -16.07,-15.62 -40.41,-19.87l-0 0z"
           />
           <path
             className="fil1 str1"
-            fill="#fff"
+            fill={id1}
             id="id_1"
             d="M91.7 0.01c-28.14,0 -41.8,5.11 -41.81,11.41 0,0 0,0 0,0 0,6.3 13.66,11.41 41.81,11.41 0.64,0 1.27,-0.01 1.89,-0.01 22.24,-0.19 35.01,-3.66 38.75,-8.35 -3.73,4.69 -16.51,8.16 -38.75,8.35 -0.63,0 -1.25,0.01 -1.89,0.01 -28.15,0 -41.81,-5.11 -41.81,-11.41 0,0 0,-0 0,-0l-5.47 25.01 -3.44 15.74c-0.16,0.36 -0.24,0.73 -0.24,1.1 0,6.3 22.82,11.41 50.96,11.41 0.63,0 1.27,0 1.89,-0.01l0 0c27.27,-0.22 49.07,-5.25 49.07,-11.41 0,-0.38 -0.09,-0.74 -0.24,-1.1l-3.3 -15.08 -5.61 -25.66c0,-0 0,-0 0,-0 0,0 0,-0 0,-0 -0,-6.3 -13.66,-11.41 -41.8,-11.41l-0 0z"
           />
@@ -55,7 +59,7 @@ export default function SunCricketHat({ colors }: { colors: CapColors }) {
             />
             <path
               className="str2"
-              fill="#fff"
+              fill={id3}
               id="id_3"
               d="M113.04 33.86c0.87,0.84 2.74,0.93 4.18,0.19 1.44,-0.73 1.89,-2.01 1.02,-2.85 -0.87,-0.84 -2.74,-0.93 -4.18,-0.19 -1.44,0.73 -1.89,2.01 -1.02,2.85zm0.74 -0.38c0.62,0.6 1.97,0.66 3,0.14 1.03,-0.53 1.36,-1.44 0.73,-2.04 -0.63,-0.6 -1.97,-0.66 -3,-0.14 -1.03,0.53 -1.36,1.44 -0.73,2.04z"
             />
@@ -74,7 +78,7 @@ export default function SunCricketHat({ colors }: { colors: CapColors }) {
             />
             <path
               className="str2"
-              fill="#fff"
+              fill={id3}
               id="id_3"
               d="M126.32 32.29c0.87,0.84 2.74,0.93 4.18,0.19 1.44,-0.73 1.89,-2.01 1.02,-2.85 -0.87,-0.84 -2.74,-0.93 -4.18,-0.19 -1.44,0.73 -1.89,2.01 -1.02,2.85zm0.74 -0.38c0.62,0.6 1.97,0.66 3,0.14 1.03,-0.53 1.36,-1.44 0.73,-2.04 -0.63,-0.6 -1.97,-0.66 -3,-0.14 -1.03,0.53 -1.36,1.44 -0.73,2.04z"
             />

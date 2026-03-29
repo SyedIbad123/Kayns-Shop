@@ -18,6 +18,16 @@ export default function TruckerCapSVG({ colors }: { colors: CapColors }) {
   const back = colors.back || DEFAULT_PERFORMANCE_COLORS.back;
   const button = colors.button || DEFAULT_PERFORMANCE_COLORS.button;
 
+  const applyColorMapping = (svg: string) =>
+    svg
+      .replaceAll('id="id_1" fill="#fff"', `id="id_1" fill="${crown}"`)
+      .replaceAll('id="id_2" fill="#fff"', `id="id_2" fill="${brim}"`)
+      .replaceAll('id="id_3" fill="#fff"', `id="id_3" fill="${button}"`)
+      .replaceAll('fill="#Fff" id="button"', `fill="${button}" id="button"`)
+      .replaceAll('fill="#fff" id="back"', `fill="${back}" id="back"`)
+      .replaceAll('fill="#FEFEFE" id="front"', `fill="${crown}" id="front"`)
+      .replaceAll('fill="#949292" id="front"', `fill="${side}" id="front"`);
+
   const svgA = `<svg  id="Layer_1" width="4.2in" height="1.8581in" version="1.1" viewBox="0 0 1973.65 2222.4">
 
    <path id="id_2" fill="#fff" d="M987.36 2088.63c-369.52,0 -609.87,101.19 -609.87,101.19 0,0 -380.27,180.32 -349.98,-371.24 30.29,-551.54 43.75,-516.19 43.75,-516.19l916.11 35.21 916.11 -35.21c0,0 13.46,-35.35 43.76,516.19 30.28,551.56 -349.99,371.24 -349.99,371.24 0,0 -240.34,-101.19 -609.87,-101.19l-0.01 0z"/>
@@ -1351,15 +1361,18 @@ export default function TruckerCapSVG({ colors }: { colors: CapColors }) {
  </g>
 </svg>`;
 
+  const processedSvgA = applyColorMapping(svgA);
+  const processedSvgB = applyColorMapping(svgB);
+
   return (
     <div className="flex flex-col gap-4 items-center justify-center h-full w-full">
       <div
-        dangerouslySetInnerHTML={{ __html: svgA }}
+        dangerouslySetInnerHTML={{ __html: processedSvgA }}
         className="w-full h-full max-h-[50%] flex-1"
         aria-label="Performance Cap Front Profile"
       />
       <div
-        dangerouslySetInnerHTML={{ __html: svgB }}
+        dangerouslySetInnerHTML={{ __html: processedSvgB }}
         className="w-full h-full max-h-[50%] flex-1"
         aria-label="Performance Cap Top Profile"
       />

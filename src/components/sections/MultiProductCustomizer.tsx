@@ -70,7 +70,7 @@ export default function MultiProductCustomizer() {
 
           {/* Right — live SVG preview (dynamic per cap) */}
           <div className="flex w-full flex-1 items-center justify-center">
-            <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl bg-gray-300 shadow-2xl sm:h-72 sm:w-72 md:h-150 md:w-100">
+            <div className="relative flex h-64 w-64 items-center justify-center overflow-hidden rounded-3xl bg-gray-300 shadow-2xl sm:h-72 sm:w-72 md:h-250 md:w-150">
               <SVGComponent colors={colors} />
             </div>
           </div>

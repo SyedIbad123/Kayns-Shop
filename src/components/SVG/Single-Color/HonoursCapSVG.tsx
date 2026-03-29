@@ -47,15 +47,15 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
-        stroke-width="2.5"
+        fill={color}
+        strokeWidth="2.5"
         id="id_10"
         d="M300.2,274.4c-0.1,0.8-3.1,12.2-3.2,13c-5.7,40.2-19,79.3-56.2,100.7c-6.8,3.9-14.2,7.1-22.2,9.6  c-23.1,7.1-54.5,6.9-78.6,3.1c-59.7-9.5-88.3-50.6-95.5-113.9c-0.1-0.6-2.3-11.2-2.3-11.8L300.2,274.4z"
       />
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_8"
         d="M102.8,338.7c-6.9-4.8-13.7-11.7-20.9-21.6c-7.4-10.2-8.9-12.9-18.5-21.6c-14.8-13.4-27.4-25.6-33.2-33.6  c-0.4-0.6-0.9-1.3-1.4-2.1l0,0l128.7-60.2l6.4,7.2L102.8,338.7z"
       />
@@ -66,7 +66,7 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_2"
         d="M313.2,260.2c-0.4,0.6-0.8,1.2-1.1,1.7c-5.8,8-18.4,20.1-33.2,33.6c-9.6,8.7-11.1,11.3-18.5,21.6  c-7.5,10.4-14.5,17.5-21.8,22.3l0,0l-61.4-132l7.4-7.4L313.2,260.2z"
       />
@@ -76,7 +76,7 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       />
       <path
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_4"
         d="M238.5,46.9c0.9,0.7,1.8,1.4,2.6,2.2c1.6,1.5,3.3,3.4,5.2,5.5c5.5,6,12.1,13.5,18.7,20  c22.3,21.9,23.4,19.3,42.6,45.4c5,6.8,10.6,15.1,13.2,23.8l-136.9,45l-8-7.5L238.5,46.9z"
       />
@@ -87,7 +87,7 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_6"
         d="M21.4,144.1c2.5-8.8,8.2-17.3,13.3-24.2C57.3,89.1,71.3,81.8,96,54.6c1.9-2.1,3.6-4,5.2-5.5  c0.5-0.5,1.1-1,1.7-1.5l67.6,145.5L21.4,144.1z"
       />
@@ -98,7 +98,7 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_1"
         d="M238.6,339.4c-17.2,11.3-35.7,9.9-65.3,9.8c-0.7,0-1.4,0-2.1,0c-0.7,0-1.4,0-2.1,0  c-30.2,0.1-48.8,1.5-66.3-10.4L166.3,202l9.7,3.1L238.6,339.4z"
       />
@@ -113,14 +113,14 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_5"
-        stroke-width="2.5"
+        strokeWidth="2.5"
         d="M126.7,41.8c3.8,0.1,85.2,0.1,89,0c8.4-0.3,16.2,0.3,22.9,5.1l-62.5,134.3l-9.7,3.1L102.9,47.6  C109.7,42.1,117.9,41.5,126.7,41.8z"
       />
       <path
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_3"
         d="M321.5,145.8c0.7,3.1,1.1,6.2,0.8,9.3c-0.6,7.9-1.5,12-1.2,20.5l0.4,12.5l0.5,16.3c0.5,17.4,0.6,33.7-2.6,43  c-1.5,4.4-3.7,8.8-6.1,12.8l-142.5-66.6l0.1-0.4L321,143.8L321.5,145.8z"
       />
@@ -131,7 +131,7 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
       <path
         className=""
         stroke="#000000"
-        fill="#FFFFFF"
+        fill={color}
         id="id_7"
         d="M28.9,259.8c-2.2-3.7-4.7-9-5.8-12.4c-3.2-9.4-3.1-25.7-2.6-43l0.5-16.3l0.4-12.5c0.2-8.5-0.6-12.6-1.2-20.5  c-0.3-3.7,0.2-7.4,1.3-11l149.2,49l0.1,0.4L28.9,259.8z"
       />

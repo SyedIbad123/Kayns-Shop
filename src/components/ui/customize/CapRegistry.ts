@@ -19,8 +19,12 @@ import SolidCapSVG, { DEFAULT_SOLID_COLORS } from "./SolidCapSVG";
 import PanelCapSVG, { DEFAULT_PANEL_COLORS } from "./PanelCapSVG";
 import CustomCricketBaggyCapSingleColor from "@/components/SVG/Single-Color/CustomCricketBaggyCapSingleColor";
 import CustomBeanies from "@/components/SVG/Single-Color/CustomBeanies";
-import CustomCricketBaggyCapMultiColor from "@/components/SVG/Multi-Color/CustomCricketBaggyCapMultiColor";
-import SunCricketHat from "@/components/SVG/Multi-Color/SunCricketHatSVG";
+import CustomCricketBaggyCapMultiColor, {
+  DEFAULT_BAGGY_MULTI_COLORS,
+} from "@/components/SVG/Multi-Color/CustomCricketBaggyCapMultiColor";
+import SunCricketHat, {
+  DEFAULT_SUN_CRICKET_HAT_COLORS,
+} from "@/components/SVG/Multi-Color/SunCricketHatSVG";
 import CustomBucketHat from "@/components/SVG/Multi-Color/BucketHatSVG";
 import HonoursCapSVG from "@/components/SVG/Single-Color/HonoursCapSVG";
 import PerformanceCapSVG from "@/components/SVG/Multi-Color/PerformanceCapSVG";
@@ -37,7 +41,45 @@ const STANDARD_MULTI_PANELS = [
   { key: "brim", label: "Brim" },
   { key: "side", label: "Side Panels" },
   { key: "back", label: "Back Panel" },
-  { key: "button", label: "Top Button" },
+];
+
+const BUCKET_PANELS = [
+  { key: "id_1", label: "Top Surface" },
+  { key: "id_2", label: "Base Surface" },
+];
+
+const SIX_ZONE_PANELS = [
+  { key: "id_1", label: "Front Panels" },
+  { key: "id_2", label: "Peak" },
+  { key: "id_3", label: "Side Panels" },
+  { key: "id_4", label: "Back Panel" },
+  { key: "id_5", label: "Top Button" },
+  { key: "id_6", label: "Stitching / Accent" },
+];
+
+const BAGGY_MULTI_PANELS = Object.keys(DEFAULT_BAGGY_MULTI_COLORS).map(
+  (key) => ({
+    key,
+    label: key.startsWith("id_")
+      ? `Path ${key.replace("id_", "")}`
+      : key
+          .replace(/[_-]/g, " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase()),
+  }),
+);
+
+const PERFORMANCE_PANELS = [
+  { key: "crown", label: "Crown" },
+  { key: "brim", label: "Brim" },
+  { key: "back", label: "Back Panel" },
+  { key: "eyelets", label: "Eyelets" },
+  { key: "strap", label: "Strap" },
+];
+
+const VISOR_PANELS = [
+  { key: "id_1", label: "Top Surface" },
+  { key: "id_2", label: "Base Surface" },
+  { key: "id_3", label: "Band" },
 ];
 
 const CAP_REGISTRY: CapConfig[] = [
@@ -53,14 +95,8 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "baggy-multi",
     label: "Custom Cricket Baggy Caps (Multi Color)",
     type: "panel",
-    panels: [
-      { key: "crown", label: "Crown" },
-      { key: "brim", label: "Brim" },
-      { key: "side", label: "Side Panels" },
-      { key: "back", label: "Back Panel" },
-      { key: "button", label: "Top Button" },
-    ],
-    defaultColors: DEFAULT_PANEL_COLORS,
+    panels: BAGGY_MULTI_PANELS,
+    defaultColors: DEFAULT_BAGGY_MULTI_COLORS,
     SVGComponent: CustomCricketBaggyCapMultiColor,
   },
 
@@ -69,15 +105,11 @@ const CAP_REGISTRY: CapConfig[] = [
     label: "Custom Sun Cricket Hat",
     type: "panel",
     panels: [
-      { key: "crown", label: "Crown" },
-      { key: "brim", label: "Brim" },
-      { key: "side", label: "Side" },
+      { key: "id_1", label: "Top Surface" },
+      { key: "id_2", label: "Base Surface" },
+      { key: "id_3", label: "Vent" },
     ],
-    defaultColors: {
-      crown: "#1D4ED8",
-      brim: "#374151",
-      side: "#DC2626",
-    },
+    defaultColors: DEFAULT_SUN_CRICKET_HAT_COLORS,
     SVGComponent: SunCricketHat,
   },
   {
@@ -85,7 +117,7 @@ const CAP_REGISTRY: CapConfig[] = [
     label: "Custom Cricket Honours Cap",
     type: "solid",
     defaultColors: {
-      main: "#FFFFFF",
+      solid: "#FFFFFF",
     },
     SVGComponent: HonoursCapSVG,
   },
@@ -93,13 +125,15 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "performance",
     label: "Custom Cricket Performance Cap",
     type: "panel",
-    panels: STANDARD_MULTI_PANELS,
+    panels: PERFORMANCE_PANELS,
     defaultColors: {
       crown: "#523233",
-      brim: "#FFFF66",
-      side: "#088008",
+      brimTop: "#FFFF66",
+      brimBottom: "#E7B800",
       back: "#611078",
       button: "#FA8805",
+      eyelets: "#088008",
+      strap: "#ffffff",
     },
     SVGComponent: PerformanceCapSVG,
   },
@@ -107,13 +141,14 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "baseball",
     label: "Custom Baseball Cap",
     type: "panel",
-    panels: STANDARD_MULTI_PANELS,
+    panels: SIX_ZONE_PANELS,
     defaultColors: {
-      crown: "#523233",
-      brim: "#FFFF66",
-      side: "#088008",
-      back: "#611078",
-      button: "#FA8805",
+      id_1: "#523233",
+      id_2: "#FFFF66",
+      id_3: "#088008",
+      id_4: "#611078",
+      id_5: "#FA8805",
+      id_6: "#EF4444",
     },
     SVGComponent: BaseballSVG,
   },
@@ -121,13 +156,11 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "visor",
     label: "Custom Visor",
     type: "panel",
-    panels: STANDARD_MULTI_PANELS,
+    panels: VISOR_PANELS,
     defaultColors: {
-      crown: "#523233",
-      brim: "#FFFF66",
-      side: "#088008",
-      back: "#611078",
-      button: "#FA8805",
+      id_1: "#523233",
+      id_2: "#FFFF66",
+      id_3: "#088008",
     },
     SVGComponent: VisorSVG,
   },
@@ -135,13 +168,10 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "bucket",
     label: "Custom Bucket Hat",
     type: "panel",
-    panels: STANDARD_MULTI_PANELS,
+    panels: BUCKET_PANELS,
     defaultColors: {
-      crown: "#523233",
-      brim: "#FFFF66",
-      side: "#088008",
-      back: "#611078",
-      button: "#FA8805",
+      id_1: "#523233",
+      id_2: "#FFFF66",
     },
     SVGComponent: CustomBucketHat,
   },
@@ -173,19 +203,14 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "flat-5",
     label: "Custom Flat Peak Cap (5 Panels)",
     type: "panel",
-    panels: [
-      { key: "crown", label: "Crown" },
-      { key: "brim", label: "Brim" },
-      { key: "side", label: "Side Panels" },
-      { key: "back", label: "Back Panel" },
-      { key: "button", label: "Top Button" },
-    ],
+    panels: SIX_ZONE_PANELS,
     defaultColors: {
-      crown: "#FFFF00",
-      brim: "#660818",
-      side: "#523233",
-      back: "#050840",
-      button: "#660818",
+      id_1: "#FFFF00",
+      id_2: "#660818",
+      id_3: "#523233",
+      id_4: "#050840",
+      id_5: "#660818",
+      id_6: "#111111",
     },
     SVGComponent: FlatPeak5SVG,
   },
@@ -193,19 +218,14 @@ const CAP_REGISTRY: CapConfig[] = [
     id: "flat-6",
     label: "Custom Flat Peak Cap (6 Panels)",
     type: "panel",
-    panels: [
-      { key: "crown", label: "Crown" },
-      { key: "brim", label: "Brim" },
-      { key: "side", label: "Side Panels" },
-      { key: "back", label: "Back Panel" },
-      { key: "button", label: "Top Button" },
-    ],
+    panels: SIX_ZONE_PANELS,
     defaultColors: {
-      crown: "#FFFF00",
-      brim: "#FC92EA",
-      side: "#FA8805",
-      back: "#611078",
-      button: "#FC92EA",
+      id_1: "#FFFF00",
+      id_2: "#FC92EA",
+      id_3: "#FA8805",
+      id_4: "#611078",
+      id_5: "#FC92EA",
+      id_6: "#111111",
     },
     SVGComponent: FlatPeak6SVG,
   },
