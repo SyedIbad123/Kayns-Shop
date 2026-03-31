@@ -9,6 +9,7 @@ const DEFAULT_PERFORMANCE_COLORS: CapColors = {
   back: "#611078",
   eyelets: "#088008",
   strap: "#ffffff",
+  middle: "#ffffff",
 };
 
 export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
@@ -17,6 +18,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
   const back = colors.back || DEFAULT_PERFORMANCE_COLORS.back;
   const eyelets = colors.eyelets || DEFAULT_PERFORMANCE_COLORS.eyelets;
   const strap = colors.strap || DEFAULT_PERFORMANCE_COLORS.strap;
+  const side = colors.middle || DEFAULT_PERFORMANCE_COLORS.middle;
 
   const svgA = `<svg width="70%" id="Layer_1" height="60%" version="1.1" viewBox="0 0 238.79 205.97">
  <defs>
@@ -42,7 +44,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
  </defs>
  <g id="Layer_x0020_1">
   <g id="_1623524886992">
-   <path fill="${back}" id="rid_5" d="M233.69 139.59c0,0 -7.98,7.76 -25.89,9.39 0,0 -5.27,-3.71 -21.74,-4.42 -2.58,-0.28 29.52,-98.16 -31.61,-136.02 -6.38,-7.47 109.66,14.54 79.25,131.06z"/>
+   <path fill="${side}" id="rid_5" d="M233.69 139.59c0,0 -7.98,7.76 -25.89,9.39 0,0 -5.27,-3.71 -21.74,-4.42 -2.58,-0.28 29.52,-98.16 -31.61,-136.02 -6.38,-7.47 109.66,14.54 79.25,131.06z"/>
    <path fill="${crown}" id="id_1" d="M87.37 128.87c0,0 -41.26,-3.34 -56.96,2.65 0,0 -0.43,-11.63 6.75,-20.22 0,0 0.66,-33.39 6.84,-47.63 6.18,-14.24 21.91,-57.89 93.55,-57.89l0 2.75c0,0 -32.01,6.22 -50.18,120.33z"/>
    <path fill="${crown}" id="id_1" d="M185.95 144.45c0,0 -63.77,-5.03 -99.41,-15.96 0,0 16.82,-111.6 49.62,-119.94l18.28 0c0,0 25.62,12.36 31.95,32.58 4.21,7.85 5.27,19.26 5.49,34.59 0.27,18.69 1.67,41.45 -5.93,68.74z"/>
    <path class="perf_a_fil3 perf_a_str0" d="M185.95 144.28c0.29,-0.22 4.6,-20.61 6.02,-47.53 0.99,-18.71 1.73,-41.72 -6.02,-58.53 -6.75,-14.64 -19.46,-23.41 -34.06,-29.96"/>
@@ -168,7 +170,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
  <g id="Layer_x0020_1">
   <metadata id="CorelCorpID_0Corel-Layer"/>
   <g id="_1622255108768">
-   <path fill="${back}" id="lid_5" d="M5.03 137.11c0,0 7.88,7.66 25.56,9.26 0,0 5.2,-3.66 21.46,-4.37 1.29,-0.14 -3.79,-24.82 -5.76,-53.89 -2.82,-41.63 4.45,-66.89 37.57,-79.76 5.69,-7.98 -108.85,13.74 -78.83,128.75z"/>
+   <path fill="${side}" id="lid_5" d="M5.03 137.11c0,0 7.88,7.66 25.56,9.26 0,0 5.2,-3.66 21.46,-4.37 1.29,-0.14 -3.79,-24.82 -5.76,-53.89 -2.82,-41.63 4.45,-66.89 37.57,-79.76 5.69,-7.98 -108.85,13.74 -78.83,128.75z"/>
    <path fill="${crown}" id="front" d="M149.46 126.52c0,0 40.72,-3.3 56.22,2.62 0,0 0.42,-11.48 -6.66,-19.95 0,0 -0.66,-32.96 -6.75,-47.01 -6.1,-14.05 -21.63,-57.14 -92.34,-57.14l0 2.71c0,0 31.6,6.14 49.53,118.78z"/>
    <path fill="${crown}" id="front" d="M51.72 140.05c0,0 65.94,-2.27 101.12,-13.06 0,0 -16.6,-110.16 -48.98,-118.39l-18.05 0c-1.12,0 -27.41,8.49 -33.66,28.45 -4.16,7.75 -7.52,20.98 -6.41,37.85 -0.93,17.37 0.61,37.89 5.98,65.16z"/>
    <path class="fil2 str0" d="M52.05 142c-0.28,-0.22 -3.58,-20.67 -5.83,-47.18 -1.56,-18.42 -1.71,-41.18 5.94,-57.77 6.66,-14.45 19.21,-23.11 33.62,-29.57"/>
