@@ -1,3 +1,5 @@
+import type { ClothingProductType } from "@/data/clothingFormConfig";
+
 const PLACEHOLDER_IMG =
   "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80";
 
@@ -6,6 +8,8 @@ export interface CollectionProduct {
   name: string;
   image: string;
   icon: string;
+  category?: string;
+  productType?: ClothingProductType;
 }
 
 export interface CollectionItem {
@@ -14,168 +18,115 @@ export interface CollectionItem {
   image: string;
   description?: string;
   products?: CollectionProduct[];
+  productType?: ClothingProductType;
 }
 
 export const collectionRow1: CollectionItem[] = [
   {
     id: 1,
-    title: "Design Alpha",
+    title: "Sports T-Shirt Collection",
     description:
-      "Explore our Alpha collection — a curated set of bold, layered designs built for those who stand out.",
+      "Custom sports t-shirts with tailored sleeve, collar, logo, and print options.",
     image: PLACEHOLDER_IMG,
+    productType: "t-shirt",
     products: [
       {
-        id: 101,
-        name: "Alpha Cap I",
+        id: 1001,
+        name: "Elite Sports T-Shirt",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 102,
-        name: "Alpha Cap II",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 103,
-        name: "Alpha Cap III",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 104,
-        name: "Alpha Cap IV",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 105,
-        name: "Alpha Cap V",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 106,
-        name: "Alpha Cap VI",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 107,
-        name: "Alpha Cap VII",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
+        category: "T-Shirt",
+        productType: "t-shirt",
       },
     ],
   },
   {
     id: 2,
-    title: "Design Beta",
+    title: "Polo Shirt Collection",
     description:
-      "The Beta collection redefines everyday style with clean lines and vibrant expression.",
+      "Team and corporate polo shirts with premium collar and logo application options.",
     image: PLACEHOLDER_IMG,
+    productType: "polo-shirt",
     products: [
       {
-        id: 201,
-        name: "Beta Cap I",
+        id: 1002,
+        name: "Classic Team Polo",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 202,
-        name: "Beta Cap II",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 203,
-        name: "Beta Cap III",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 204,
-        name: "Beta Cap IV",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 205,
-        name: "Beta Cap V",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
+        category: "Polo Shirt",
+        productType: "polo-shirt",
       },
     ],
   },
   {
     id: 3,
-    title: "Design Gamma",
+    title: "Hooded Sweatshirt Collection",
     description:
-      "Gamma blends art and utility — each piece crafted with intention and love for the craft.",
+      "Modern hooded sweatshirts for clubs, teams, and premium casual wear.",
     image: PLACEHOLDER_IMG,
+    productType: "hooded-sweatshirt",
     products: [
       {
-        id: 301,
-        name: "Gamma Cap I",
+        id: 1003,
+        name: "Urban Hooded Sweatshirt",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 302,
-        name: "Gamma Cap II",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 303,
-        name: "Gamma Cap III",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 304,
-        name: "Gamma Cap IV",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
+        category: "Hooded Sweatshirt",
+        productType: "hooded-sweatshirt",
       },
     ],
   },
   {
     id: 4,
-    title: "Design Delta",
+    title: "Track Jacket Collection",
     description:
-      "Delta is luxury streetwear — premium fabrics meet boundary-pushing design.",
+      "Performance track jackets with flexible branding and optional matching trousers.",
     image: PLACEHOLDER_IMG,
+    productType: "track-jacket",
     products: [
       {
-        id: 401,
-        name: "Delta Cap I",
+        id: 1004,
+        name: "Pro Track Jacket",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
+        category: "Track Jacket",
+        productType: "track-jacket",
       },
+    ],
+  },
+  {
+    id: 5,
+    title: "Puffer Jacket Collection",
+    description:
+      "Warm, lightweight puffer jackets with custom collar, cuff, and branding options.",
+    image: PLACEHOLDER_IMG,
+    productType: "puffer-jacket",
+    products: [
       {
-        id: 402,
-        name: "Delta Cap II",
+        id: 1005,
+        name: "All-Weather Puffer Jacket",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
+        category: "Puffer Jacket",
+        productType: "puffer-jacket",
       },
+    ],
+  },
+  {
+    id: 6,
+    title: "Reversible Jacket Collection",
+    description:
+      "Dual-look reversible jackets designed for training, travel, and teamwear.",
+    image: PLACEHOLDER_IMG,
+    productType: "reversible-jacket",
+    products: [
       {
-        id: 403,
-        name: "Delta Cap III",
+        id: 1006,
+        name: "Dual-Side Reversible Jacket",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 404,
-        name: "Delta Cap IV",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 405,
-        name: "Delta Cap V",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
+        category: "Reversible Jacket",
+        productType: "reversible-jacket",
       },
     ],
   },
@@ -183,107 +134,92 @@ export const collectionRow1: CollectionItem[] = [
 
 export const collectionRow2: CollectionItem[] = [
   {
-    id: 5,
-    title: "Design Epsilon",
-    description:
-      "Epsilon brings a fresh energy to the collection with bold prints and structured fits.",
-    image: PLACEHOLDER_IMG,
-    products: [
-      {
-        id: 501,
-        name: "Epsilon Cap I",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 502,
-        name: "Epsilon Cap II",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 503,
-        name: "Epsilon Cap III",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-    ],
-  },
-  {
-    id: 6,
-    title: "Design Zeta",
-    description:
-      "Zeta is where minimalism meets craftsmanship. Clean, classic, timeless.",
-    image: PLACEHOLDER_IMG,
-    products: [
-      {
-        id: 601,
-        name: "Zeta Cap I",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 602,
-        name: "Zeta Cap II",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 603,
-        name: "Zeta Cap III",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-      {
-        id: 604,
-        name: "Zeta Cap IV",
-        image: PLACEHOLDER_IMG,
-        icon: PLACEHOLDER_IMG,
-      },
-    ],
-  },
-  {
     id: 7,
-    title: "Design Eta",
+    title: "Trousers Collection",
     description:
-      "Eta captures the spirit of adventure with its rugged aesthetic and premium materials.",
+      "Custom trousers with pocket and bottom finish options for teams and staff uniforms.",
     image: PLACEHOLDER_IMG,
+    productType: "trousers",
     products: [
       {
-        id: 701,
-        name: "Eta Cap I",
+        id: 1007,
+        name: "Performance Team Trousers",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
+        category: "Trousers",
+        productType: "trousers",
       },
     ],
   },
   {
     id: 8,
-    title: "Design Theta",
+    title: "Football Shorts Collection",
     description:
-      "Theta represents the pinnacle of the XYZ design language — refined, bold, and iconic.",
+      "Football shorts built for movement with customizable pocket and logo options.",
     image: PLACEHOLDER_IMG,
+    productType: "football-shorts",
     products: [
       {
-        id: 801,
-        name: "Theta Cap I",
+        id: 1008,
+        name: "Matchday Football Shorts",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
+        category: "Football Shorts",
+        productType: "football-shorts",
       },
     ],
   },
   {
     id: 9,
-    title: "Design Iota",
+    title: "Basketball Shorts Collection",
     description:
-      "Iota is the finishing touch — subtle details that make a big statement.",
+      "Lightweight basketball shorts with premium fit and custom branding support.",
     image: PLACEHOLDER_IMG,
+    productType: "basketball-shorts",
     products: [
       {
-        id: 901,
-        name: "Iota Cap I",
+        id: 1009,
+        name: "Court Performance Shorts",
         image: PLACEHOLDER_IMG,
         icon: PLACEHOLDER_IMG,
+        category: "Basketball Shorts",
+        productType: "basketball-shorts",
+      },
+    ],
+  },
+  {
+    id: 10,
+    title: "Netball Shorts Collection",
+    description:
+      "Netball shorts and skort-ready options designed for comfort and play-day confidence.",
+    image: PLACEHOLDER_IMG,
+    productType: "netball-shorts",
+    products: [
+      {
+        id: 1010,
+        name: "Netball Match Shorts",
+        image: PLACEHOLDER_IMG,
+        icon: PLACEHOLDER_IMG,
+        category: "Netball Shorts",
+        productType: "netball-shorts",
+      },
+    ],
+  },
+  {
+    id: 11,
+    title: "Rugby Shorts Collection",
+    description:
+      "Durable rugby shorts built for high-impact play and full kit customization.",
+    image: PLACEHOLDER_IMG,
+    productType: "rugby-shorts",
+    products: [
+      {
+        id: 1011,
+        name: "Impact Rugby Shorts",
+        image: PLACEHOLDER_IMG,
+        icon: PLACEHOLDER_IMG,
+        category: "Rugby Shorts",
+        productType: "rugby-shorts",
       },
     ],
   },

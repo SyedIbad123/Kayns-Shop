@@ -35,20 +35,12 @@ export default function SingleProductOption({ title, description }: Props) {
       </div>
 
       {/* Red background form */}
-      <div
-        className="relative bg-brand-red px-4 pb-16 pt-4"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='1' opacity='0.1'%3E%3Ccircle cx='80' cy='80' r='35'/%3E%3Cpath d='M200 40 L230 100 L170 100 Z'/%3E%3Ccircle cx='320' cy='200' r='25'/%3E%3Cpath d='M60 300 Q100 260 140 300'/%3E%3Crect x='280' y='280' width='60' height='80' rx='8'/%3E%3C/g%3E%3C/svg%3E\")",
-          backgroundRepeat: "repeat",
-          backgroundSize: "350px",
-        }}
-      >
+      <div className="relative bg-brand-red px-4 pb-16 pt-4">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:items-start">
           {/* Left preview image */}
           <div className="mx-auto w-full max-w-md lg:max-w-xl">
-            <div className="relative aspect-3/4 overflow-hidden rounded-3xl bg-white/10 p-4 shadow-xl">
-              <div className="relative h-full w-full overflow-hidden rounded-2xl bg-white/10">
+            <div className="relative aspect-4/4 overflow-hidden p-4">
+              <div className="relative h-full w-full overflow-hidden rounded-2xl">
                 <Image
                   src={OPTION_PREVIEW_IMAGE}
                   alt={`${title} preview`}

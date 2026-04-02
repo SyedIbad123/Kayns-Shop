@@ -1,22 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import type { CapConfig, CapColors } from "@/types/cap.types";
-
-// ─── shared presets ──────────────────────────
-const SWATCH_PRESETS = [
-  "#201E1E",
-  "#374151",
-  "#1D4ED8",
-  "#DC2626",
-  "#16A34A",
-  "#D97706",
-  "#7C3AED",
-  "#FFFFFF",
-  "#000000",
-  "#F9A8D4",
-  "#FDE68A",
-  "#A7F3D0",
-];
 
 // ─────────────────────────────────────────────
 interface Props {
@@ -39,54 +24,98 @@ function ColorRow({
   colors: CapColors;
   onColorChange: (value: string, panelKey?: string) => void;
 }) {
-  const current = colors[colorKey] ?? "#201E1E";
+  const current = colors[colorKey] ?? "#FFF";
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-  function handleCustom() {
-    const next = prompt(`Enter hex for "${label}" (e.g. #FF0000)`);
-    if (next) onColorChange(next, colorKey);
-  }
+  // Provided color options and labels
+  const COLOR_OPTIONS = [
+    { value: "#FFF", label: "Select  Head Colour" },
+    { value: "#000000", label: "Black" },
+    { value: "#FFFFFF", label: "White" },
+    { value: "#FF0000", label: "Red" },
+    { value: "#193802", label: "Bottle Green" },
+    { value: "#FA8805", label: "Orange" },
+    { value: "#FC92EA", label: "Pink" },
+    { value: "#660818", label: "Maroon" },
+    { value: "#023085", label: "Royal Blue" },
+    { value: "Yellow", label: "Yellow" },
+    { value: "#523233", label: "Brown" },
+    { value: "#611078", label: "Purple" },
+    { value: "Grey", label: "Grey" },
+    { value: "Gold", label: "Gold" },
+    { value: "#050840", label: "Navy" },
+    { value: "#63B0F0", label: "Sky Blue" },
+    { value: "#198A0A", label: "Green" },
+  ];
+
+  const selectedOption =
+    COLOR_OPTIONS.find((opt) => opt.value === current) ?? COLOR_OPTIONS[0];
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
 
   return (
     <div className="rounded-xl bg-white px-4 py-3 shadow-sm">
       <p className="mb-2 text-sm font-medium text-gray-700">{label}</p>
+      <div ref={wrapperRef} className="relative w-3/4">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between rounded  bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label={`${label} color dropdown`}
+        >
+          <span className="flex items-center gap-2">
+            <span
+              className="inline-block h-4 w-4 rounded-full border border-gray-300"
+              style={{ backgroundColor: selectedOption.value }}
+            />
+            <span>{selectedOption.label}</span>
+          </span>
+          <span className="text-xs text-gray-500">▼</span>
+        </button>
 
-      {/* Current colour + native picker */}
-      <div className="mb-2 flex items-center gap-3">
-        <input
-          type="color"
-          value={current}
-          onChange={(e) => onColorChange(e.target.value, colorKey)}
-          className="h-10 w-12 cursor-pointer rounded-lg border-2 border-gray-200 p-1"
-          aria-label={`${label} color picker`}
-        />
-        <span className="font-mono text-xs text-gray-500">{current}</span>
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
+          >
+            {COLOR_OPTIONS.map((opt) => (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-100"
+                  onClick={() => {
+                    onColorChange(opt.value, colorKey);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 rounded-full ${(opt.label == "White" || opt.label === "Select  Head Colour") && "border border-gray-300"}`}
+                    style={{ backgroundColor: opt.value }}
+                  />
+                  <span>{opt.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
-
-      {/* Swatches */}
-      <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-6">
-        {SWATCH_PRESETS.map((color) => (
-          <button
-            key={color}
-            onClick={() => onColorChange(color, colorKey)}
-            style={{ backgroundColor: color }}
-            className={`h-7 rounded-md border-2 transition hover:scale-110 ${
-              current === color
-                ? "border-gray-800"
-                : "border-gray-200 hover:border-gray-400"
-            }`}
-            title={color}
-            aria-label={`Set ${label} to ${color}`}
-          />
-        ))}
-      </div>
-
-      {/* Custom hex */}
-      <button
-        onClick={handleCustom}
-        className="mt-2 flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700"
-      >
-        <span className="text-base font-bold">+</span> Custom colour
-      </button>
     </div>
   );
 }
