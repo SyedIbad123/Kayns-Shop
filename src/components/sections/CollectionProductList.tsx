@@ -8,6 +8,15 @@ export default function CollectionProductList({
 }) {
   const products = item.products ?? [];
 
+  const isImageSource = (value?: string) => {
+    if (!value) return false;
+    return (
+      value.startsWith("/") ||
+      value.startsWith("http://") ||
+      value.startsWith("https://")
+    );
+  };
+
   return (
     <section className="bg-white px-6 py-10" aria-label="Products">
       <h2 className="mb-8 text-center text-3xl font-extrabold uppercase tracking-widest text-gray-900">
@@ -27,29 +36,35 @@ export default function CollectionProductList({
                     <div className="flex flex-1 items-center">
                       <div className="h-px flex-1 border-t-2 border-dashed border-gray-300" />
                     </div>
-                    <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-full border-2 border-gray-300">
-                      <Image
-                        src={product.icon}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative h-52 w-52 shrink-0 overflow-hidden ">
+                      {isImageSource(product.image) ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-2xl">
+                          {product.image || "🧢"}
+                        </div>
+                      )}
                     </div>
-                    <div className="flex text-center justify-center items-center relative h-22 w-40 shrink-0 overflow-hidden rounded-xl border border-black">
-                      <div className="flex text-center justify-center items-center">
-                        <h1>syed Ibad ali</h1>
+                    <div className="flex text-center justify-center items-center relative h-22 w-40 shrink-0 overflow-hidden">
+                      <div className="flex text-center justify-center items-center text-2xl font-extrabold">
+                        <h1>{product.name}</h1>
                       </div>
                     </div>
                   </>
                 ) : (
                   <>
                     {/* Odd: image — circle — dashed line */}
-                    <div className="flex text-center justify-center items-center relative h-22 w-40 shrink-0 overflow-hidden rounded-xl border border-black">
-                      <div className="flex text-center justify-center items-center">
-                        <h1>syed Ibad ali</h1>
+                    <div className="flex text-center justify-center items-center relative h-22 w-40 shrink-0 overflow-hidden ">
+                      <div className="flex text-center justify-center items-center text-2xl font-extrabold">
+                        <h1>{product.name}</h1>
                       </div>
                     </div>
-                    <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-full border-2 border-gray-300">
+                    <div className="relative h-52 w-52 shrink-0 overflow-hidden">
                       <Image
                         src={product.image}
                         alt={product.name}

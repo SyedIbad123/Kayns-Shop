@@ -24,9 +24,10 @@ export default async function CollectionPage({ params }: Props) {
 
   if (!collection) notFound();
 
-  const isSingleProduct = (collection.products?.length ?? 0) === 1;
+  const hasMultipleProducts =
+    Array.isArray(collection.products) && collection.products.length > 1;
 
-  if (isSingleProduct) {
+  if (!hasMultipleProducts) {
     return (
       <main className="min-h-screen">
         <SingleProductHero item={collection} />

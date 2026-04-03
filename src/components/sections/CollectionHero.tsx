@@ -4,15 +4,17 @@ import Button from "@/components/ui/Button";
 import type { CollectionItem } from "@/data/collection";
 
 export default function CollectionHero({ item }: { item: CollectionItem }) {
+  const heroImage = "/hero_Image_01.png";
   return (
     <>
       {/* Banner image */}
-      <div className="relative h-64 w-full sm:h-80">
+      <div className="relative h-64 w-full sm:h-125 flex justify-center items-center ">
         <Image
-          src={item.image}
+          src={heroImage}
           alt={item.title}
-          fill
-          className="object-cover"
+          width={700}
+          height={700}
+          className="object-contain"
           priority
         />
       </div>

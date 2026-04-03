@@ -1,5 +1,5 @@
 /**
- * Renders integer quantity input with increment/decrement controls and bulk-pricing advisory.
+ * Renders integer quantity input with increment/decrement controls and helper text.
  * Dependencies: cn utility.
  */
 
@@ -90,12 +90,6 @@ export default function NumberInput({
       </div>
 
       <p className="text-xs text-[#6B7280]">Minimum 1 unit</p>
-
-      {currentValue < 10 ? (
-        <p className="text-xs text-[#D97706]" aria-live="polite">
-          Note: Minimum bulk pricing applies from 10 units
-        </p>
-      ) : null}
 
       {error ? (
         <p className="text-[13px] text-[#DC2626]" aria-live="polite">

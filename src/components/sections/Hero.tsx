@@ -10,15 +10,15 @@ import Image from "next/image";
 
 const iconBoxes = [
   {
-    icon: "https://img.freepik.com/free-photo/beautiful-lake-mountains_395237-44.jpg?semt=ais_rp_50_assets&w=740&q=80",
+    icon: "/Hero_Image_01.png",
     label: "Layered Design",
   },
   {
-    icon: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_960_720.jpg",
+    icon: "/Hero_Image_02.png",
     label: "Creative Art",
   },
   {
-    icon: "https://www.bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg",
+    icon: "/Hero_Image_03.png",
     label: "Custom Craft",
   },
 ];
@@ -27,17 +27,17 @@ const slides = [
   {
     id: 1,
     alt: "Design showcase 1",
-    src: "https://img.freepik.com/free-photo/beautiful-lake-mountains_395237-44.jpg?semt=ais_rp_50_assets&w=740&q=80",
+    src: "/Hero_Image_01.png",
   },
   {
     id: 2,
     alt: "Design showcase 2",
-    src: "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_960_720.jpg",
+    src: "/Hero_Image_02.png",
   },
   {
     id: 3,
     alt: "Design showcase 3",
-    src: "https://www.bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg",
+    src: "/Hero_Image_03.png",
   },
 ];
 
@@ -81,14 +81,14 @@ export default function Hero() {
         </div>
       </div>
 
-      <Container className="pb-8 px-0">
+      <Container className="pb-8 px-0 max-w-full">
         {/* Slider */}
         <div className="relative max-w-full">
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex">
               {slides.map((slide) => (
                 <div key={slide.id} className="min-w-0 flex-[0_0_100%]">
-                  <div className="relative aspect-video">
+                  <div className="relative aspect-3/2">
                     <Image
                       src={slide.src}
                       alt={slide.alt}

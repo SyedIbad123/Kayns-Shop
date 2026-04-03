@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
-import Button from "@/components/ui/Button";
 import { portfolioItems } from "@/data/portfolio";
 
 const cardVariant = {
@@ -31,7 +31,7 @@ export default function Portfolio() {
         />
 
         {/* Portfolio grid — 1 col mobile, 2 col tablet, 3 col desktop with explicit placement */}
-        <div className="grid grid-cols-1 gap-4 auto-rows-[200px] sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-auto lg:[grid-template-rows:200px_220px_200px]">
+        <div className="grid grid-cols-1 gap-4 auto-rows-[200px] sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-auto lg:grid-rows-[200px_220px_200px]">
           {/* Item 1 — col 1, row 1 */}
           <motion.div
             custom={0}
@@ -39,14 +39,16 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl lg:col-start-1 lg:row-start-1"
+            className="relative overflow-hidden rounded-2xl bg-[#0B3A75] p-6 lg:col-start-1 lg:row-start-1"
           >
-            <Image
-              src={portfolioItems[0].image}
-              alt={portfolioItems[0].title}
-              fill
-              className="object-cover"
-            />
+            <div className="flex h-full flex-col justify-end text-white">
+              <p className="text-xs uppercase tracking-[0.18em] opacity-85">
+                {portfolioItems[0].category}
+              </p>
+              <h3 className="mt-2 text-xl font-semibold leading-tight">
+                {portfolioItems[0].title}
+              </h3>
+            </div>
           </motion.div>
 
           {/* Item 2 — col 2, row 1 */}
@@ -107,14 +109,16 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl lg:col-start-2 lg:row-start-2"
+            className="relative overflow-hidden rounded-2xl bg-[#0E5A4B] p-6 lg:col-start-2 lg:row-start-2"
           >
-            <Image
-              src={portfolioItems[4].image}
-              alt={portfolioItems[4].title}
-              fill
-              className="object-cover"
-            />
+            <div className="flex h-full flex-col justify-end text-white">
+              <p className="text-xs uppercase tracking-[0.18em] opacity-85">
+                {portfolioItems[4].category}
+              </p>
+              <h3 className="mt-2 text-xl font-semibold leading-tight">
+                {portfolioItems[4].title}
+              </h3>
+            </div>
           </motion.div>
 
           {/* Item 6 — col 2, row 3 */}
@@ -141,22 +145,27 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl lg:col-start-3 lg:row-start-3"
+            className="relative overflow-hidden rounded-2xl bg-[#7C2D12] p-6 lg:col-start-3 lg:row-start-3"
           >
-            <Image
-              src={portfolioItems[6].image}
-              alt={portfolioItems[6].title}
-              fill
-              className="object-cover"
-            />
+            <div className="flex h-full flex-col justify-end text-white">
+              <p className="text-xs uppercase tracking-[0.18em] opacity-85">
+                {portfolioItems[6].category}
+              </p>
+              <h3 className="mt-2 text-xl font-semibold leading-tight">
+                {portfolioItems[6].title}
+              </h3>
+            </div>
           </motion.div>
         </div>
 
         {/* CTA Button */}
         <div className="mt-10 flex justify-center">
-          <Button variant="secondary" size="lg">
-            View All Projects
-          </Button>
+          <Link
+            href="/portfolio"
+            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-lg font-semibold text-dark-blue transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+          >
+            View All Products
+          </Link>
         </div>
       </Container>
     </section>

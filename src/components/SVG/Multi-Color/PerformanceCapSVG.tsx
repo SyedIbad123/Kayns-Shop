@@ -5,9 +5,9 @@ import type { CapColors } from "@/types/cap.types";
 // Default colors matching Performance registry definition
 const DEFAULT_PERFORMANCE_COLORS: CapColors = {
   crown: "#523233",
-  brim: "#FFFF66",
+  brim: "#FFFFFF",
   back: "#611078",
-  eyelets: "#088008",
+  eyelets: "#000",
   strap: "#ffffff",
   middle: "#ffffff",
 };
@@ -20,7 +20,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
   const strap = colors.strap || DEFAULT_PERFORMANCE_COLORS.strap;
   const side = colors.middle || DEFAULT_PERFORMANCE_COLORS.middle;
 
-  const svgA = `<svg width="70%" id="Layer_1" height="60%" version="1.1" viewBox="0 0 238.79 205.97">
+  const svgA = `<svg width="50%" height="50%" viewBox="0 0 238.79 205.97">
  <defs>
   <style type="text/css">
     .perf_a_str0 {stroke:#7A6E6E;stroke-width:0.48;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.61313}
@@ -78,7 +78,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
  </g>
 </svg>`;
 
-  const svgB = `<svg width="70%" id="Layer_2" height="60%" version="1.1" viewBox="0 0 182.62 139.76">
+  const svgB = `<svg width="50%" height="50%" viewBox="0 0 182.62 139.76">
  <defs>
   <style type="text/css">
     .perf_b_str0 {stroke:#9C9999;stroke-width:0.84;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:2.61313}
@@ -144,8 +144,7 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
  </g>
 </svg>`;
 
-  const svgC = `
-  <svg width="70%" id="Layer_4" height="60%" version="1.1"  viewBox="0 0 235.7 202.62">
+  const svgC = `<svg width="50%" height="20%"  viewBox="0 0 235.7 202.62">
  <defs>
   <style type="text/css">
    <![CDATA[
@@ -205,20 +204,22 @@ export default function PerformanceCapSVG({ colors }: { colors: CapColors }) {
 </svg>`;
 
   return (
-    <div className="flex flex-col gap-4 items-center justify-center h-full w-full mt-40">
-      <div
-        dangerouslySetInnerHTML={{ __html: svgA }}
-        className="w-full h-full max-h-[50%] flex-1"
-        aria-label="Performance Cap Front Profile"
-      />
-      <div
-        dangerouslySetInnerHTML={{ __html: svgB }}
-        className="w-full h-full max-h-[50%] flex-1"
-        aria-label="Performance Cap Top Profile"
-      />
+    <div className="flex flex-col gap-4 items-center justify-center  w-full mt-40">
+      <div className="flex flex-row gap-4 items-center justify-center w-full">
+        <div
+          dangerouslySetInnerHTML={{ __html: svgA }}
+          className="w-full  flex-1"
+          aria-label="Performance Cap Front Profile"
+        />
+        <div
+          dangerouslySetInnerHTML={{ __html: svgB }}
+          className="w-full  flex-1"
+          aria-label="Performance Cap Top Profile"
+        />
+      </div>
       <div
         dangerouslySetInnerHTML={{ __html: svgC }}
-        className="w-full h-full max-h-[50%] flex-1"
+        className="w-full  flex-1"
         aria-label="Performance Cap Top Profile"
       />
     </div>

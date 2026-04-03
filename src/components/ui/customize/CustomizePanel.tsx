@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import type { CapConfig, CapColors } from "@/types/cap.types";
+import type { StoredLogoUpload } from "@/lib/storage";
 
 // ─────────────────────────────────────────────
 interface Props {
@@ -10,6 +12,25 @@ interface Props {
   /** For solid caps: called with (value) — key is always "solid"   */
   /** For panel caps: called with (value, panelKey)                 */
   onColorChange: (value: string, panelKey?: string) => void;
+  logoUpload?: StoredLogoUpload | null;
+  logoError?: string | null;
+  onLogoSelect?: (file: File | null) => void;
+  onLogoDescriptionChange?: (value: string) => void;
+  onLogoClear?: () => void;
+}
+
+function formatBytes(sizeInBytes: number) {
+  if (!Number.isFinite(sizeInBytes) || sizeInBytes <= 0) {
+    return "0 B";
+  }
+
+  const units = ["B", "KB", "MB"];
+  const exponent = Math.min(
+    Math.floor(Math.log(sizeInBytes) / Math.log(1024)),
+    units.length - 1,
+  );
+  const value = sizeInBytes / Math.pow(1024, exponent);
+  return `${value.toFixed(exponent === 0 ? 0 : 1)} ${units[exponent]}`;
 }
 
 // ── helper: one color-picker row ─────────────────────────
@@ -30,7 +51,7 @@ function ColorRow({
 
   // Provided color options and labels
   const COLOR_OPTIONS = [
-    { value: "#FFF", label: "Select  Head Colour" },
+    { value: "#FFF", label },
     { value: "#000000", label: "Black" },
     { value: "#FFFFFF", label: "White" },
     { value: "#FF0000", label: "Red" },
@@ -69,12 +90,14 @@ function ColorRow({
   }, []);
 
   return (
-    <div className="rounded-xl bg-white px-4 py-3 shadow-sm">
-      <p className="mb-2 text-sm font-medium text-gray-700">{label}</p>
-      <div ref={wrapperRef} className="relative w-3/4">
+    <div>
+      <p className="mb-1 pl-4 block text-sm font-medium text-gray-700">
+        {label}
+      </p>
+      <div ref={wrapperRef} className="relative rounded-xl px-4 py-3">
         <button
           type="button"
-          className="flex w-full items-center justify-between rounded  bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+          className="flex w-full items-center justify-between rounded-xl border border-black bg-white px-4 py-3 text-base text-gray-900 outline-none transition"
           onClick={() => setIsOpen((open) => !open)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
@@ -82,7 +105,7 @@ function ColorRow({
         >
           <span className="flex items-center gap-2">
             <span
-              className="inline-block h-4 w-4 rounded-full border border-gray-300"
+              className={`inline-block h-4 w-4 rounded-full ${selectedOption.value === "#FFFFFF" || selectedOption.value === "#FFF" ? "border border-gray-300" : ""}`}
               style={{ backgroundColor: selectedOption.value }}
             />
             <span>{selectedOption.label}</span>
@@ -93,7 +116,7 @@ function ColorRow({
         {isOpen && (
           <ul
             role="listbox"
-            className="absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
+            className="absolute left-4 right-4 z-20 mt-1 max-h-60 overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
           >
             {COLOR_OPTIONS.map((opt) => (
               <li key={opt.value}>
@@ -106,7 +129,7 @@ function ColorRow({
                   }}
                 >
                   <span
-                    className={`inline-block h-4 w-4 rounded-full ${(opt.label == "White" || opt.label === "Select  Head Colour") && "border border-gray-300"}`}
+                    className={`inline-block h-4 w-4 rounded-full ${opt.value === "#FFFFFF" || opt.value === "#FFF" ? "border border-gray-300" : ""}`}
                     style={{ backgroundColor: opt.value }}
                   />
                   <span>{opt.label}</span>
@@ -124,6 +147,11 @@ export default function CustomizePanel({
   capConfig,
   colors,
   onColorChange,
+  logoUpload,
+  logoError,
+  onLogoSelect,
+  onLogoDescriptionChange,
+  onLogoClear,
 }: Props) {
   const dynamicPanelRows =
     capConfig.type === "panel"
@@ -139,9 +167,11 @@ export default function CustomizePanel({
           }))
       : [];
 
+  const useTwoColumnPanelLayout =
+    capConfig.type === "panel" && dynamicPanelRows.length > 4;
+
   return (
-    <div className="flex flex-col gap-3">
-      {/* Product name */}
+    <div className="flex flex-col justify-center gap-4 w-full">
       <div className="rounded-xl bg-white px-4 py-3 shadow-sm">
         <p className="text-sm font-medium text-gray-800">{capConfig.label}</p>
         <p className="mt-0.5 text-xs text-gray-400 capitalize">
@@ -149,27 +179,127 @@ export default function CustomizePanel({
         </p>
       </div>
 
-      {/* ── SOLID: single colour picker ─────── */}
-      {capConfig.type === "solid" && (
-        <ColorRow
-          label="Cap Colour"
-          colorKey="solid"
-          colors={colors}
-          onColorChange={onColorChange}
-        />
-      )}
+      <div className="flex flex-col p-4 gap-3 rounded-xl bg-white px-4 py-3 shadow-sm">
+        {/* Product name */}
 
-      {/* ── PANEL: one picker per section ───── */}
-      {capConfig.type === "panel" &&
-        dynamicPanelRows.map((panel) => (
+        {/* ── SOLID: single colour picker ─────── */}
+        {capConfig.type === "solid" && (
           <ColorRow
-            key={panel.key}
-            label={panel.label}
-            colorKey={panel.key}
+            label="Cap Colour"
+            colorKey="solid"
             colors={colors}
             onColorChange={onColorChange}
           />
-        ))}
+        )}
+
+        {/* ── PANEL: one picker per section ───── */}
+        {capConfig.type === "panel" && (
+          <div
+            className={
+              useTwoColumnPanelLayout
+                ? "grid grid-cols-1 gap-3 sm:grid-cols-2"
+                : "flex flex-col gap-3"
+            }
+          >
+            {dynamicPanelRows.map((panel) => (
+              <ColorRow
+                key={panel.key}
+                label={panel.label}
+                colorKey={panel.key}
+                colors={colors}
+                onColorChange={onColorChange}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="rounded-xl bg-white px-4 py-3 shadow-sm">
+        <p className="text-sm font-medium text-gray-800">
+          Logo Upload (Optional)
+        </p>
+        <p className="mt-0.5 text-xs text-gray-500">
+          This does not change the SVG preview. It is sent with your quote
+          request.
+        </p>
+
+        <div className="mt-3">
+          <label
+            htmlFor="logo-upload"
+            className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-50"
+          >
+            Choose Logo Image
+          </label>
+          <input
+            id="logo-upload"
+            type="file"
+            accept="image/png,image/jpeg,image/webp,image/svg+xml"
+            className="hidden"
+            onChange={(event) => {
+              const file = event.target.files?.[0] ?? null;
+              onLogoSelect?.(file);
+              event.currentTarget.value = "";
+            }}
+          />
+        </div>
+
+        {logoError ? (
+          <p className="mt-2 rounded-md border border-red-200 bg-red-50 px-2.5 py-2 text-xs text-red-700">
+            {logoError}
+          </p>
+        ) : null}
+
+        {logoUpload ? (
+          <div className="mt-3 rounded-lg border border-gray-200 bg-gray-50 p-3">
+            <div className="flex items-start gap-3">
+              <Image
+                src={logoUpload.dataUrl}
+                alt="Uploaded logo preview"
+                width={64}
+                height={64}
+                unoptimized
+                className="h-16 w-16 rounded-md border border-gray-200 bg-white object-contain"
+              />
+
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-gray-800">
+                  {logoUpload.fileName}
+                </p>
+                <p className="text-[11px] text-gray-500">
+                  {logoUpload.mimeType} · {formatBytes(logoUpload.sizeInBytes)}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={onLogoClear}
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-[11px] font-medium text-gray-700 transition hover:bg-gray-100"
+              >
+                Remove
+              </button>
+            </div>
+
+            <div className="mt-3 space-y-1.5">
+              <label
+                htmlFor="logo-description"
+                className="text-xs font-medium text-gray-700"
+              >
+                Logo Description
+              </label>
+              <textarea
+                id="logo-description"
+                rows={2}
+                value={logoUpload.description ?? ""}
+                onChange={(event) =>
+                  onLogoDescriptionChange?.(event.target.value)
+                }
+                placeholder="e.g. Club crest for front panel"
+                className="w-full rounded-md border border-gray-300 bg-white px-2.5 py-2 text-xs text-gray-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+            </div>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

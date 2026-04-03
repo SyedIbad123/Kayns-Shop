@@ -22,9 +22,9 @@ export default function SunCricketHat({ colors }: { colors: CapColors }) {
 
   return (
     <svg
-      width="13.2669in"
+      width="5.2669in"
       id="Layer_1"
-      height="6.45772in"
+      height="5.45772in"
       version="1.1"
       viewBox="0 0 179.55 87.4"
     >

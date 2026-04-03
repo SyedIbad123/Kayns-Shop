@@ -5,7 +5,8 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Controller,
   type FieldErrors,
@@ -25,6 +26,12 @@ import {
   clothingSchemaByProductType,
   type ClothingFormValues,
 } from "@/lib/schemas/clothingFormSchema";
+import {
+  clearProductConfig,
+  getProductConfig,
+  saveProductConfig,
+  saveQuoteConfig,
+} from "@/lib/storage";
 import { cn } from "@/lib/utils";
 
 import ColorDescriptionField from "./fields/ColorDescriptionField";
@@ -182,11 +189,14 @@ export default function DynamicClothingForm({
   productId,
   onFormComplete,
 }: DynamicClothingFormProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+
   const config = CLOTHING_FORM_CONFIG[productType];
   const schema = clothingSchemaByProductType[productType];
 
-  const storageKey = useMemo(() => `customize-form-${productId}`, [productId]);
   const defaultValues = useMemo(() => createDefaultValues(config), [config]);
+  const skipNextPersistenceRef = useRef(false);
 
   const [showErrorBanner, setShowErrorBanner] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -214,23 +224,22 @@ export default function DynamicClothingForm({
   );
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    const savedProductConfig = getProductConfig();
+    if (!savedProductConfig) {
       return;
     }
 
-    const serializedValues = sessionStorage.getItem(storageKey);
-    if (!serializedValues) {
+    if (
+      savedProductConfig.productType !== productType ||
+      savedProductConfig.productId !== String(productId)
+    ) {
       return;
     }
 
     try {
-      const parsedValues = JSON.parse(serializedValues) as Record<
-        string,
-        unknown
-      >;
       const hydrated: Record<string, unknown> = {
         ...defaultValues,
-        ...parsedValues,
+        ...savedProductConfig.values,
         productType,
         uploadLogos: [],
         uploadDesign: [],
@@ -245,16 +254,30 @@ export default function DynamicClothingForm({
     } catch {
       reset(defaultValues as ClothingFormValues);
     }
-  }, [defaultValues, productType, reset, storageKey]);
+  }, [defaultValues, productId, productType, reset]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (skipNextPersistenceRef.current) {
+      skipNextPersistenceRef.current = false;
       return;
     }
 
-    const serialized = sanitizeForStorage(watchedValues);
-    sessionStorage.setItem(storageKey, JSON.stringify(serialized));
-  }, [storageKey, watchedValues]);
+    const serialized = sanitizeForStorage(watchedValues) as Record<
+      string,
+      unknown
+    >;
+    delete serialized.uploadLogos;
+    delete serialized.uploadDesign;
+
+    saveProductConfig({
+      source: "standard",
+      productId: String(productId),
+      productType,
+      values: serialized,
+      updatedAt: new Date().toISOString(),
+      sourcePath: pathname,
+    });
+  }, [pathname, productId, productType, watchedValues]);
 
   const buildCustomizationOrder = (
     values: ClothingFormValues,
@@ -286,9 +309,43 @@ export default function DynamicClothingForm({
     };
   };
 
+  const buildStandardQuoteConfig = (values: ClothingFormValues) => {
+    const cleanValues =
+      (sanitizeForStorage(values) as Record<string, unknown>) ?? {};
+
+    delete cleanValues.uploadLogos;
+    delete cleanValues.uploadDesign;
+
+    return {
+      source: "standard" as const,
+      productId: String(productId),
+      productType,
+      values: cleanValues,
+      updatedAt: new Date().toISOString(),
+      sourcePath: pathname,
+    };
+  };
+
+  const resetConfigurator = () => {
+    skipNextPersistenceRef.current = true;
+    reset(defaultValues as ClothingFormValues);
+    clearProductConfig();
+    setActiveIntent("add-to-cart");
+  };
+
   const onSubmit = async (values: ClothingFormValues, intent: SubmitIntent) => {
     setShowErrorBanner(false);
     setSubmitError(null);
+
+    if (intent === "request-quote") {
+      const quoteConfig = buildStandardQuoteConfig(values);
+      saveQuoteConfig(quoteConfig);
+
+      // Reset synchronously before navigation to fix quote-click reset behavior.
+      resetConfigurator();
+      router.push("/quote?source=standard");
+      return;
+    }
 
     const customizationOrder = buildCustomizationOrder(values, intent);
 
@@ -297,12 +354,7 @@ export default function DynamicClothingForm({
         await onFormComplete(customizationOrder);
       }
 
-      if (typeof window !== "undefined") {
-        sessionStorage.removeItem(storageKey);
-      }
-
-      reset(defaultValues as ClothingFormValues);
-      setActiveIntent("add-to-cart");
+      resetConfigurator();
     } catch {
       setShowErrorBanner(true);
       setSubmitError("We could not submit your request. Please try again.");

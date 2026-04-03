@@ -22,21 +22,10 @@ export default function CustomCricketBaggyCapSingleColor({
 
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlSpace="preserve"
-      width="21.1406in"
+      width="5.1406in"
       id="Layer_1"
-      height="24.4142in"
-      version="1.1"
-      style={{
-        shapeRendering: "geometricPrecision",
-        textRendering: "geometricPrecision",
-        imageRendering: "auto",
-        fillRule: "evenodd",
-        clipRule: "evenodd",
-      }}
+      height="5.4142in"
       viewBox="0 0 9436.2 10897.4"
-      className="h-full w-full"
       aria-label="Cap preview"
     >
       <defs>

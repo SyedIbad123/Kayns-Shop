@@ -32,9 +32,9 @@ export default function CustomCricketBaggyCapMultiColor({
 
   return (
     <svg
-      width="21.1406in"
+      width="5.1406in"
       id="Layer_1"
-      height="24.4142in"
+      height="5.4142in"
       version="1.1"
       viewBox="0 0 9436.2 10897.4"
     >

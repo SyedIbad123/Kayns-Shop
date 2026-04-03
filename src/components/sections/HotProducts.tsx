@@ -55,7 +55,7 @@ export default function HotProducts() {
                 <div
                   key={product.id}
                   className="relative min-w-0 flex-[0_0_70%] overflow-hidden rounded-2xl sm:flex-[0_0_45%] lg:flex-[0_0_30%]"
-                  style={{ height: "300px" }}
+                  style={{ height: "370px" }}
                   onMouseEnter={() => setIsPaused(true)}
                   onMouseLeave={() => setIsPaused(false)}
                 >
@@ -67,7 +67,7 @@ export default function HotProducts() {
                   />
 
                   <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/60 to-transparent px-4 py-3">
-                    <h3 className="truncate text-sm font-semibold uppercase tracking-[0.12em] text-white sm:text-base">
+                    <h3 className="truncate text-sm text-center font-semibold uppercase tracking-[0.12em] text-white sm:text-base">
                       {product.title}
                     </h3>
                   </div>

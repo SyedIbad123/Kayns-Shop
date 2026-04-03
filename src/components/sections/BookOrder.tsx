@@ -25,7 +25,7 @@ export default function BookOrder({ item }: { item: CollectionItem }) {
         </div>
 
         {/* Right — image */}
-        <div className="relative h-36 w-full max-w-xs shrink-0 overflow-hidden rounded-2xl bg-gray-500 sm:h-44 sm:w-72">
+        <div className="relative h-36 w-full max-w-xs shrink-0 overflow-hidden sm:h-72 sm:w-72">
           <Image
             src={item.image}
             alt={item.title}

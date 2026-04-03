@@ -17,22 +17,19 @@ export const portfolioItems: PortfolioItem[] = [
     id: 2,
     title: "Corporate Polo Uniform",
     category: "Polo Shirt",
-    image:
-      "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
+    image: "/visor.png",
   },
   {
     id: 3,
     title: "Winter Club Hoodie",
     category: "Hooded Sweatshirt",
-    image:
-      "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
+    image: "/frame_3.png",
   },
   {
     id: 4,
     title: "Training Track Jacket",
     category: "Track Jacket",
-    image:
-      "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
+    image: "/frame_16.png",
   },
   {
     id: 5,
@@ -45,8 +42,7 @@ export const portfolioItems: PortfolioItem[] = [
     id: 6,
     title: "Dual-Side Team Jacket",
     category: "Reversible Jacket",
-    image:
-      "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
+    image: "/bucket_hat.png",
   },
   {
     id: 7,

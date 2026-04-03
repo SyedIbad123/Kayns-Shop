@@ -5,141 +5,135 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
-import {
-  collectionRow1,
-  collectionRow2,
-  CollectionItem,
-} from "@/data/collection";
+import { collectionSections } from "@/data/collection";
+import ExpandCard from "@/components/sections/collection/ExpandCard";
 
-function ExpandCard({
-  item,
-  baseFlex,
-  activeId,
-  onHover,
-  height,
-}: {
-  item: CollectionItem;
-  baseFlex: number;
-  activeId: number | null;
-  onHover: (id: number | null) => void;
-  height: string;
-}) {
-  const isActive = activeId === item.id;
-  const someActive = activeId !== null;
-  const flexGrow = isActive
-    ? baseFlex * 2
-    : someActive
-      ? baseFlex * 0.75
-      : baseFlex;
+type SectionKey = (typeof collectionSections)[number]["key"];
 
-  return (
-    <div
-      style={{
-        flexGrow,
-        flexShrink: 1,
-        flexBasis: 0,
-        minWidth: 0,
-        transition: "flex-grow 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
-      }}
-      className="flex min-w-0 flex-col"
-    >
-      <Link
-        href={`/collection/${item.id}`}
-        onMouseEnter={() => onHover(item.id)}
-        onMouseLeave={() => onHover(null)}
-        className={`group relative cursor-pointer overflow-hidden rounded-2xl ${height}`}
-      >
-        <Image
-          src="/Product_Bg.svg"
-          alt=""
-          fill
-          aria-hidden
-          className="object-cover"
-        />
-        <div className="absolute inset-2 overflow-hidden rounded-xl">
-          <Image
-            src={item.image}
-            alt={item.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        </div>
-      </Link>
-      <p className="mt-2 px-1 text-center text-xs font-semibold uppercase tracking-wide text-white lg:text-sm">
-        {item.title}
-      </p>
-    </div>
-  );
+const DESKTOP_HEIGHT_BY_SECTION: Record<SectionKey, string> = {
+  caps: "h-80",
+  "t-shirts": "h-80",
+  bottom: "h-80",
+  jackets: "h-80",
+};
+
+const DESKTOP_ITEMS_PER_ROW = 5;
+
+function chunkItems<T>(items: T[], chunkSize: number): T[][] {
+  const chunks: T[][] = [];
+
+  for (let index = 0; index < items.length; index += chunkSize) {
+    chunks.push(items.slice(index, index + chunkSize));
+  }
+
+  return chunks;
 }
 
 export default function Collection() {
-  const [activeRow1, setActiveRow1] = useState<number | null>(null);
-  const [activeRow2, setActiveRow2] = useState<number | null>(null);
+  const [activeByRow, setActiveByRow] = useState<Record<string, number | null>>(
+    {},
+  );
 
-  const allItems = [...collectionRow1, ...collectionRow2];
+  const handleRowHover = (rowKey: string, id: number | null) => {
+    setActiveByRow((current) => ({
+      ...current,
+      [rowKey]: id,
+    }));
+  };
 
   return (
-    <section className="bg-brand-red py-10" aria-label="XYZ Collection">
+    <section className="bg-brand-red py-10" aria-label="KAYNS Collection">
       <Container>
-        <SectionTitle title="XYZ  COLLECTION" light className="mb-10" />
+        <SectionTitle title="KAYNS COLLECTION" light className="mb-10" />
 
-        {/* Mobile grid — 2 columns, shown below md */}
-        <div className="grid grid-cols-2 gap-4 md:hidden">
-          {allItems.map((item) => (
-            <div key={item.id} className="flex min-w-0 flex-col">
-              <Link
-                href={`/collection/${item.id}`}
-                className="group relative h-48 overflow-hidden rounded-2xl"
-              >
-                <Image
-                  src="/Product_Bg.svg"
-                  alt=""
-                  fill
-                  aria-hidden
-                  className="object-cover"
-                />
-                <div className="absolute inset-2 overflow-hidden rounded-xl">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+        <div className="space-y-8 md:space-y-10">
+          {collectionSections.map((section) => (
+            <div key={section.key}>
+              <h3 className="mb-4 text-center text-xl font-bold uppercase tracking-[0.2em] text-white md:text-left md:text-2xl">
+                {section.title}
+              </h3>
+
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:hidden">
+                {section.items.map((item) => (
+                  <div key={item.id} className="flex min-w-0 flex-col">
+                    <Link
+                      href={`/collection/${item.id}`}
+                      className="relative h-48 overflow-hidden rounded-2xl"
+                    >
+                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                        <Image
+                          src="/Product_Bg.svg"
+                          alt=""
+                          width={540}
+                          height={540}
+                          aria-hidden
+                          className="h-135 w-135 max-w-none object-contain"
+                        />
+                      </div>
+
+                      <div className="absolute inset-2 overflow-hidden rounded-xl">
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          fill
+                          className="object-contain p-2"
+                        />
+                      </div>
+                    </Link>
+
+                    <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-white">
+                      {item.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="hidden md:block">
+                <div className="space-y-4">
+                  {chunkItems(section.items, DESKTOP_ITEMS_PER_ROW).map(
+                    (rowItems, rowIndex) => {
+                      const rowKey = `${section.key}-row-${rowIndex}`;
+                      const rowActiveId = activeByRow[rowKey] ?? null;
+                      const placeholdersNeeded =
+                        DESKTOP_ITEMS_PER_ROW - rowItems.length;
+
+                      return (
+                        <div key={rowKey} className="flex gap-4">
+                          {rowItems.map((item) => (
+                            <ExpandCard
+                              key={item.id}
+                              item={item}
+                              baseFlex={1}
+                              activeId={rowActiveId}
+                              onHover={(id) => handleRowHover(rowKey, id)}
+                              height={DESKTOP_HEIGHT_BY_SECTION[section.key]}
+                            />
+                          ))}
+
+                          {Array.from({ length: placeholdersNeeded }).map(
+                            (_, placeholderIndex) => (
+                              <div
+                                key={`${rowKey}-placeholder-${placeholderIndex}`}
+                                aria-hidden
+                                style={{
+                                  flexGrow: rowActiveId !== null ? 0.9 : 1,
+                                  flexShrink: 1,
+                                  flexBasis: 0,
+                                  minWidth: 0,
+                                  transition:
+                                    "flex-grow 0.45s cubic-bezier(0.4, 0, 0.2, 1)",
+                                }}
+                                className="pointer-events-none select-none"
+                              />
+                            ),
+                          )}
+                        </div>
+                      );
+                    },
+                  )}
                 </div>
-              </Link>
-              <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-white">
-                {item.title}
-              </p>
+              </div>
             </div>
-          ))}
-        </div>
-
-        {/* Desktop accordion rows — shown at md+ */}
-        {/* Row 1: 1 large + 3 portrait */}
-        <div className="hidden gap-4 md:flex">
-          {collectionRow1.map((item, i) => (
-            <ExpandCard
-              key={item.id}
-              item={item}
-              baseFlex={i === 0 ? 2 : 1}
-              activeId={activeRow1}
-              onHover={setActiveRow1}
-              height="h-64"
-            />
-          ))}
-        </div>
-
-        {/* Row 2: 5 equal */}
-        <div className="mt-5 hidden gap-4 md:flex">
-          {collectionRow2.map((item) => (
-            <ExpandCard
-              key={item.id}
-              item={item}
-              baseFlex={1}
-              activeId={activeRow2}
-              onHover={setActiveRow2}
-              height="h-56"
-            />
           ))}
         </div>
       </Container>

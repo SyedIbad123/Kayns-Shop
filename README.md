@@ -2,6 +2,20 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+Create an environment file before running the app:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables:
+
+```env
+RESEND_API_KEY=re_xxxxxxxxxxxx
+QUOTE_RECIPIENT_EMAIL=quotes@yourdomain.com
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+```
+
 First, run the development server:
 
 ```bash

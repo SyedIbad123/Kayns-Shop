@@ -5,14 +5,117 @@ import Image from "next/image";
 import type { CollectionItem } from "@/data/collection";
 
 const filterButtons = ["Size chart", "Available color", "Logo Location"];
-const filterImages: Record<string, string> = {
-  "Size chart":
-    "https://img.freepik.com/free-photo/beautiful-lake-mountains_395237-44.jpg?semt=ais_rp_50_assets&w=740&q=80",
-  "Available color":
-    "https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832_960_720.jpg",
-  "Logo Location":
-    "https://www.bigfootdigital.co.uk/wp-content/uploads/2020/07/image-optimisation-scaled.jpg",
+
+const SHIRTS_AND_JACKETS_SIZE_CHART = "/shirts_and_jacket_size_chart.png";
+const SHORTS_SIZE_CHART = "/shorts_size_chart.png";
+
+const SIZE_CHART_BY_PRODUCT_TYPE: Partial<
+  Record<NonNullable<CollectionItem["productType"]>, string>
+> = {
+  "t-shirt": SHIRTS_AND_JACKETS_SIZE_CHART,
+  "polo-shirt": SHIRTS_AND_JACKETS_SIZE_CHART,
+  trousers: SHORTS_SIZE_CHART,
+  "basketball-shorts": SHORTS_SIZE_CHART,
+  "football-shorts": SHORTS_SIZE_CHART,
+  "rugby-shorts": SHORTS_SIZE_CHART,
+  "netball-shorts": SHORTS_SIZE_CHART,
+  "hooded-sweatshirt": SHIRTS_AND_JACKETS_SIZE_CHART,
+  "puffer-jacket": SHIRTS_AND_JACKETS_SIZE_CHART,
+  "track-jacket": SHIRTS_AND_JACKETS_SIZE_CHART,
+  "reversible-jacket": SHIRTS_AND_JACKETS_SIZE_CHART,
 };
+
+const LOGO_LOCATION_BY_PRODUCT_TYPE: Partial<
+  Record<NonNullable<CollectionItem["productType"]>, string>
+> = {
+  "t-shirt": "/shirt_logo_position.png",
+  "polo-shirt": "/shirt_logo_position.png",
+  trousers: "/shorts_logo_position.png",
+  "basketball-shorts": "/shorts_logo_position.png",
+  "football-shorts": "/shorts_logo_position.png",
+  "rugby-shorts": "/shorts_logo_position.png",
+  "netball-shorts": "/shorts_logo_position.png",
+  "hooded-sweatshirt": "/sweatshirt_logo_position.png",
+  "puffer-jacket": "/puffer_logo_position.png",
+  "track-jacket": "/ziptop_logo_position.png",
+};
+
+function resolveLogoLocationImage(item: CollectionItem): string {
+  const title = item.title.toLowerCase();
+
+  // Title checks first for product types that share the same backend key.
+  if (title.includes("zip")) return "/ziptop_logo_position.png";
+  if (title.includes("sleeveless")) return "/sleevless_logo_position.png";
+  if (title.includes("puffer")) return "/puffer_logo_position.png";
+  if (title.includes("hoodie") || title.includes("sweatshirt")) {
+    return "/sweatshirt_logo_position.png";
+  }
+  if (title.includes("singlet") || title.includes("jumper")) {
+    return "/singlet_logo_position.png";
+  }
+  if (title.includes("short") || title.includes("trouser")) {
+    return "/shorts_logo_position.png";
+  }
+  if (
+    title.includes("shirt") ||
+    title.includes("tee") ||
+    title.includes("jersey") ||
+    title.includes("polo")
+  ) {
+    return "/shirt_logo_position.png";
+  }
+
+  const mappedByType = item.productType
+    ? LOGO_LOCATION_BY_PRODUCT_TYPE[item.productType]
+    : undefined;
+
+  // Last resort: related default image so modal never shows unrelated placeholders.
+  return mappedByType ?? "/shirt_logo_position.png";
+}
+
+function resolveSizeChartImage(item: CollectionItem): string {
+  const title = item.title.toLowerCase();
+
+  if (title.includes("short") || title.includes("trouser")) {
+    return SHORTS_SIZE_CHART;
+  }
+
+  if (
+    title.includes("shirt") ||
+    title.includes("tee") ||
+    title.includes("jersey") ||
+    title.includes("polo") ||
+    title.includes("hoodie") ||
+    title.includes("sweatshirt") ||
+    title.includes("puffer") ||
+    title.includes("jacket") ||
+    title.includes("zip") ||
+    title.includes("singlet") ||
+    title.includes("jumper")
+  ) {
+    return SHIRTS_AND_JACKETS_SIZE_CHART;
+  }
+
+  const mappedByType = item.productType
+    ? SIZE_CHART_BY_PRODUCT_TYPE[item.productType]
+    : undefined;
+
+  // Default to the broader tops/jackets chart when uncertain.
+  return mappedByType ?? SHIRTS_AND_JACKETS_SIZE_CHART;
+}
+
+function resolveFilterImage(filterLabel: string, item: CollectionItem): string {
+  if (filterLabel === "Size chart") {
+    return resolveSizeChartImage(item);
+  }
+
+  if (filterLabel === "Logo Location") {
+    return resolveLogoLocationImage(item);
+  }
+
+  // Size chart and Available color assets can vary per product; fallback to product image.
+  return item.image;
+}
 
 export default function SingleProductQuote({ item }: { item: CollectionItem }) {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -56,16 +159,6 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
             Quote Details
           </button>
         </div>
-
-        {/* Right — image */}
-        <div className="relative h-40 w-full max-w-xs shrink-0 overflow-hidden rounded-2xl bg-gray-600 sm:h-44 sm:w-64">
-          <Image
-            src={item.image}
-            alt={item.title}
-            fill
-            className="object-cover"
-          />
-        </div>
       </div>
 
       {activeFilter ? (
@@ -82,7 +175,7 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
             aria-label={`${activeFilter} preview`}
           >
             <Image
-              src={filterImages[activeFilter] ?? item.image}
+              src={resolveFilterImage(activeFilter, item)}
               alt={`${activeFilter} preview`}
               fill
               className="object-cover"

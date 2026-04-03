@@ -15,7 +15,7 @@ export default function GetAQuote() {
         {/* Text */}
         <div className="flex-1">
           <h2 className="text-2xl font-extrabold uppercase tracking-widest sm:text-3xl">
-            Get a Quote
+            Customize
           </h2>
           <p className="mt-2 text-md leading-relaxed text-gray-300">
             Lorem Ipsum is simply dummy text of the printing and typesetting
