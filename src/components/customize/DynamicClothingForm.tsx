@@ -31,7 +31,9 @@ import {
   getProductConfig,
   saveProductConfig,
   saveQuoteConfig,
+  type StoredUploadedFileSummary,
 } from "@/lib/storage";
+import { setPendingQuoteFiles } from "@/lib/quote-file-store";
 import { cn } from "@/lib/utils";
 
 import ColorDescriptionField from "./fields/ColorDescriptionField";
@@ -118,6 +120,20 @@ function sanitizeForStorage(value: unknown): unknown {
   }
 
   return value;
+}
+
+function toUploadedFileSummary(
+  file: File,
+  category: StoredUploadedFileSummary["category"],
+  description?: string,
+): StoredUploadedFileSummary {
+  return {
+    fileName: file.name,
+    mimeType: file.type || "application/octet-stream",
+    sizeInBytes: file.size,
+    category,
+    description: description?.trim() || undefined,
+  };
 }
 
 function createDefaultValues(config: FormConfig): Record<string, unknown> {
@@ -309,7 +325,10 @@ export default function DynamicClothingForm({
     };
   };
 
-  const buildStandardQuoteConfig = (values: ClothingFormValues) => {
+  const buildStandardQuoteConfig = (
+    values: ClothingFormValues,
+    uploadedFiles: StoredUploadedFileSummary[],
+  ) => {
     const cleanValues =
       (sanitizeForStorage(values) as Record<string, unknown>) ?? {};
 
@@ -321,6 +340,7 @@ export default function DynamicClothingForm({
       productId: String(productId),
       productType,
       values: cleanValues,
+      uploadedFiles,
       updatedAt: new Date().toISOString(),
       sourcePath: pathname,
     };
@@ -338,7 +358,47 @@ export default function DynamicClothingForm({
     setSubmitError(null);
 
     if (intent === "request-quote") {
-      const quoteConfig = buildStandardQuoteConfig(values);
+      const rawValues = values as Record<string, unknown>;
+      const uploadLogos = (rawValues.uploadLogos as File[] | undefined) ?? [];
+      const uploadDesign = (rawValues.uploadDesign as File[] | undefined) ?? [];
+      const logoPositionComment =
+        typeof rawValues.logoPositionComment === "string"
+          ? rawValues.logoPositionComment
+          : "";
+
+      const uploadedFiles: StoredUploadedFileSummary[] = [
+        ...uploadLogos.map((file) =>
+          toUploadedFileSummary(file, "logo", logoPositionComment),
+        ),
+        ...uploadDesign.map((file) =>
+          toUploadedFileSummary(file, "design-reference"),
+        ),
+      ];
+
+      setPendingQuoteFiles(
+        uploadedFiles.length > 0
+          ? {
+              source: "standard",
+              createdAt: new Date().toISOString(),
+              files: [
+                ...uploadLogos.map((file) => ({
+                  file,
+                  summary: toUploadedFileSummary(
+                    file,
+                    "logo",
+                    logoPositionComment,
+                  ),
+                })),
+                ...uploadDesign.map((file) => ({
+                  file,
+                  summary: toUploadedFileSummary(file, "design-reference"),
+                })),
+              ],
+            }
+          : null,
+      );
+
+      const quoteConfig = buildStandardQuoteConfig(values, uploadedFiles);
       saveQuoteConfig(quoteConfig);
 
       // Reset synchronously before navigation to fix quote-click reset behavior.

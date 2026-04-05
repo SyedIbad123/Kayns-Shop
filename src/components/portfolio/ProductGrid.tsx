@@ -4,14 +4,34 @@ import { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import FilterBar from "@/components/portfolio/FilterBar";
 import ProductCard from "@/components/portfolio/ProductCard";
-import { products } from "@/lib/products";
+import type { Product, ProductSize } from "@/lib/products";
 
-export default function ProductGrid() {
+interface ProductGridProps {
+  products: Product[];
+}
+
+const gridSpanBySize: Record<ProductSize, string> = {
+  large: "md:col-span-2 md:row-span-2",
+  wide: "md:col-span-2 md:row-span-1",
+  tall: "md:col-span-1 md:row-span-2",
+  medium: "md:col-span-1 md:row-span-1",
+  small: "md:col-span-1 md:row-span-1",
+};
+
+const minHeightBySize: Record<ProductSize, string> = {
+  large: "min-h-[360px]",
+  wide: "min-h-[250px]",
+  tall: "min-h-[330px]",
+  medium: "min-h-[250px]",
+  small: "min-h-[220px]",
+};
+
+export default function ProductGrid({ products }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = useMemo(
     () => ["All", ...new Set(products.map((item) => item.category))],
-    [],
+    [products],
   );
 
   const visibleProducts = useMemo(() => {
@@ -20,7 +40,7 @@ export default function ProductGrid() {
     }
 
     return products.filter((item) => item.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, products]);
 
   return (
     <section className="bg-zinc-950 px-4 pb-20 pt-8 sm:px-6 lg:px-8">
@@ -36,6 +56,7 @@ export default function ProductGrid() {
             {visibleProducts.map((product, index) => (
               <motion.div
                 key={product.id}
+                className={`${gridSpanBySize[product.size]} ${minHeightBySize[product.size]} md:min-h-0`}
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

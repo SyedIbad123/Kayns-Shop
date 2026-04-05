@@ -9,27 +9,12 @@ interface ProductCardProps {
   priority?: boolean;
 }
 
-const gridSpanBySize: Record<Product["size"], string> = {
-  large: "md:col-span-2 md:row-span-2",
-  wide: "md:col-span-2 md:row-span-1",
-  tall: "md:col-span-1 md:row-span-2",
-  medium: "md:col-span-1 md:row-span-1",
-  small: "md:col-span-1 md:row-span-1",
-};
-
-const minHeightBySize: Record<Product["size"], string> = {
-  large: "min-h-[360px]",
-  wide: "min-h-[250px]",
-  tall: "min-h-[330px]",
-  medium: "min-h-[250px]",
-  small: "min-h-[220px]",
-};
-
 export default function ProductCard({
   product,
   priority = false,
 }: ProductCardProps) {
   const compact = product.size === "small";
+  const isLocalPortfolioImage = product.image.startsWith("/portfolio_Images/");
 
   const imageSizes =
     product.size === "large" || product.size === "wide"
@@ -39,7 +24,7 @@ export default function ProductCard({
   return (
     <Link
       href={`/portfolio/${product.slug}`}
-      className={`group relative isolate block overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-[0_12px_35px_-16px_rgba(0,0,0,0.75)] transition-all duration-400 ease-out hover:scale-[1.03] hover:shadow-[0_22px_55px_-18px_rgba(0,0,0,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 ${gridSpanBySize[product.size]} ${minHeightBySize[product.size]} md:min-h-0`}
+      className="group relative isolate block h-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-[0_12px_35px_-16px_rgba(0,0,0,0.75)] transition-all duration-400 ease-out hover:scale-[1.03] hover:shadow-[0_22px_55px_-18px_rgba(0,0,0,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
       aria-label={`View details for ${product.name}`}
     >
       <Image
@@ -48,6 +33,7 @@ export default function ProductCard({
         fill
         sizes={imageSizes}
         priority={priority}
+        unoptimized={isLocalPortfolioImage}
         className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
       />
 

@@ -9,6 +9,7 @@ const navLinks = [
   { label: "Home", href: "#" },
   { label: "Services", href: "#services" },
   { label: "Portfolio", href: "#portfolio" },
+  { label: "Uniform", href: "/uniform" },
   { label: "Contact Us", href: "#contact" },
   { label: "About Us", href: "#about" },
 ];
@@ -20,12 +21,19 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <Container className="flex items-center justify-between py-4">
         {/* Logo */}
-        <a href="#" className="text-xl font-bold tracking-wide text-[#0F2B4C]" aria-label="XYZ Designs Home">
+        <a
+          href="#"
+          className="text-xl font-bold tracking-wide text-[#0F2B4C]"
+          aria-label="XYZ Designs Home"
+        >
           XYZ&nbsp;<span className="text-[#D7262E]">DESIGNS</span>
         </a>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main navigation">
+        <nav
+          className="hidden items-center gap-8 md:flex"
+          aria-label="Main navigation"
+        >
           {navLinks.map((link) => (
             <a
               key={link.label}
@@ -52,10 +60,13 @@ export default function Navbar() {
       <div
         className={cn(
           "overflow-hidden transition-all duration-300 md:hidden",
-          mobileOpen ? "max-h-64" : "max-h-0"
+          mobileOpen ? "max-h-64" : "max-h-0",
         )}
       >
-        <nav className="flex flex-col gap-4 px-6 pb-6" aria-label="Mobile navigation">
+        <nav
+          className="flex flex-col gap-4 px-6 pb-6"
+          aria-label="Mobile navigation"
+        >
           {navLinks.map((link) => (
             <a
               key={link.label}

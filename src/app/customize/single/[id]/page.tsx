@@ -50,8 +50,8 @@ export default async function CustomizeSinglePage({ params }: Props) {
 
   const selectedProduct = collection.products?.[0];
   const mappedProductType =
-    mapCategoryToProductType(selectedProduct?.category) ??
-    selectedProduct?.productType ??
+    mapCategoryToProductType(selectedProduct?.name) ??
+    mapCategoryToProductType(collection.title) ??
     collection.productType;
 
   if (!mappedProductType) {

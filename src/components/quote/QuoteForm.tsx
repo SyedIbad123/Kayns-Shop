@@ -23,6 +23,10 @@ import {
   type StoredQuoteConfig,
   type StoredQuoteFormData,
 } from "@/lib/storage";
+import {
+  clearPendingQuoteFiles,
+  getPendingQuoteFiles,
+} from "@/lib/quote-file-store";
 import { quoteFormSchema, type QuoteFormValues } from "@/lib/validators";
 
 import ConfigSummary from "./ConfigSummary";
@@ -106,6 +110,7 @@ export default function QuoteForm() {
   const isHydratedRef = useRef(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+  const [submitWarning, setSubmitWarning] = useState<string | null>(null);
 
   const [isPending, startTransition] = useTransition();
 
@@ -157,6 +162,7 @@ export default function QuoteForm() {
   const onSubmit = (values: QuoteFormValues) => {
     setSubmitError(null);
     setSubmitSuccess(null);
+    setSubmitWarning(null);
 
     if (!configuration) {
       setSubmitError(
@@ -166,10 +172,34 @@ export default function QuoteForm() {
     }
 
     startTransition(async () => {
-      const response = await sendQuoteEmail({
-        ...values,
-        configuration,
-      });
+      const formData = new FormData();
+      formData.append(
+        "payload",
+        JSON.stringify({
+          ...values,
+          configuration,
+        }),
+      );
+
+      if (configuration.source === "standard") {
+        const pendingFiles = getPendingQuoteFiles();
+
+        if (pendingFiles?.source === "standard" && pendingFiles.files.length) {
+          pendingFiles.files.forEach((entry) => {
+            const fieldName =
+              entry.summary.category === "design-reference"
+                ? "designFiles"
+                : "logoFiles";
+            formData.append(fieldName, entry.file, entry.file.name);
+          });
+        } else if ((configuration.uploadedFiles?.length ?? 0) > 0) {
+          setSubmitWarning(
+            "Uploaded files were not available to attach (likely due to page refresh). Quote details are still sent; please re-upload files if needed.",
+          );
+        }
+      }
+
+      const response = await sendQuoteEmail(formData);
 
       if (!response.success) {
         setSubmitError(response.message);
@@ -177,6 +207,7 @@ export default function QuoteForm() {
       }
 
       setSubmitSuccess("Your quote request has been sent successfully.");
+      clearPendingQuoteFiles();
       clearQuoteStorage();
       router.push("/quote/success");
     });
@@ -338,6 +369,12 @@ export default function QuoteForm() {
             {submitSuccess ? (
               <p className="mt-4 rounded-lg border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-2 text-sm text-[#166534]">
                 {submitSuccess}
+              </p>
+            ) : null}
+
+            {submitWarning ? (
+              <p className="mt-4 rounded-lg border border-[#FCD34D] bg-[#FFFBEB] px-3 py-2 text-sm text-[#92400E]">
+                {submitWarning}
               </p>
             ) : null}
 

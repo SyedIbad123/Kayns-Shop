@@ -1,43 +1,11 @@
 import Image from "next/image";
 import type { CollectionItem } from "@/data/collection";
 
-const baseFeatures = [
-  {
-    label: "MULTIPLE COLOR OPTIONS",
-    sub: "Built for club identity, sponsor blocks, and fast recoloring.",
-  },
-  {
-    label: "JUNIOR, MEN & LADIES SIZES",
-    sub: "Consistent fit range available across team size brackets.",
-  },
-  {
-    label: "LOGO READY",
-    sub: "Add crest, initials, and sponsor marks in preferred positions.",
-  },
-  {
-    label: "HIGH QUALITY FABRIC",
-    sub: "Durable stock fabrics for training, game day, and travel.",
-  },
-  {
-    label: "CUSTOM CUT OPTIONS",
-    sub: "Neck, sleeve, and trim choices based on product category.",
-  },
-];
-
-const namedImageByTitle: Record<string, string> = {
-  "Sports T-Shirt": "/cricket_shirt.jpg",
-  "Performance Tee": "/soccer_shirt.jpg",
-  "Racer T-Shirt": "/rugby_shirt.jpg",
-  "Athletic Singlet": "/basketball_singlet.jpg",
-  "Polo Shirt": "/polo_shirt.jpg",
-  "Pro Jersey": "/soccer_shirt.jpg",
-  "Training Shorts": "/soccer_short.jpg",
-  "Fleece Shorts": "/rugby_short.jpg",
-  "Match Shorts": "/rugby_short.jpg",
-  "Classic Shorts": "/netball_short.jpg",
-  "Puffer Jacket": "/full_sleves_puffer.jpg",
-  "Sleeveless Puffer": "/half_sleves_puffer.jpg",
-  "Zip Top": "/ziptop.jpg",
+type DetailFeature = {
+  label: string;
+  sub: string;
+  icon: string;
+  iconAlt: string;
 };
 
 const frameImageByTitle: Record<string, string> = {
@@ -59,13 +27,44 @@ const frameImageByTitle: Record<string, string> = {
   "Zip Top": "/frame_8.png",
 };
 
-function getFeatures(title: string) {
+function getFeatures(title: string): DetailFeature[] {
   return [
     {
-      label: `${title.toUpperCase()} DESIGNS`,
-      sub: "Personalized teamwear layout aligned with your branding.",
+      label: `${title.toUpperCase()} DESIGN STUDIO`,
+      sub: "From concept to final mockup, we shape kits that carry your identity.",
+      icon: "/paint.png",
+      iconAlt: "Paint icon",
     },
-    ...baseFeatures.slice(0, 2),
+    {
+      label: "PROVEN QUALITY CONTROL",
+      sub: "Every batch is checked for color, stitching, fit, and finish consistency.",
+      icon: "/trust.png",
+      iconAlt: "Trust icon",
+    },
+    {
+      label: "RESPONSIBLE MATERIALS",
+      sub: "Sustainable fabric and print paths available without losing performance.",
+      icon: "/sustainability.png",
+      iconAlt: "Sustainability icon",
+    },
+    {
+      label: "SMART DESIGN INSIGHT",
+      sub: "Our specialists refine cuts and details for a sharper game-day look.",
+      icon: "/lightbulb.png",
+      iconAlt: "Lightbulb icon",
+    },
+    {
+      label: "ON-TIME DELIVERY",
+      sub: "Clear production planning keeps your season, launch, or event on schedule.",
+      icon: "/delivery.png",
+      iconAlt: "Delivery icon",
+    },
+    {
+      label: "RETAIL-READY PACKAGING",
+      sub: "Orders are neatly packed, counted, and protected for smooth dispatch.",
+      icon: "/box.png",
+      iconAlt: "Box icon",
+    },
   ];
 }
 
@@ -75,12 +74,13 @@ export default function SingleProductDetail({
   item: CollectionItem;
 }) {
   const features = getFeatures(item.title);
-  const sideImage = namedImageByTitle[item.title] ?? item.image;
+  const leftFeatures = features.slice(0, 3);
+  const rightFeatures = features.slice(3);
   const centerImage = frameImageByTitle[item.title] ?? item.image;
 
   return (
     <section className="bg-white py-12" aria-label="Product detail">
-      {/* Mobile / tablet: center card only */}
+      {/* Mobile / tablet: center card with compact feature list */}
       <div className="flex justify-center px-4 lg:hidden">
         <div className="relative h-64 w-44 overflow-hidden rounded-3xl bg-gray-300 shadow-xl sm:h-80 sm:w-56">
           <Image
@@ -92,12 +92,34 @@ export default function SingleProductDetail({
         </div>
       </div>
 
+      <div className="mx-auto mt-6 grid max-w-md grid-cols-2 gap-3 px-4 lg:hidden">
+        {features.map((f) => (
+          <div
+            key={f.label}
+            className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white p-2 shadow-sm"
+          >
+            <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg bg-gray-50">
+              <Image
+                src={f.icon}
+                alt={f.iconAlt}
+                fill
+                sizes="36px"
+                className="object-contain p-1.5"
+              />
+            </div>
+            <p className="text-[10px] font-semibold leading-tight text-gray-700">
+              {f.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
       {/* Desktop: full 3-column layout */}
       <div className="mx-auto hidden max-w-4xl items-stretch gap-6 px-4 lg:flex">
         {/* Left column */}
         <div className="flex flex-1 flex-col justify-center gap-5">
-          {features.map((f, i) => (
-            <div key={i} className="flex items-center gap-3">
+          {leftFeatures.map((f) => (
+            <div key={f.label} className="flex items-center gap-3">
               {/* Text */}
               <div className="min-w-0 text-right">
                 <p className="text-xs font-bold uppercase tracking-wide text-gray-900">
@@ -108,13 +130,14 @@ export default function SingleProductDetail({
                 </p>
               </div>
 
-              {/* Small image rect */}
-              <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-300">
+              {/* Feature icon */}
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
                 <Image
-                  src={sideImage}
-                  alt={f.label}
+                  src={f.icon}
+                  alt={f.iconAlt}
                   fill
-                  className="object-cover"
+                  sizes="48px"
+                  className="object-contain p-2"
                 />
               </div>
             </div>
@@ -133,15 +156,16 @@ export default function SingleProductDetail({
 
         {/* Right column */}
         <div className="flex flex-1 flex-col justify-center gap-5">
-          {features.map((f, i) => (
-            <div key={i} className="flex items-center gap-3">
-              {/* Small image rect */}
-              <div className="relative h-12 w-20 shrink-0 overflow-hidden rounded-lg bg-gray-300">
+          {rightFeatures.map((f) => (
+            <div key={f.label} className="flex items-center gap-3">
+              {/* Feature icon */}
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
                 <Image
-                  src={sideImage}
-                  alt={f.label}
+                  src={f.icon}
+                  alt={f.iconAlt}
                   fill
-                  className="object-cover"
+                  sizes="48px"
+                  className="object-contain p-2"
                 />
               </div>
 

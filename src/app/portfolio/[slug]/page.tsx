@@ -2,21 +2,24 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { products } from "@/lib/products";
+import {
+  getPortfolioProductBySlug,
+  getPortfolioProducts,
+} from "@/lib/portfolio-products.server";
 
 interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return products.map((product) => ({ slug: product.slug }));
+  return getPortfolioProducts().map((product) => ({ slug: product.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = getPortfolioProductBySlug(slug);
 
   if (!product) {
     return { title: "Product Not Found | Kayns Collections" };
@@ -32,11 +35,13 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = getPortfolioProductBySlug(slug);
 
   if (!product) {
     notFound();
   }
+
+  const isLocalPortfolioImage = product.image.startsWith("/portfolio_Images/");
 
   return (
     <main className="min-h-screen bg-zinc-950 px-4 pb-20 pt-14 text-zinc-100 sm:px-6 lg:px-8">
@@ -56,6 +61,7 @@ export default async function ProductDetailPage({
               fill
               priority
               sizes="(max-width: 767px) 100vw, 50vw"
+              unoptimized={isLocalPortfolioImage}
               className="h-full w-full object-cover"
             />
           </div>

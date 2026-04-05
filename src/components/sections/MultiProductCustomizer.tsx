@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
 import ProductDropdown from "@/components/ui/customize/ProductDropdown";
@@ -12,10 +12,12 @@ import {
 import {
   saveQuoteConfig,
   saveSvgConfig,
+  type StoredExtraMotif,
   type StoredLogoUpload,
   type StoredSvgConfig,
+  type StoredUploadedFileSummary,
 } from "@/lib/storage";
-import type { CapColors } from "@/types/cap.types";
+import type { CapColors, CapConfig } from "@/types/cap.types";
 
 const MAX_LOGO_SIZE_BYTES = 1 * 1024 * 1024;
 
@@ -134,6 +136,66 @@ function getSnapshotCellStyle(svgCount: number, index: number) {
   return baseStyle;
 }
 
+interface CapPanelOption {
+  key: string;
+  label: string;
+}
+
+function formatPanelLabel(key: string) {
+  return key.startsWith("id_")
+    ? `Path ${key.replace("id_", "")}`
+    : key.replace(/[_-]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function getCapPanelOptions(capConfig: CapConfig): CapPanelOption[] {
+  if (capConfig.type === "panel") {
+    if (capConfig.panels && capConfig.panels.length > 0) {
+      return capConfig.panels.map((panel) => ({
+        key: panel.key,
+        label: panel.label,
+      }));
+    }
+
+    return Object.keys(capConfig.defaultColors).map((key) => ({
+      key,
+      label: formatPanelLabel(key),
+    }));
+  }
+
+  return [{ key: "solid", label: "Cap Colour" }];
+}
+
+function createMotifId() {
+  return `motif-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
+}
+
+function createDefaultExtraMotif(panel: CapPanelOption): StoredExtraMotif {
+  return {
+    id: createMotifId(),
+    type: "text",
+    panelKey: panel.key,
+    panelLabel: panel.label,
+    color: "#000000",
+    text: "",
+    logo: null,
+  };
+}
+
+function toUploadedFileSummary(
+  fileName: string,
+  mimeType: string,
+  sizeInBytes: number,
+  description?: string,
+): StoredUploadedFileSummary {
+  return {
+    fileName,
+    mimeType: mimeType || "application/octet-stream",
+    sizeInBytes,
+    category: "logo",
+    description: description?.trim() || undefined,
+  };
+}
+
 export default function MultiProductCustomizer() {
   const router = useRouter();
   const pathname = usePathname();
@@ -145,17 +207,56 @@ export default function MultiProductCustomizer() {
   const [svgMarkupList, setSvgMarkupList] = useState<string[]>([]);
   const [logoUpload, setLogoUpload] = useState<StoredLogoUpload | null>(null);
   const [logoError, setLogoError] = useState<string | null>(null);
+  const [extraMotifs, setExtraMotifs] = useState<StoredExtraMotif[]>([]);
+  const [extraMotifErrors, setExtraMotifErrors] = useState<
+    Record<string, string>
+  >({});
 
   // ── active cap config ─────────────────────────────────────
   const [capConfig, setCapConfig] = useState(DEFAULT_CAP);
 
   // ── colours — re-seeded whenever cap changes ──────────────
   const [colors, setColors] = useState<CapColors>(DEFAULT_CAP.defaultColors);
+  const panelOptions = useMemo(
+    () => getCapPanelOptions(capConfig),
+    [capConfig],
+  );
 
   // ─── ProductDropdown selection ───────────────────────────
   function handleProductSelect(label: string) {
     const config = getCapByLabel(label);
     if (!config) return; // label not registered — do nothing
+
+    const nextPanelOptions = getCapPanelOptions(config);
+    const panelLookup = new Map(
+      nextPanelOptions.map((panel) => [panel.key, panel.label]),
+    );
+
+    setExtraMotifs((currentMotifs) => {
+      if (nextPanelOptions.length === 0) {
+        return [];
+      }
+
+      return currentMotifs
+        .slice(0, nextPanelOptions.length)
+        .map((motif, index) => {
+          const fallbackPanel =
+            nextPanelOptions[Math.min(index, nextPanelOptions.length - 1)] ??
+            nextPanelOptions[0];
+
+          const panelKey = panelLookup.has(motif.panelKey)
+            ? motif.panelKey
+            : fallbackPanel.key;
+
+          return {
+            ...motif,
+            panelKey,
+            panelLabel: panelLookup.get(panelKey) ?? fallbackPanel.label,
+          };
+        });
+    });
+
+    setExtraMotifErrors({});
     setCapConfig(config);
     setColors(config.defaultColors); // reset colours to new cap defaults
   }
@@ -166,41 +267,228 @@ export default function MultiProductCustomizer() {
     setColors((prev) => ({ ...prev, [key]: value }));
   }
 
-  const handleLogoSelect = useCallback(
-    async (file: File | null) => {
-      setLogoError(null);
+  const handleAddExtraMotif = useCallback(() => {
+    setExtraMotifs((currentMotifs) => {
+      if (
+        panelOptions.length === 0 ||
+        currentMotifs.length >= panelOptions.length
+      ) {
+        return currentMotifs;
+      }
+
+      const defaultPanel =
+        panelOptions[currentMotifs.length] ??
+        panelOptions[panelOptions.length - 1];
+
+      return [...currentMotifs, createDefaultExtraMotif(defaultPanel)];
+    });
+  }, [panelOptions]);
+
+  const handleRemoveExtraMotif = useCallback((motifId: string) => {
+    setExtraMotifs((currentMotifs) =>
+      currentMotifs.filter((motif) => motif.id !== motifId),
+    );
+    setExtraMotifErrors((currentErrors) => {
+      if (!currentErrors[motifId]) {
+        return currentErrors;
+      }
+
+      const nextErrors = { ...currentErrors };
+      delete nextErrors[motifId];
+      return nextErrors;
+    });
+  }, []);
+
+  const handleExtraMotifTypeChange = useCallback(
+    (motifId: string, nextType: StoredExtraMotif["type"]) => {
+      setExtraMotifs((currentMotifs) =>
+        currentMotifs.map((motif) =>
+          motif.id === motifId
+            ? {
+                ...motif,
+                type: nextType,
+                text: nextType === "text" ? motif.text : "",
+                logo: nextType === "logo" ? motif.logo : null,
+              }
+            : motif,
+        ),
+      );
+
+      setExtraMotifErrors((currentErrors) => {
+        if (!currentErrors[motifId]) {
+          return currentErrors;
+        }
+
+        const nextErrors = { ...currentErrors };
+        delete nextErrors[motifId];
+        return nextErrors;
+      });
+    },
+    [],
+  );
+
+  const handleExtraMotifTextChange = useCallback(
+    (motifId: string, textValue: string) => {
+      setExtraMotifs((currentMotifs) =>
+        currentMotifs.map((motif) =>
+          motif.id === motifId
+            ? { ...motif, text: textValue.slice(0, 120) }
+            : motif,
+        ),
+      );
+    },
+    [],
+  );
+
+  const handleExtraMotifPanelChange = useCallback(
+    (motifId: string, panelKey: string) => {
+      const panelLookup = new Map(
+        panelOptions.map((panel) => [panel.key, panel.label]),
+      );
+
+      setExtraMotifs((currentMotifs) =>
+        currentMotifs.map((motif) =>
+          motif.id === motifId
+            ? {
+                ...motif,
+                panelKey,
+                panelLabel: panelLookup.get(panelKey) ?? motif.panelLabel,
+              }
+            : motif,
+        ),
+      );
+    },
+    [panelOptions],
+  );
+
+  const handleExtraMotifColorChange = useCallback(
+    (motifId: string, colorValue: string) => {
+      setExtraMotifs((currentMotifs) =>
+        currentMotifs.map((motif) =>
+          motif.id === motifId ? { ...motif, color: colorValue } : motif,
+        ),
+      );
+    },
+    [],
+  );
+
+  const handleExtraMotifLogoSelect = useCallback(
+    async (motifId: string, file: File | null) => {
+      setExtraMotifErrors((currentErrors) => {
+        if (!currentErrors[motifId]) {
+          return currentErrors;
+        }
+
+        const nextErrors = { ...currentErrors };
+        delete nextErrors[motifId];
+        return nextErrors;
+      });
 
       if (!file) {
+        setExtraMotifs((currentMotifs) =>
+          currentMotifs.map((motif) =>
+            motif.id === motifId ? { ...motif, logo: null } : motif,
+          ),
+        );
         return;
       }
 
       if (!ALLOWED_LOGO_TYPES.has(file.type)) {
-        setLogoError("Please upload a PNG, JPG, WEBP, or SVG image.");
+        setExtraMotifErrors((currentErrors) => ({
+          ...currentErrors,
+          [motifId]: "Please upload a PNG, JPG, WEBP, or SVG image.",
+        }));
         return;
       }
 
       if (file.size > MAX_LOGO_SIZE_BYTES) {
-        setLogoError("Logo image must be 1 MB or smaller.");
+        setExtraMotifErrors((currentErrors) => ({
+          ...currentErrors,
+          [motifId]: "Logo image must be 1 MB or smaller.",
+        }));
         return;
       }
 
       try {
         const dataUrl = await readFileAsDataUrl(file);
-        setLogoUpload({
-          fileName: file.name,
-          mimeType: file.type,
-          sizeInBytes: file.size,
-          dataUrl,
-          description: logoUpload?.description?.trim() ?? "",
-        });
-      } catch {
-        setLogoError(
-          "Could not read the selected image. Please try another file.",
+
+        setExtraMotifs((currentMotifs) =>
+          currentMotifs.map((motif) =>
+            motif.id === motifId
+              ? {
+                  ...motif,
+                  logo: {
+                    fileName: file.name,
+                    mimeType: file.type,
+                    sizeInBytes: file.size,
+                    dataUrl,
+                    description: motif.logo?.description ?? "",
+                  },
+                }
+              : motif,
+          ),
         );
+      } catch {
+        setExtraMotifErrors((currentErrors) => ({
+          ...currentErrors,
+          [motifId]:
+            "Could not read the selected image. Please try another file.",
+        }));
       }
     },
-    [logoUpload?.description],
+    [],
   );
+
+  const handleExtraMotifLogoClear = useCallback((motifId: string) => {
+    setExtraMotifs((currentMotifs) =>
+      currentMotifs.map((motif) =>
+        motif.id === motifId ? { ...motif, logo: null } : motif,
+      ),
+    );
+
+    setExtraMotifErrors((currentErrors) => {
+      if (!currentErrors[motifId]) {
+        return currentErrors;
+      }
+
+      const nextErrors = { ...currentErrors };
+      delete nextErrors[motifId];
+      return nextErrors;
+    });
+  }, []);
+
+  const handleLogoSelect = useCallback(async (file: File | null) => {
+    setLogoError(null);
+
+    if (!file) {
+      return;
+    }
+
+    if (!ALLOWED_LOGO_TYPES.has(file.type)) {
+      setLogoError("Please upload a PNG, JPG, WEBP, or SVG image.");
+      return;
+    }
+
+    if (file.size > MAX_LOGO_SIZE_BYTES) {
+      setLogoError("Logo image must be 1 MB or smaller.");
+      return;
+    }
+
+    try {
+      const dataUrl = await readFileAsDataUrl(file);
+      setLogoUpload((currentLogoUpload) => ({
+        fileName: file.name,
+        mimeType: file.type,
+        sizeInBytes: file.size,
+        dataUrl,
+        description: currentLogoUpload?.description?.trim() ?? "",
+      }));
+    } catch {
+      setLogoError(
+        "Could not read the selected image. Please try another file.",
+      );
+    }
+  }, []);
 
   const handleLogoDescriptionChange = useCallback((description: string) => {
     setLogoUpload((currentLogoUpload) => {
@@ -277,31 +565,89 @@ export default function MultiProductCustomizer() {
       .join("")}</div>`;
   }, [extractSvgMarkupList, svgMarkupList]);
 
+  const captureSvgViews = useCallback(() => {
+    const svgMarkups =
+      svgMarkupList.length > 0 ? svgMarkupList : extractSvgMarkupList();
+
+    return svgMarkups
+      .map((markup) => markup.trim())
+      .filter((markup) => markup.length > 0);
+  }, [extractSvgMarkupList, svgMarkupList]);
+
   const buildSvgConfigPayload = useCallback((): StoredSvgConfig => {
-    const fallbackPanels = Object.keys(colors).map((key) => ({
-      key,
-      label: key
-        .replace(/[_-]/g, " ")
-        .replace(/\b\w/g, (char) => char.toUpperCase()),
+    const panelLookup = new Map(
+      panelOptions.map((panel) => [panel.key, panel.label]),
+    );
+
+    const panels = panelOptions.map((panel) => ({
+      key: panel.key,
+      label: panel.label,
+      color: colors[panel.key] ?? "#FFFFFF",
     }));
 
-    const panels =
-      capConfig.type === "panel"
-        ? (capConfig.panels && capConfig.panels.length > 0
-            ? capConfig.panels
-            : fallbackPanels
-          ).map((panel) => ({
-            key: panel.key,
-            label: panel.label,
-            color: colors[panel.key] ?? "#FFFFFF",
-          }))
-        : [
-            {
-              key: "solid",
-              label: "Cap Colour",
-              color: colors.solid ?? Object.values(colors)[0] ?? "#FFFFFF",
-            },
-          ];
+    const normalizedExtraMotifs = extraMotifs
+      .slice(0, panelOptions.length)
+      .map((motif, index) => {
+        const fallbackPanel =
+          panelOptions[Math.min(index, panelOptions.length - 1)] ??
+          panelOptions[0];
+
+        if (!fallbackPanel) {
+          return null;
+        }
+
+        const panelKey = panelLookup.has(motif.panelKey)
+          ? motif.panelKey
+          : fallbackPanel.key;
+
+        return {
+          ...motif,
+          panelKey,
+          panelLabel: panelLookup.get(panelKey) ?? fallbackPanel.label,
+          color: motif.color || "#000000",
+          text: motif.text.trim(),
+          logo: motif.logo ?? null,
+        };
+      })
+      .filter((motif): motif is StoredExtraMotif => {
+        if (!motif) {
+          return false;
+        }
+
+        if (motif.type === "text") {
+          return motif.text.length > 0;
+        }
+
+        return Boolean(motif.logo);
+      });
+
+    const uploadedFiles: StoredUploadedFileSummary[] = [];
+
+    if (logoUpload) {
+      uploadedFiles.push(
+        toUploadedFileSummary(
+          logoUpload.fileName,
+          logoUpload.mimeType,
+          logoUpload.sizeInBytes,
+          logoUpload.description,
+        ),
+      );
+    }
+
+    normalizedExtraMotifs.forEach((motif, index) => {
+      if (motif.type !== "logo" || !motif.logo) {
+        return;
+      }
+
+      uploadedFiles.push(
+        toUploadedFileSummary(
+          motif.logo.fileName,
+          motif.logo.mimeType,
+          motif.logo.sizeInBytes,
+          `Motif ${index + 1} on ${motif.panelLabel}`,
+        ),
+      );
+    });
 
     return {
       source: "svg",
@@ -311,11 +657,23 @@ export default function MultiProductCustomizer() {
       colors: { ...colors },
       panels,
       logo: logoUpload,
+      extraMotifs: normalizedExtraMotifs,
       svgMarkup: captureSvgMarkup(),
+      svgViews: captureSvgViews(),
+      uploadedFiles,
       updatedAt: new Date().toISOString(),
       sourcePath: pathname,
     };
-  }, [capConfig, captureSvgMarkup, colors, logoUpload, pathname]);
+  }, [
+    capConfig,
+    captureSvgMarkup,
+    captureSvgViews,
+    colors,
+    extraMotifs,
+    logoUpload,
+    panelOptions,
+    pathname,
+  ]);
 
   function handleRequestQuote() {
     const payload = buildSvgConfigPayload();
@@ -365,6 +723,7 @@ export default function MultiProductCustomizer() {
           <div className="w-full lg:w-140 lg:shrink-0">
             <CustomizePanel
               capConfig={capConfig}
+              panelOptions={panelOptions}
               colors={colors}
               onColorChange={handleColorChange}
               logoUpload={logoUpload}
@@ -372,6 +731,17 @@ export default function MultiProductCustomizer() {
               onLogoSelect={handleLogoSelect}
               onLogoDescriptionChange={handleLogoDescriptionChange}
               onLogoClear={handleLogoClear}
+              extraMotifs={extraMotifs}
+              extraMotifLimit={panelOptions.length}
+              extraMotifErrors={extraMotifErrors}
+              onAddExtraMotif={handleAddExtraMotif}
+              onRemoveExtraMotif={handleRemoveExtraMotif}
+              onExtraMotifTypeChange={handleExtraMotifTypeChange}
+              onExtraMotifTextChange={handleExtraMotifTextChange}
+              onExtraMotifPanelChange={handleExtraMotifPanelChange}
+              onExtraMotifColorChange={handleExtraMotifColorChange}
+              onExtraMotifLogoSelect={handleExtraMotifLogoSelect}
+              onExtraMotifLogoClear={handleExtraMotifLogoClear}
             />
           </div>
 

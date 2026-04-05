@@ -1,6 +1,16 @@
 import type { ClothingProductType } from "@/data/clothingFormConfig";
 import type { CapType } from "@/types/cap.types";
 
+export type QuoteFileCategory = "logo" | "design-reference";
+
+export interface StoredUploadedFileSummary {
+  fileName: string;
+  mimeType: string;
+  sizeInBytes: number;
+  category: QuoteFileCategory;
+  description?: string;
+}
+
 export const STORAGE_KEYS = {
   productConfig: "product_config",
   svgConfig: "svg_config",
@@ -14,6 +24,7 @@ export interface StoredStandardConfig {
   productType: ClothingProductType;
   values: Record<string, unknown>;
   logo?: StoredLogoUpload | null;
+  uploadedFiles?: StoredUploadedFileSummary[];
   updatedAt: string;
   sourcePath?: string;
 }
@@ -32,6 +43,18 @@ export interface StoredLogoUpload {
   description?: string;
 }
 
+export type ExtraMotifType = "text" | "logo";
+
+export interface StoredExtraMotif {
+  id: string;
+  type: ExtraMotifType;
+  panelKey: string;
+  panelLabel: string;
+  color: string;
+  text: string;
+  logo: StoredLogoUpload | null;
+}
+
 export interface StoredSvgConfig {
   source: "svg";
   capId: string;
@@ -40,7 +63,10 @@ export interface StoredSvgConfig {
   colors: Record<string, string>;
   panels: StoredSvgPanel[];
   logo?: StoredLogoUpload | null;
+  extraMotifs?: StoredExtraMotif[];
   svgMarkup?: string | null;
+  svgViews?: string[];
+  uploadedFiles?: StoredUploadedFileSummary[];
   updatedAt: string;
   sourcePath?: string;
 }

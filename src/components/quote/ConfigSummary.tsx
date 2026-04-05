@@ -1,5 +1,9 @@
 import Image from "next/image";
-import type { StoredLogoUpload, StoredQuoteConfig } from "@/lib/storage";
+import type {
+  StoredExtraMotif,
+  StoredLogoUpload,
+  StoredQuoteConfig,
+} from "@/lib/storage";
 
 interface ConfigSummaryProps {
   configuration: StoredQuoteConfig | null;
@@ -115,6 +119,70 @@ function LogoSummary({ logo }: { logo: StoredLogoUpload }) {
   );
 }
 
+function ExtraMotifsSummary({ motifs }: { motifs: StoredExtraMotif[] }) {
+  return (
+    <div className="mt-4 rounded-xl border border-[#F6DDA3] bg-[#FFFBF2] p-3">
+      <p className="text-xs font-semibold uppercase tracking-wide text-[#92400E]">
+        Extra Motifs
+      </p>
+
+      <div className="mt-2 space-y-2">
+        {motifs.map((motif, index) => {
+          const safeMotifLogoDataUrl = motif.logo
+            ? getSafeLogoDataUrl(motif.logo.dataUrl)
+            : null;
+
+          return (
+            <div
+              key={`${motif.id}-${index}`}
+              className="rounded-lg border border-[#FDE68A] bg-white p-2.5"
+            >
+              <p className="text-xs font-semibold text-[#92400E]">
+                Motif {index + 1}: {motif.type === "text" ? "Text" : "Logo"}
+              </p>
+              <p className="mt-1 text-xs text-[#374151]">
+                {motif.type === "text"
+                  ? `Panel: ${motif.panelLabel} · Colour: ${motif.color}`
+                  : `Panel: ${motif.panelLabel}`}
+              </p>
+
+              {motif.type === "text" ? (
+                <p className="mt-1 text-xs text-[#111827]">
+                  Text: {motif.text || "N/A"}
+                </p>
+              ) : motif.logo ? (
+                <div className="mt-1.5 flex items-center gap-2">
+                  {safeMotifLogoDataUrl ? (
+                    <Image
+                      src={safeMotifLogoDataUrl}
+                      alt={`Motif ${index + 1} logo`}
+                      width={44}
+                      height={44}
+                      unoptimized
+                      className="h-11 w-11 rounded-md border border-[#E5E7EB] bg-white object-contain"
+                    />
+                  ) : null}
+                  <div className="min-w-0 text-xs text-[#111827]">
+                    <p className="truncate font-medium">
+                      {motif.logo.fileName}
+                    </p>
+                    <p className="text-[#6B7280]">
+                      {motif.logo.mimeType} ·{" "}
+                      {formatBytes(motif.logo.sizeInBytes)}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <p className="mt-1 text-xs text-[#111827]">Logo: N/A</p>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
   if (!configuration) {
     return (
@@ -179,6 +247,7 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
   }
 
   const logo = configuration.logo ?? null;
+  const extraMotifs = configuration.extraMotifs ?? [];
   const safeMarkup = getSafeMarkup(configuration.svgMarkup);
 
   return (
@@ -220,6 +289,10 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
             </li>
           ))}
         </ul>
+
+        {extraMotifs.length > 0 ? (
+          <ExtraMotifsSummary motifs={extraMotifs} />
+        ) : null}
 
         {safeMarkup ? (
           <div className="mt-4 rounded-xl border border-[#E5E7EB] bg-white p-3">
