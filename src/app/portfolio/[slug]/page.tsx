@@ -11,6 +11,8 @@ interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   return getPortfolioProducts().map((product) => ({ slug: product.slug }));
 }
