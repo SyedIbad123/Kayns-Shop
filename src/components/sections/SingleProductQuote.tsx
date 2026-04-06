@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
 
 const filterButtons = ["Size chart", "Available color", "Logo Location"];
@@ -132,8 +133,8 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
             Get a Quote
           </h2>
           <p className="text-sm leading-relaxed text-gray-400">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            Send your customization brief and our team will provide pricing,
+            production details, and delivery timelines for your product.
           </p>
 
           {/* Filter pills */}
@@ -151,13 +152,13 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
           </div>
 
           {/* Quote action */}
-          <button
-            type="button"
+          <Link
+            href={`/customize/single/${item.id}`}
             className="w-full rounded-full bg-white px-5 py-3 text-sm font-semibold text-gray-900 outline-none transition hover:bg-gray-100 focus:ring-2 focus:ring-brand-red"
             aria-label="Quote details"
           >
             Quote Details
-          </button>
+          </Link>
         </div>
       </div>
 

@@ -6,6 +6,7 @@ import { Resend, type Attachment } from "resend";
 
 import QuoteEmailTemplate, {
   type QuoteEmailAttachmentSummary,
+  type QuoteEmailTemplateVariant,
 } from "@/components/email/QuoteEmailTemplate";
 import { quoteSubmissionSchema } from "@/lib/validators";
 
@@ -40,6 +41,8 @@ const MIME_EXTENSION_MAP: Record<string, string> = {
   "application/pdf": ".pdf",
   "text/html": ".html",
 };
+
+const DEFAULT_QUOTE_FROM_EMAIL = "Kayns Shop Quotes <onboarding@resend.dev>";
 
 interface ParsedRawInput {
   payload: unknown;
@@ -133,6 +136,15 @@ function sanitizeFileName(name: string) {
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 80);
+}
+
+function normalizeEnvValue(value: string | undefined) {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
 }
 
 function parseRawInput(rawPayload: unknown): ParsedRawInput | null {
@@ -469,10 +481,22 @@ export async function sendQuoteEmail(
     };
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const quoteRecipient = process.env.QUOTE_RECIPIENT_EMAIL;
+  const payload = parsedPayload.data;
 
-  if (!resendApiKey || !quoteRecipient) {
+  const resendApiKey = normalizeEnvValue(process.env.RESEND_API_KEY);
+  const configuredVendorRecipient =
+    normalizeEnvValue(process.env.QUOTE_VENDOR_EMAIL) ??
+    normalizeEnvValue(process.env.QUOTE_RECIPIENT_EMAIL);
+  const testRecipientOverride = normalizeEnvValue(
+    process.env.QUOTE_TEST_RECIPIENT_EMAIL,
+  );
+  const fromAddress =
+    normalizeEnvValue(process.env.QUOTE_FROM_EMAIL) ?? DEFAULT_QUOTE_FROM_EMAIL;
+
+  const vendorRecipient = testRecipientOverride ?? configuredVendorRecipient;
+  const userRecipient = testRecipientOverride ?? payload.emailAddress;
+
+  if (!resendApiKey || !vendorRecipient) {
     console.error("Missing required quote email environment variables.");
     return {
       success: false,
@@ -482,8 +506,6 @@ export async function sendQuoteEmail(
   }
 
   const resend = new Resend(resendApiKey);
-
-  const payload = parsedPayload.data;
   const configuration = isRecord(payload.configuration)
     ? payload.configuration
     : null;
@@ -513,22 +535,55 @@ export async function sendQuoteEmail(
     attachmentBuildResult.summaries,
   );
 
-  try {
-    await resend.emails.send({
-      from: "Kayns Shop Quotes <onboarding@resend.dev>",
-      to: [quoteRecipient],
-      replyTo: payload.emailAddress,
-      subject: `New Quote Request from ${payload.fullName}`,
-      attachments:
-        attachmentBuildResult.attachments.length > 0
-          ? attachmentBuildResult.attachments
-          : undefined,
+  const sendEmail = async ({
+    to,
+    replyTo,
+    subject,
+    variant,
+    attachments,
+  }: {
+    to: string;
+    replyTo?: string;
+    subject: string;
+    variant: QuoteEmailTemplateVariant;
+    attachments?: Attachment[];
+  }) => {
+    const result = await resend.emails.send({
+      from: fromAddress,
+      to: [to],
+      replyTo,
+      subject,
+      attachments: attachments?.length ? attachments : undefined,
       react: createElement(QuoteEmailTemplate, {
         payload,
         appUrl: process.env.NEXT_PUBLIC_APP_URL,
         safeSvgMarkup,
         attachmentSummaries,
+        variant,
       }),
+    });
+
+    if (result.error) {
+      throw new Error(
+        result.error.message || `Failed to send ${variant} email.`,
+      );
+    }
+  };
+
+  try {
+    await sendEmail({
+      to: vendorRecipient,
+      replyTo: payload.emailAddress,
+      subject: `New Quote Request from ${payload.fullName}`,
+      variant: "vendor",
+      attachments: attachmentBuildResult.attachments,
+    });
+
+    await sendEmail({
+      to: userRecipient,
+      replyTo: configuredVendorRecipient ?? undefined,
+      subject: "We received your quote inquiry - Kayns Shop",
+      variant: "user",
     });
 
     return {

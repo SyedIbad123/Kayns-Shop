@@ -9,7 +9,11 @@ export default function DesignsIntro() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="bg-white py-16" aria-label="About our designs">
+    <section
+      id="about"
+      className="bg-white py-16"
+      aria-label="About our designs"
+    >
       <Container className="text-center">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
@@ -18,7 +22,7 @@ export default function DesignsIntro() {
           transition={{ duration: 0.5 }}
           className="text-3xl font-bold tracking-wide text-dark-blue md:text-4xl"
         >
-          Our Design Philosophy
+          Where Sport Meets Street And Quality Never Compromises
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -37,21 +41,12 @@ export default function DesignsIntro() {
                 }
           }
         >
-          We believe great design speaks for itself. Our team blends creativity
-          and precision to deliver unique visual experiences that elevate brands
-          and inspire audiences. We believe great design speaks for itself. Our
-          team blends creativity and precision to deliver unique visual
-          experiences that elevate brands and inspire audiences. We believe
-          great design speaks for itself. Our team blends creativity and
-          precision to deliver unique visual experiences that elevate brands and
-          inspire audiences. We believe great design speaks for itself. Our team
-          blends creativity and precision to deliver unique visual experiences
-          that elevate brands and inspire audiences. We believe great design
-          speaks for itself. Our team blends creativity and precision to deliver
-          unique visual experiences that elevate brands and inspire audiences.
-          We believe great design speaks for itself. Our team blends creativity
-          and precision to deliver unique visual experiences that elevate brands
-          and inspire audiences.
+          KAYNS is where performance meets street culture and every piece is
+          built with purpose. From cricket pitches to basketball courts, from
+          intense training sessions to casual everyday life — we craft premium
+          sport and streetwear that moves with you, fits like it was made for
+          you, and looks sharp in every setting. Quality stitched into every
+          seam, style woven into every thread, confidence worn every single day.
         </motion.p>
 
         <div className="mt-8 text-center">

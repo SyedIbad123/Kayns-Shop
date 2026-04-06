@@ -31,7 +31,7 @@ export default function HotProducts() {
           {/* Fixed left panel — heading & description */}
           <div className="flex w-full flex-col justify-center rounded-2xl bg-white/10 p-5 text-white md:w-72 md:shrink-0 md:p-6">
             <h2 className="text-xl font-bold uppercase leading-tight tracking-wide sm:text-2xl">
-              XYZ
+              KAYNS
               <br />
               Hot
               <br />

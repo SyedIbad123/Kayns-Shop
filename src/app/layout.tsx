@@ -10,9 +10,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "XYZ Designs — We Design Your Imagination",
+  title: "KAYNS — Where Sport Meets Street",
   description:
-    "Premium design solutions crafted with passion and precision by XYZ Designs.",
+    "KAYNS crafts premium custom sportswear and streetwear with uncompromising quality and style.",
 };
 
 export default function RootLayout({

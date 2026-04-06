@@ -1,11 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 
 export default function GetAQuote() {
-  const [email, setEmail] = useState("");
-
   return (
     <section
       className="bg-dark-blue px-6 py-10 text-white"
@@ -18,8 +15,9 @@ export default function GetAQuote() {
             Customize
           </h2>
           <p className="mt-2 text-md leading-relaxed text-gray-300">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry.
+            Share your product concept and brand details, and KAYNS will return
+            a tailored quote with customization options, pricing, and delivery
+            timelines.
           </p>
         </div>
 

@@ -5,7 +5,6 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import Container from "@/components/ui/Container";
-import Button from "@/components/ui/Button";
 import Image from "next/image";
 
 const iconBoxes = [
@@ -42,9 +41,9 @@ const slides = [
 ];
 
 const marqueeItems = [
-  "KAYNS HERE WE DESIGN YOUR IMAGINATION",
-  "PREMIUM PRINTS FOR EVERY STYLE",
-  "CUSTOM MERCH, BUILT TO LAST",
+  "WHERE SPORT MEETS STREET AND QUALITY NEVER COMPROMISES",
+  "WHERE SPORT MEETS STREET AND QUALITY NEVER COMPROMISES",
+  "WHERE SPORT MEETS STREET AND QUALITY NEVER COMPROMISES",
 ];
 
 export default function Hero() {

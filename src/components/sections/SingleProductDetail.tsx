@@ -9,22 +9,21 @@ type DetailFeature = {
 };
 
 const frameImageByTitle: Record<string, string> = {
-  "Sports T-Shirt": "/frame_1.png",
-  "Performance Tee": "/frame_2.png",
-  "Racer T-Shirt": "/frame_3.png",
-  "Athletic Singlet": "/frame_9.png",
-  "Polo Shirt": "/frame_17.png",
-  "Pro Jersey": "/frame_10.png",
-  "Performance Trouser": "/frame_11.png",
-  "Training Shorts": "/frame_13.png",
-  "Fleece Shorts": "/frame_14.png",
-  "Match Shorts": "/frame_15.png",
-  "Classic Shorts": "/frame_16.png",
-  Hoodie: "/frame_4.png",
-  "Puffer Jacket": "/frame_5.png",
-  "Sleeveless Puffer": "/frame_6.png",
+  "Cricket T-Shirt": "/frame_1.png",
+  "Soccer T-Shirt": "/frame_2.png",
+  "Rugby T-Shirt": "/frame_3.png",
+  "Basketball Singlet": "/frame_9.png",
+  "Polo T-Shirt": "/frame_17.png",
+  Trouser: "/frame_11.png",
+  "Netball Bummer": "/frame_13.png",
+  "Basketball Short": "/frame_14.png",
+  "Soccer Short": "/frame_15.png",
+  "Rugby Short": "/frame_16.png",
+  Sweatshirt: "/frame_4.png",
+  "Full Sleeves Puffer Jacket": "/frame_5.png",
+  "Half Sleeves Puffer Jacket": "/frame_6.png",
   "Track Jacket": "/frame_7.png",
-  "Zip Top": "/frame_8.png",
+  "Zip Top Jacket": "/frame_8.png",
 };
 
 function getFeatures(title: string): DetailFeature[] {
@@ -79,7 +78,11 @@ export default function SingleProductDetail({
   const centerImage = frameImageByTitle[item.title] ?? item.image;
 
   return (
-    <section className="bg-white py-12" aria-label="Product detail">
+    <section
+      id="details"
+      className="bg-white py-12"
+      aria-label="Product detail"
+    >
       {/* Mobile / tablet: center card with compact feature list */}
       <div className="flex justify-center px-4 lg:hidden">
         <div className="relative h-64 w-44 overflow-hidden rounded-3xl bg-gray-300 shadow-xl sm:h-80 sm:w-56">

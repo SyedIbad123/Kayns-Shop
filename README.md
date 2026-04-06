@@ -12,9 +12,18 @@ Required variables:
 
 ```env
 RESEND_API_KEY=re_xxxxxxxxxxxx
-QUOTE_RECIPIENT_EMAIL=quotes@yourdomain.com
+QUOTE_FROM_EMAIL=Kayns Shop Quotes <onboarding@resend.dev>
+QUOTE_VENDOR_EMAIL=ibad1657@gmail
+QUOTE_TEST_RECIPIENT_EMAIL=ibad1657@gmail
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ```
+
+Notes:
+
+- `QUOTE_VENDOR_EMAIL` receives the internal/vendor notification.
+- The user confirmation email is sent to the submitted `emailAddress` by default.
+- `QUOTE_TEST_RECIPIENT_EMAIL` is optional and overrides both destinations (useful while testing).
+- `QUOTE_RECIPIENT_EMAIL` is still supported as a legacy fallback.
 
 First, run the development server:
 

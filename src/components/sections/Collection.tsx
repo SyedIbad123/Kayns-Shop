@@ -42,7 +42,11 @@ export default function Collection() {
   };
 
   return (
-    <section className="bg-brand-red py-10" aria-label="KAYNS Collection">
+    <section
+      id="services"
+      className="bg-brand-red py-10"
+      aria-label="KAYNS Collection"
+    >
       <Container>
         <SectionTitle title="KAYNS COLLECTION" light className="mb-10" />
 

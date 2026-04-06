@@ -37,10 +37,10 @@ export default function ProductCard({
         className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
       />
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-20 transition-opacity duration-400 group-hover:opacity-100 group-focus-visible:opacity-100" />
+      <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent" />
 
       <div
-        className={`absolute inset-x-0 bottom-0 z-10 translate-y-4 text-white opacity-0 transition-all duration-400 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 ${
+        className={`absolute inset-x-0 bottom-0 z-10 text-white ${
           compact ? "p-4" : "p-5 md:p-6"
         }`}
       >

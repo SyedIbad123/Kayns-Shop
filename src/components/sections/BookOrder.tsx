@@ -1,9 +1,15 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
 
 export default function BookOrder({ item }: { item: CollectionItem }) {
+  const bookOrderHref =
+    (item.products?.length ?? 0) > 1
+      ? `/customize/${item.id}`
+      : `/customize/single/${item.id}`;
+
   return (
     <section
       className="bg-neutral-800 px-6 py-12 text-white"
@@ -15,13 +21,13 @@ export default function BookOrder({ item }: { item: CollectionItem }) {
           <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
             Book Your Order
           </h2>
-          <button
-            type="button"
+          <Link
+            href={bookOrderHref}
             className="w-full rounded-full bg-brand-red px-6 py-3 text-sm font-semibold text-white outline-none transition hover:bg-red-700 focus:ring-2 focus:ring-white/40"
             aria-label="Book your order"
           >
             Book Your Order
-          </button>
+          </Link>
         </div>
 
         {/* Right — image */}

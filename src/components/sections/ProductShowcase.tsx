@@ -9,22 +9,21 @@ const namedImageByTitle: Record<string, string> = {
   "Sun Hat": "/sunhat_.png",
   "Trucker Cap": "/truckercap_.png",
   Visor: "/visor_.png",
-  "Sports T-Shirt": "/tshirt_.png",
-  "Performance Tee": "/t-shirt_.png",
-  "Racer T-Shirt": "/tshirt_.png",
-  "Athletic Singlet": "/rugby_.png",
-  "Polo Shirt": "/polo_.png",
-  "Pro Jersey": "/t-shirt_.png",
-  "Performance Trouser": "/trouser_.png",
-  "Training Shorts": "/netball_.png",
-  "Fleece Shorts": "/rugby_s_.png",
-  "Match Shorts": "/rugby_s_.png",
-  "Classic Shorts": "/netball_s_.png",
-  Hoodie: "/sweatshirt_.png",
-  "Puffer Jacket": "/puffer_f_.png",
-  "Sleeveless Puffer": "/puffer_h_.png",
+  "Cricket T-Shirt": "/tshirt_.png",
+  "Soccer T-Shirt": "/t-shirt_.png",
+  "Rugby T-Shirt": "/rugby_.png",
+  "Basketball Singlet": "/basketball_s_.png",
+  "Polo T-Shirt": "/polo_.png",
+  Trouser: "/trouser_.png",
+  "Netball Bummer": "/netball_.png",
+  "Basketball Short": "/basketball_s_.png",
+  "Soccer Short": "/soccer_.png",
+  "Rugby Short": "/rugby_s_.png",
+  Sweatshirt: "/sweatshirt_.png",
+  "Full Sleeves Puffer Jacket": "/puffer_f_.png",
+  "Half Sleeves Puffer Jacket": "/puffer_h_.png",
   "Track Jacket": "/zipper_jacket_.png",
-  "Zip Top": "/ziptop.png",
+  "Zip Top Jacket": "/ziptop.png",
 };
 
 export default function ProductShowcase({ item }: { item: CollectionItem }) {
@@ -58,11 +57,11 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
         {/* Red panel */}
         <div className="flex flex-col justify-center bg-brand-red px-6 py-10 text-white sm:px-10">
           <h2 className="text-xl font-extrabold leading-snug sm:text-2xl">
-            Lorem Ipsum is simply dummy
+            Where Sport Meets Street
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/85">
             {item.description ??
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing"}
+              "KAYNS is where performance meets street culture and every piece is built with purpose."}
           </p>
         </div>
       </div>
@@ -84,11 +83,11 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
         {/* Right — brand-red panel with text */}
         <div className="flex w-1/2 flex-col justify-center bg-brand-red px-28 py-12 text-white">
           <h2 className="text-xl font-extrabold leading-snug sm:text-2xl">
-            Lorem Ipsum is simply dummy
+            Where Sport Meets Street
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/85">
             {item.description ??
-              "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum is simply dummy text of the printing"}
+              "KAYNS is where performance meets street culture and every piece is built with purpose."}
           </p>
         </div>
 

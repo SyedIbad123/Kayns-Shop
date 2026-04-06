@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import Container from "@/components/ui/Container";
 
@@ -21,9 +22,15 @@ export default function Footer() {
       <Container className="grid gap-10 py-16 md:grid-cols-3">
         {/* Brand */}
         <div>
-          <h3 className="mb-4 text-xl font-bold tracking-wide text-white">
-            XYZ&nbsp;<span className="text-[#D7262E]">DESIGNS</span>
-          </h3>
+          <div className="mb-4 flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="Kayns Shop"
+              width={140}
+              height={56}
+              className="h-12 w-auto rounded-sm bg-white p-1 object-contain"
+            />
+          </div>
           <p className="text-sm leading-relaxed">
             We design your imagination. Premium design solutions crafted with
             passion and precision.
@@ -49,10 +56,12 @@ export default function Footer() {
 
         {/* Contact & Social */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-white">Contact Info</h4>
+          <h4 className="mb-4 text-lg font-semibold text-white">
+            Contact Info
+          </h4>
           <address className="space-y-2 text-sm not-italic">
             <p>123 Design Street, Creative City</p>
-            <p>Email: info@xyzdesigns.com</p>
+            <p>Email: ibad1657@gmail.com</p>
             <p>Phone: +1 (555) 123-4567</p>
           </address>
           <div className="mt-6 flex gap-4">
@@ -72,7 +81,7 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10 py-4 text-center text-xs text-gray-500">
-        &copy; {new Date().getFullYear()} XYZ Designs. All rights reserved.
+        &copy; {new Date().getFullYear()} Kayns Shop. All rights reserved.
       </div>
     </footer>
   );

@@ -25,7 +25,7 @@ export default function Portfolio() {
     >
       <Container>
         <SectionTitle
-          title="XYZ PORTFOLIO"
+          title="KAYNS PORTFOLIO"
           light
           className="mb-10 text-center"
         />

@@ -18,7 +18,11 @@ export default function CollectionProductList({
   };
 
   return (
-    <section className="bg-white px-6 py-10" aria-label="Products">
+    <section
+      id="products"
+      className="bg-white px-6 py-10"
+      aria-label="Products"
+    >
       <h2 className="mb-8 text-center text-3xl font-extrabold uppercase tracking-widest text-gray-900">
         {item.title.replace("Design ", "").toUpperCase()}&nbsp;CAPS
       </h2>

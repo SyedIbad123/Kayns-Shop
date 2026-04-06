@@ -11,11 +11,14 @@ export interface QuoteEmailAttachmentSummary {
   description?: string;
 }
 
+export type QuoteEmailTemplateVariant = "vendor" | "user";
+
 interface QuoteEmailTemplateProps {
   payload: QuoteSubmissionValues;
   appUrl?: string;
   safeSvgMarkup?: string | null;
   attachmentSummaries?: QuoteEmailAttachmentSummary[];
+  variant?: QuoteEmailTemplateVariant;
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -169,6 +172,21 @@ function parseColorDescriptions(rawValue: unknown) {
     .filter(Boolean);
 }
 
+function buildPublicAssetUrl(
+  appUrl: string | undefined,
+  assetPath: string,
+): string | null {
+  if (!appUrl) {
+    return null;
+  }
+
+  try {
+    return new URL(assetPath, appUrl).toString();
+  } catch {
+    return null;
+  }
+}
+
 const pageStyle: CSSProperties = {
   margin: "0",
   padding: "0",
@@ -241,7 +259,11 @@ export default function QuoteEmailTemplate({
   appUrl,
   safeSvgMarkup,
   attachmentSummaries = [],
+  variant = "vendor",
 }: QuoteEmailTemplateProps) {
+  const isUserTemplate = variant === "user";
+  const isVendorTemplate = !isUserTemplate;
+
   const sourceDetails = getSourceDetails(payload.configuration);
   const sourceData = sourceDetails.data;
   const logoDetails = getLogoDetails(sourceData);
@@ -271,6 +293,19 @@ export default function QuoteEmailTemplate({
     ["Address", payload.fullAddress],
     ["Comments", payload.comments || "N/A"],
   ];
+
+  const headerTitle = isUserTemplate
+    ? "Your Quote Inquiry Has Been Received"
+    : "New Quote Request";
+  const headerLead = isUserTemplate
+    ? "Thank you for contacting Kayns Shop. This email confirms that we received your inquiry."
+    : "A new quote inquiry was submitted from the website.";
+  const brandLogoUrl = buildPublicAssetUrl(appUrl, "/logo.png");
+  const headerMeta = `${submittedAt}${
+    sourceDetails.source !== "unknown"
+      ? ` · Source: ${sourceDetails.source.toUpperCase()}`
+      : ""
+  }`;
 
   const motifRows = extraMotifs.map((motif, index) => {
     const type = motif.type === "logo" ? "Logo" : "Text";
@@ -357,17 +392,42 @@ export default function QuoteEmailTemplate({
               padding: "12px 16px",
             }}
           >
-            <h1 style={{ margin: "0", fontSize: "20px" }}>New Quote Request</h1>
+            {brandLogoUrl ? (
+              <div
+                style={{
+                  marginBottom: "10px",
+                  display: "inline-block",
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: "6px",
+                  padding: "4px 8px",
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={brandLogoUrl}
+                  alt="Kayns Shop logo"
+                  style={{
+                    display: "block",
+                    width: "120px",
+                    height: "38px",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+            ) : null}
+            <h1 style={{ margin: "0", fontSize: "20px" }}>{headerTitle}</h1>
+            <p style={{ margin: "4px 0 0", opacity: "0.96", fontSize: "13px" }}>
+              {headerLead}
+            </p>
             <p style={{ margin: "4px 0 0", opacity: "0.88", fontSize: "12px" }}>
-              Submitted at {submittedAt}
-              {sourceDetails.source !== "unknown"
-                ? ` · Source: ${sourceDetails.source.toUpperCase()}`
-                : ""}
+              Submitted at {headerMeta}
             </p>
           </div>
 
           <div style={sectionStyle}>
-            <SectionTitle title="Customer Details" />
+            <SectionTitle
+              title={isUserTemplate ? "Your Details" : "Customer Details"}
+            />
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
               {contactCells.map(([label, value]) => (
                 <div key={label} style={labelBoxStyle}>
@@ -378,7 +438,13 @@ export default function QuoteEmailTemplate({
           </div>
 
           <div style={sectionStyle}>
-            <SectionTitle title="Configuration Summary" />
+            <SectionTitle
+              title={
+                isUserTemplate
+                  ? "Your Configuration Summary"
+                  : "Configuration Summary"
+              }
+            />
 
             {sourceDetails.source === "standard" && standardValues ? (
               <div>
@@ -597,7 +663,7 @@ export default function QuoteEmailTemplate({
                   </table>
                 ) : null}
 
-                {safeSvgMarkup ? (
+                {isVendorTemplate && safeSvgMarkup ? (
                   <div
                     style={{
                       marginTop: "10px",
@@ -647,7 +713,7 @@ export default function QuoteEmailTemplate({
               </table>
             ) : null}
 
-            {logoDetails ? (
+            {isVendorTemplate && logoDetails ? (
               <div
                 style={{
                   marginTop: "10px",
@@ -686,7 +752,7 @@ export default function QuoteEmailTemplate({
               </div>
             ) : null}
 
-            {motifLogoPreviews.length > 0 ? (
+            {isVendorTemplate && motifLogoPreviews.length > 0 ? (
               <div
                 style={{
                   marginTop: "10px",
@@ -759,7 +825,9 @@ export default function QuoteEmailTemplate({
 
           <div style={{ ...sectionStyle, backgroundColor: "#F9FAFB" }}>
             <p style={{ margin: "0", fontSize: "11px", color: "#6B7280" }}>
-              Generated by Kayns Shop quote workflow
+              {isUserTemplate
+                ? "This is an automatic confirmation that your quote inquiry is in our queue."
+                : "Generated by Kayns Shop quote workflow"}
               {appUrl ? ` (${appUrl})` : ""}.
             </p>
           </div>

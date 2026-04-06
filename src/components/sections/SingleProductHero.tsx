@@ -1,25 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import Button from "@/components/ui/Button";
 import type { CollectionItem } from "@/data/collection";
 
 const namedImageByTitle: Record<string, string> = {
-  "Sports T-Shirt": "/cricket_shirt.jpg",
-  "Performance Tee": "/soccer_shirt.jpg",
-  "Racer T-Shirt": "/rugby_shirt.jpg",
-  "Athletic Singlet": "/basketball_singlet.jpg",
-  "Polo Shirt": "/polo_shirt.jpg",
-  "Pro Jersey": "/soccer_shirt.jpg",
-  "Performance Trouser": "/trouser.jpg",
-  "Training Shorts": "/netball_short.jpg",
-  "Fleece Shorts": "/rugby_short.jpg",
-  "Match Shorts": "/basketball_short.jpg",
-  "Classic Shorts": "/soccer_short.jpg",
-  "Puffer Jacket": "/full_sleves_puffer.jpg",
-  Hoodie: "/sweat_shirt.jpg",
-  "Sleeveless Puffer": "/half_sleves_puffer.jpg",
+  "Cricket T-Shirt": "/cricket_shirt.jpg",
+  "Soccer T-Shirt": "/soccer_shirt.jpg",
+  "Rugby T-Shirt": "/rugby_shirt.jpg",
+  "Basketball Singlet": "/basketball_singlet.jpg",
+  "Polo T-Shirt": "/polo_shirt.jpg",
+  Trouser: "/trouser.jpg",
+  "Netball Bummer": "/netball_short.jpg",
+  "Basketball Short": "/basketball_short.jpg",
+  "Soccer Short": "/soccer_short.jpg",
+  "Rugby Short": "/rugby_short.jpg",
+  Sweatshirt: "/sweat_shirt.jpg",
+  "Full Sleeves Puffer Jacket": "/full_sleves_puffer.jpg",
+  "Half Sleeves Puffer Jacket": "/half_sleves_puffer.jpg",
   "Track Jacket": "/track_jacket.jpg",
-  "Zip Top": "/ziptop.jpg",
+  "Zip Top Jacket": "/ziptop.jpg",
 };
 
 export default function SingleProductHero({ item }: { item: CollectionItem }) {
@@ -41,20 +39,24 @@ export default function SingleProductHero({ item }: { item: CollectionItem }) {
       {/* Title + description bar */}
       <div className="bg-white px-6 py-10 text-center">
         <h1 className="text-3xl font-extrabold uppercase tracking-widest text-gray-900 sm:text-4xl">
-          XYZ&ensp;DESIGNS
+          KAYNS
         </h1>
         <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-gray-600">
           {item.description ??
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,"}
+            "Where sport meets street and quality never compromises."}
         </p>
         <div className="mt-6 flex items-center justify-center gap-3">
-          <Button variant="primary" size="sm">
+          <Link
+            href={`/collection/${item.id}#details`}
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
             Read More &darr;
-          </Button>
-          <Link href={`/customize/single/${item.id}`}>
-            <Button variant="primary" size="sm">
-              Customize
-            </Button>
+          </Link>
+          <Link
+            href={`/customize/single/${item.id}`}
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          >
+            Customize
           </Link>
         </div>
       </div>

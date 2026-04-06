@@ -10,7 +10,7 @@ const playfairDisplay = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Kayns Collections | XYZ Designs",
+  title: "Kayns Collections | KAYNS",
   description:
     "Explore our full Kayns portfolio of custom sportswear, mockups, and production samples.",
 };

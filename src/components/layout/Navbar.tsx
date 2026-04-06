@@ -1,17 +1,19 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { label: "Home", href: "#" },
-  { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#portfolio" },
+  { label: "Home", href: "/" },
+  { label: "Services", href: "/#services" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Uniform", href: "/uniform" },
-  { label: "Contact Us", href: "#contact" },
-  { label: "About Us", href: "#about" },
+  { label: "Contact Us", href: "/quote" },
+  { label: "About Us", href: "/#about" },
 ];
 
 export default function Navbar() {
@@ -21,13 +23,20 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-white shadow-sm">
       <Container className="flex items-center justify-between py-4">
         {/* Logo */}
-        <a
-          href="#"
-          className="text-xl font-bold tracking-wide text-[#0F2B4C]"
-          aria-label="XYZ Designs Home"
+        <Link
+          href="/"
+          className="flex items-center gap-3"
+          aria-label="Kayns Shop Home"
         >
-          XYZ&nbsp;<span className="text-[#D7262E]">DESIGNS</span>
-        </a>
+          <Image
+            src="/logo.png"
+            alt="Kayns Shop"
+            width={120}
+            height={108}
+            priority
+            className="h-10 w-auto object-cover"
+          />
+        </Link>
 
         {/* Desktop nav */}
         <nav
@@ -35,13 +44,13 @@ export default function Navbar() {
           aria-label="Main navigation"
         >
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               className="text-sm font-medium text-gray-700 transition-colors hover:text-[#D7262E]"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -68,14 +77,14 @@ export default function Navbar() {
           aria-label="Mobile navigation"
         >
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.label}
               href={link.href}
               className="text-sm font-medium text-gray-700 transition-colors hover:text-[#D7262E]"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

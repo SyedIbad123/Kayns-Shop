@@ -80,11 +80,11 @@ export default function SingleProductOption({ title, description }: Props) {
               />
             </div>
 
-            {/* xyz field */}
+            {/* kayns field */}
             <div className="overflow-hidden rounded-xl bg-white">
               <input
                 type="text"
-                placeholder="xyz"
+                placeholder="kayns"
                 value={detail}
                 onChange={(e) => setDetail(e.target.value)}
                 className="w-full px-5 py-3.5 text-sm text-gray-700 outline-none placeholder-gray-400"
@@ -92,11 +92,11 @@ export default function SingleProductOption({ title, description }: Props) {
               />
             </div>
 
-            {/* xyz + checkbox */}
+            {/* kayns + checkbox */}
             <div className="rounded-xl bg-white px-5 py-3.5">
               <input
                 type="text"
-                placeholder="xyz"
+                placeholder="kayns"
                 value={extraDetail}
                 onChange={(e) => setExtraDetail(e.target.value)}
                 className="w-full text-sm text-gray-700 outline-none placeholder-gray-400"
