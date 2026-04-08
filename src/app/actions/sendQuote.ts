@@ -15,6 +15,36 @@ export interface SendQuoteEmailResult {
   message: string;
 }
 
+type QuoteEmailTarget = "vendor" | "user";
+
+class QuoteEmailSendError extends Error {
+  target: QuoteEmailTarget;
+  recipient: string;
+  statusCode?: number;
+  providerErrorName?: string;
+
+  constructor({
+    message,
+    target,
+    recipient,
+    statusCode,
+    providerErrorName,
+  }: {
+    message: string;
+    target: QuoteEmailTarget;
+    recipient: string;
+    statusCode?: number;
+    providerErrorName?: string;
+  }) {
+    super(message);
+    this.name = "QuoteEmailSendError";
+    this.target = target;
+    this.recipient = recipient;
+    this.statusCode = statusCode;
+    this.providerErrorName = providerErrorName;
+  }
+}
+
 const MAX_TOTAL_ATTACHMENT_BYTES = 20 * 1024 * 1024;
 const MAX_ATTACHMENT_COUNT = 24;
 const MAX_INLINE_PREVIEW_BYTES = 512 * 1024;
@@ -611,7 +641,37 @@ async function buildAttachments({
 
 function getResendSandboxRecipient(errorMessage: string) {
   const match = errorMessage.match(/own email address \(([^)]+)\)/i);
-  return match ? match[1]?.trim() || null : null;
+  if (match?.[1]) {
+    return match[1].trim() || null;
+  }
+
+  if (!/own email address|testing emails?|sandbox/i.test(errorMessage)) {
+    return null;
+  }
+
+  const fallbackEmailMatch = errorMessage.match(
+    /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/,
+  );
+
+  return fallbackEmailMatch?.[0] ?? null;
+}
+
+function isResendSandboxError(errorMessage: string) {
+  return /own email address|testing emails?|sandbox/i.test(errorMessage);
+}
+
+function isResendDomainVerificationError(errorMessage: string) {
+  return (
+    /(verify|verified|verification)/i.test(errorMessage) &&
+    /(domain|sender|from address)/i.test(errorMessage)
+  );
+}
+
+function isResendInvalidRecipientError(errorMessage: string) {
+  return (
+    /(invalid|malformed)/i.test(errorMessage) &&
+    /(email|recipient|to|from|reply)/i.test(errorMessage)
+  );
 }
 
 export async function sendQuoteEmail(
@@ -645,6 +705,9 @@ export async function sendQuoteEmail(
   );
   const fromAddress =
     normalizeEnvValue(process.env.QUOTE_FROM_EMAIL) ?? DEFAULT_QUOTE_FROM_EMAIL;
+  const isUsingResendSandboxFromAddress = /onboarding@resend\.dev/i.test(
+    fromAddress,
+  );
 
   // Keep customer confirmation dynamic so each submitter receives their own email.
   const userRecipient = payload.emailAddress;
@@ -698,12 +761,14 @@ export async function sendQuoteEmail(
     )?.previewCid ?? null;
 
   const sendEmail = async ({
+    target,
     to,
     replyTo,
     subject,
     variant,
     attachments,
   }: {
+    target: QuoteEmailTarget;
     to: string;
     replyTo?: string;
     subject: string;
@@ -727,46 +792,113 @@ export async function sendQuoteEmail(
     });
 
     if (result.error) {
-      throw new Error(
-        result.error.message || `Failed to send ${variant} email.`,
-      );
+      const resendError = result.error as {
+        message?: string;
+        name?: string;
+        statusCode?: number;
+      };
+
+      throw new QuoteEmailSendError({
+        message: resendError.message || `Failed to send ${variant} email.`,
+        target,
+        recipient: to,
+        statusCode: resendError.statusCode,
+        providerErrorName: resendError.name,
+      });
     }
   };
 
+  let vendorEmailSent = false;
+
   try {
-    const sendEmailToVendor = await sendEmail({
+    await sendEmail({
+      target: "vendor",
       to: vendorRecipient,
       replyTo: payload.emailAddress,
       subject: `New Quote Request from ${payload.fullName}`,
       variant: "vendor",
       attachments: attachmentBuildResult.attachments,
     });
+    vendorEmailSent = true;
 
-    const sendEmailToRecipient = await sendEmail({
-      to: userRecipient,
-      replyTo: configuredVendorRecipient ?? undefined,
-      subject: "We received your quote inquiry - Kayns Shop",
-      variant: "user",
-      attachments: attachmentBuildResult.inlinePreviewAttachments,
-    });
+    try {
+      await sendEmail({
+        target: "user",
+        to: userRecipient,
+        replyTo: configuredVendorRecipient ?? undefined,
+        subject: "We received your quote inquiry - Kayns Shop",
+        variant: "user",
+        attachments: attachmentBuildResult.inlinePreviewAttachments,
+      });
+    } catch (error) {
+      // The inquiry has already been delivered to the vendor mailbox.
+      // Don't block quote submission if only the customer confirmation fails.
+      if (error instanceof QuoteEmailSendError && error.target === "user") {
+        console.warn("Customer confirmation email failed", {
+          recipient: error.recipient,
+          statusCode: error.statusCode,
+          providerErrorName: error.providerErrorName,
+          message: error.message,
+        });
 
-    void sendEmailToVendor;
-    void sendEmailToRecipient;
+        return {
+          success: true,
+          message: "Quote request sent successfully.",
+        };
+      }
+
+      throw error;
+    }
 
     return {
       success: true,
       message: "Quote request sent successfully.",
     };
   } catch (error) {
-    console.error("Failed to send quote email", error);
+    const sendError =
+      error instanceof QuoteEmailSendError
+        ? error
+        : new QuoteEmailSendError({
+            message: error instanceof Error ? error.message : "Unknown error",
+            target: vendorEmailSent ? "user" : "vendor",
+            recipient: vendorEmailSent ? userRecipient : vendorRecipient,
+          });
 
-    const errorMessage = error instanceof Error ? error.message : "";
+    console.error("Failed to send quote email", {
+      target: sendError.target,
+      recipient: sendError.recipient,
+      statusCode: sendError.statusCode,
+      providerErrorName: sendError.providerErrorName,
+      message: sendError.message,
+    });
+
+    const errorMessage = sendError.message;
     const sandboxRecipient = getResendSandboxRecipient(errorMessage);
 
     if (sandboxRecipient) {
       return {
         success: false,
         message: `Resend testing mode currently allows sending only to ${sandboxRecipient}. Vendor notification will go to the configured receiver, but customer confirmation to ${payload.emailAddress} requires a verified Resend domain and a domain-based QUOTE_FROM_EMAIL address.`,
+      };
+    }
+
+    if (
+      isUsingResendSandboxFromAddress ||
+      isResendSandboxError(errorMessage) ||
+      isResendDomainVerificationError(errorMessage)
+    ) {
+      return {
+        success: false,
+        message:
+          "Email sending is restricted by your current Resend setup. In Vercel, set QUOTE_FROM_EMAIL to an address on a verified domain and set QUOTE_VENDOR_EMAIL to a valid inbox. For sandbox testing, use QUOTE_TEST_RECIPIENT_EMAIL as your Resend account owner email.",
+      };
+    }
+
+    if (isResendInvalidRecipientError(errorMessage)) {
+      return {
+        success: false,
+        message:
+          "One of the configured quote email addresses is invalid. Check QUOTE_FROM_EMAIL, QUOTE_VENDOR_EMAIL, and QUOTE_TEST_RECIPIENT_EMAIL in Vercel environment variables.",
       };
     }
 
