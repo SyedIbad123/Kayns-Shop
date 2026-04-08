@@ -9,6 +9,8 @@ export interface QuoteEmailAttachmentSummary {
   category: string;
   label: string;
   description?: string;
+  previewDataUrl?: string;
+  previewCid?: string;
 }
 
 export type QuoteEmailTemplateVariant = "vendor" | "user";
@@ -17,6 +19,7 @@ interface QuoteEmailTemplateProps {
   payload: QuoteSubmissionValues;
   appUrl?: string;
   safeSvgMarkup?: string | null;
+  safeSvgPreviewCid?: string | null;
   attachmentSummaries?: QuoteEmailAttachmentSummary[];
   variant?: QuoteEmailTemplateVariant;
 }
@@ -82,6 +85,19 @@ function getSafeLogoDataUrl(value: unknown) {
     );
 
   return isSafeImageDataUrl ? trimmed : null;
+}
+
+function getSafeInlineCid(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalized = value.trim().replace(/^cid:/i, "");
+  if (!normalized) {
+    return null;
+  }
+
+  return /^[a-zA-Z0-9_.+\-@]+$/.test(normalized) ? normalized : null;
 }
 
 function formatBytes(sizeInBytes: number) {
@@ -258,6 +274,7 @@ export default function QuoteEmailTemplate({
   payload,
   appUrl,
   safeSvgMarkup,
+  safeSvgPreviewCid,
   attachmentSummaries = [],
   variant = "vendor",
 }: QuoteEmailTemplateProps) {
@@ -306,6 +323,10 @@ export default function QuoteEmailTemplate({
       ? ` · Source: ${sourceDetails.source.toUpperCase()}`
       : ""
   }`;
+  const safeInlineSvgPreviewCid = getSafeInlineCid(safeSvgPreviewCid);
+  const svgPreviewSrc = safeInlineSvgPreviewCid
+    ? `cid:${safeInlineSvgPreviewCid}`
+    : null;
 
   const motifRows = extraMotifs.map((motif, index) => {
     const type = motif.type === "logo" ? "Logo" : "Text";
@@ -663,7 +684,36 @@ export default function QuoteEmailTemplate({
                   </table>
                 ) : null}
 
-                {isVendorTemplate && safeSvgMarkup ? (
+                {svgPreviewSrc ? (
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      border: "1px solid #D1D5DB",
+                      padding: "10px",
+                      backgroundColor: "#FFFFFF",
+                    }}
+                  >
+                    <p
+                      style={{ margin: "0", fontSize: "13px", fontWeight: 700 }}
+                    >
+                      {isUserTemplate ? "Your SVG Preview" : "SVG Preview"}
+                    </p>
+                    <div style={{ marginTop: "8px" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={svgPreviewSrc}
+                        alt="SVG preview"
+                        style={{
+                          maxWidth: "100%",
+                          maxHeight: "280px",
+                          objectFit: "contain",
+                          border: "1px solid #D1D5DB",
+                          backgroundColor: "#F9FAFB",
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : safeSvgMarkup ? (
                   <div
                     style={{
                       marginTop: "10px",
@@ -694,21 +744,61 @@ export default function QuoteEmailTemplate({
                     <th style={headerCellStyle}>File</th>
                     <th style={headerCellStyle}>Format</th>
                     <th style={headerCellStyle}>Size</th>
+                    <th style={headerCellStyle}>Preview</th>
                     <th style={headerCellStyle}>Notes</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {attachmentSummaries.map((file, index) => (
-                    <tr key={`${file.fileName}-${file.sizeInBytes}-${index}`}>
-                      <td style={bodyCellStyle}>{file.label}</td>
-                      <td style={bodyCellStyle}>{file.fileName}</td>
-                      <td style={bodyCellStyle}>{file.mimeType}</td>
-                      <td style={bodyCellStyle}>
-                        {formatBytes(file.sizeInBytes)}
-                      </td>
-                      <td style={bodyCellStyle}>{file.description || "-"}</td>
-                    </tr>
-                  ))}
+                  {attachmentSummaries.map((file, index) => {
+                    const safePreviewCid = getSafeInlineCid(file.previewCid);
+                    const safePreviewDataUrl = getSafeLogoDataUrl(
+                      file.previewDataUrl,
+                    );
+                    const previewSrc = safePreviewCid
+                      ? `cid:${safePreviewCid}`
+                      : safePreviewDataUrl;
+
+                    return (
+                      <tr key={`${file.fileName}-${file.sizeInBytes}-${index}`}>
+                        <td style={bodyCellStyle}>{file.label}</td>
+                        <td style={bodyCellStyle}>{file.fileName}</td>
+                        <td style={bodyCellStyle}>{file.mimeType}</td>
+                        <td style={bodyCellStyle}>
+                          {formatBytes(file.sizeInBytes)}
+                        </td>
+                        <td style={bodyCellStyle}>
+                          {previewSrc ? (
+                            <div
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                width: "84px",
+                                height: "62px",
+                                border: "1px solid #D1D5DB",
+                                backgroundColor: "#FFFFFF",
+                                overflow: "hidden",
+                              }}
+                            >
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={previewSrc}
+                                alt={`${file.fileName} preview`}
+                                style={{
+                                  maxWidth: "100%",
+                                  maxHeight: "100%",
+                                  objectFit: "contain",
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+                        <td style={bodyCellStyle}>{file.description || "-"}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             ) : null}

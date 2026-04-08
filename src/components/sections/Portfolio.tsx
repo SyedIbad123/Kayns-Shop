@@ -66,11 +66,12 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-1 lg:row-start-1"
           >
-            <div className="flex h-full flex-col justify-end text-white">
+            <div className="flex h-full flex-col justify-center  items-center text-white">
+              {" "}
               <p className="text-xs uppercase tracking-[0.18em] opacity-85">
-                {portfolioItems[0].category}
+                {/* {portfolioItems[0].category} */}
               </p>
-              <h3 className="mt-2 text-xl font-semibold leading-tight">
+              <h3 className="mt-2 text-4xl font-semibold leading-tight">
                 {portfolioItems[0].title}
               </h3>
             </div>
@@ -121,11 +122,12 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-2 lg:row-start-2"
           >
-            <div className="flex h-full flex-col justify-end text-white">
-              <p className="text-xs uppercase tracking-[0.18em] opacity-85">
+            <div className="flex h-full flex-col justify-center  items-center text-white">
+              {" "}
+              {/* <p className="text-xs uppercase tracking-[0.18em] opacity-85">
                 {portfolioItems[4].category}
-              </p>
-              <h3 className="mt-2 text-xl font-semibold leading-tight">
+              </p> */}
+              <h3 className="mt-2 text-4xl font-semibold leading-tight">
                 {portfolioItems[4].title}
               </h3>
             </div>
@@ -152,11 +154,11 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-3 lg:row-start-3"
           >
-            <div className="flex h-full flex-col justify-end text-white">
-              <p className="text-xs uppercase tracking-[0.18em] opacity-85">
+            <div className="flex h-full flex-col justify-center  items-center text-white">
+              {/* <p className="text-xs uppercase tracking-[0.18em] opacity-85">
                 {portfolioItems[6].category}
-              </p>
-              <h3 className="mt-2 text-xl font-semibold leading-tight">
+              </p> */}
+              <h3 className="mt-2 text-4xl font-semibold leading-tight">
                 {portfolioItems[6].title}
               </h3>
             </div>

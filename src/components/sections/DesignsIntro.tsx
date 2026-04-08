@@ -11,7 +11,7 @@ export default function DesignsIntro() {
   return (
     <section
       id="about"
-      className="bg-white py-16"
+      className="bg-[#f3f6fc] py-16"
       aria-label="About our designs"
     >
       <Container className="text-center">

@@ -8,7 +8,7 @@ export interface PortfolioItem {
 export const portfolioItems: PortfolioItem[] = [
   {
     id: 1,
-    title: "Elite Match T-Shirt Kit",
+    title: "Slam Dunk",
     category: "T-Shirt",
     image:
       "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
@@ -33,7 +33,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 5,
-    title: "All-Weather Puffer Jacket",
+    title: "Blitz",
     category: "Puffer Jacket",
     image:
       "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",
@@ -46,7 +46,7 @@ export const portfolioItems: PortfolioItem[] = [
   },
   {
     id: 7,
-    title: "Football Match Shorts",
+    title: "Dime",
     category: "Football Shorts",
     image:
       "https://img.freepik.com/free-photo/lavender-field-sunset-near-valensole_268835-3910.jpg?semt=ais_hybrid&w=740&q=80",

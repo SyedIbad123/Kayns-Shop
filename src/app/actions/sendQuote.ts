@@ -17,6 +17,7 @@ export interface SendQuoteEmailResult {
 
 const MAX_TOTAL_ATTACHMENT_BYTES = 20 * 1024 * 1024;
 const MAX_ATTACHMENT_COUNT = 24;
+const MAX_INLINE_PREVIEW_BYTES = 512 * 1024;
 const SAFE_IMAGE_DATA_URL_REGEX =
   /^data:image\/(png|jpeg|jpg|webp|svg\+xml);base64,[a-zA-Z0-9+/=\s]+$/i;
 
@@ -43,6 +44,14 @@ const MIME_EXTENSION_MAP: Record<string, string> = {
 };
 
 const DEFAULT_QUOTE_FROM_EMAIL = "Kayns Shop Quotes <onboarding@resend.dev>";
+const PRODUCTION_APP_URL = "https://kayns.co.uk";
+const LOCAL_DEV_APP_URL = "http://localhost:3000";
+const PREVIEWABLE_IMAGE_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+]);
 
 interface ParsedRawInput {
   payload: unknown;
@@ -52,6 +61,7 @@ interface ParsedRawInput {
 
 interface AttachmentBuildResult {
   attachments: Attachment[];
+  inlinePreviewAttachments: Attachment[];
   summaries: QuoteEmailAttachmentSummary[];
   errorMessage?: string;
 }
@@ -147,6 +157,105 @@ function normalizeEnvValue(value: string | undefined) {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function getSafeInlineContentId(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const normalized = value.trim().replace(/^cid:/i, "");
+  if (!normalized) {
+    return null;
+  }
+
+  return /^[a-zA-Z0-9_.+\-@]+$/.test(normalized) ? normalized : null;
+}
+
+function normalizeAppUrl(value: string | null) {
+  if (!value) {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+
+  const withProtocol = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+
+  try {
+    const url = new URL(withProtocol);
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return null;
+  }
+}
+
+function resolveAppUrl() {
+  const explicitAppUrl = normalizeAppUrl(
+    normalizeEnvValue(process.env.NEXT_PUBLIC_APP_URL) ??
+      normalizeEnvValue(process.env.APP_URL),
+  );
+
+  if (process.env.NODE_ENV === "production") {
+    return explicitAppUrl ?? PRODUCTION_APP_URL;
+  }
+
+  const inferredAppUrl =
+    explicitAppUrl ??
+    normalizeAppUrl(
+      normalizeEnvValue(process.env.VERCEL_URL) ??
+        normalizeEnvValue(process.env.VERCEL_PROJECT_PRODUCTION_URL),
+    );
+
+  return inferredAppUrl ?? LOCAL_DEV_APP_URL;
+}
+
+function isSingleSvgMarkup(markup: string) {
+  return /^<svg[\s>]/i.test(markup.trim());
+}
+
+function buildInlinePreviewContent({
+  mimeType,
+  extension,
+  content,
+}: {
+  mimeType: string;
+  extension: string;
+  content: Buffer;
+}) {
+  if (content.length === 0 || content.length > MAX_INLINE_PREVIEW_BYTES) {
+    return null;
+  }
+
+  const normalizedMimeType = mimeType.toLowerCase();
+  if (normalizedMimeType === "image/svg+xml" || extension === ".svg") {
+    const sanitizedSvg = sanitizeSvgMarkup(content.toString("utf8"));
+    if (!sanitizedSvg || !isSingleSvgMarkup(sanitizedSvg)) {
+      return null;
+    }
+
+    return {
+      content: Buffer.from(sanitizedSvg, "utf8"),
+      mimeType: "image/svg+xml",
+    };
+  }
+
+  if (!PREVIEWABLE_IMAGE_MIME_TYPES.has(normalizedMimeType)) {
+    return null;
+  }
+
+  return {
+    content,
+    mimeType: normalizedMimeType,
+  };
+}
+
+function createInlinePreviewContentId(contentHash: string) {
+  return `quote-preview-${contentHash.slice(0, 24)}@kayns.co.uk`;
+}
+
 function parseRawInput(rawPayload: unknown): ParsedRawInput | null {
   if (!(rawPayload instanceof FormData)) {
     return {
@@ -217,6 +326,8 @@ function getConfiguredUploadedFileSummaries(configuration: unknown) {
         typeof entry.category === "string" ? entry.category : "other";
       const description =
         typeof entry.description === "string" ? entry.description : undefined;
+      const previewDataUrl = getSafeLogoDataUrl(entry.previewDataUrl);
+      const previewCid = getSafeInlineContentId(entry.previewCid);
 
       return {
         fileName,
@@ -230,6 +341,8 @@ function getConfiguredUploadedFileSummaries(configuration: unknown) {
               ? "Logo Upload"
               : "Uploaded File",
         description,
+        previewDataUrl: previewDataUrl ?? undefined,
+        previewCid: previewCid ?? undefined,
       };
     });
 }
@@ -238,20 +351,26 @@ function mergeAttachmentSummaries(
   primary: QuoteEmailAttachmentSummary[],
   secondary: QuoteEmailAttachmentSummary[],
 ) {
-  const merged: QuoteEmailAttachmentSummary[] = [];
-  const seen = new Set<string>();
+  const mergedByKey = new Map<string, QuoteEmailAttachmentSummary>();
 
   [...primary, ...secondary].forEach((entry) => {
     const key = `${entry.fileName.toLowerCase()}::${entry.sizeInBytes}::${entry.category}`;
-    if (seen.has(key)) {
+    const existing = mergedByKey.get(key);
+    if (!existing) {
+      mergedByKey.set(key, entry);
       return;
     }
 
-    seen.add(key);
-    merged.push(entry);
+    mergedByKey.set(key, {
+      ...existing,
+      ...entry,
+      description: existing.description ?? entry.description,
+      previewDataUrl: existing.previewDataUrl ?? entry.previewDataUrl,
+      previewCid: existing.previewCid ?? entry.previewCid,
+    });
   });
 
-  return merged;
+  return Array.from(mergedByKey.values());
 }
 
 async function buildAttachments({
@@ -264,8 +383,10 @@ async function buildAttachments({
   designFiles: File[];
 }): Promise<AttachmentBuildResult> {
   const attachments: Attachment[] = [];
+  const inlinePreviewAttachments: Attachment[] = [];
   const summaries: QuoteEmailAttachmentSummary[] = [];
   const seenContent = new Set<string>();
+  const seenInlinePreviewContentIds = new Set<string>();
   let totalBytes = 0;
 
   const addAttachment = ({
@@ -314,11 +435,35 @@ async function buildAttachments({
     seenContent.add(dedupeKey);
     totalBytes += content.length;
 
+    const inlinePreview = buildInlinePreviewContent({
+      mimeType,
+      extension,
+      content,
+    });
+    const previewCid = inlinePreview
+      ? createInlinePreviewContentId(dedupeKey)
+      : undefined;
+
     attachments.push({
       filename: normalizedFileName,
       content,
       contentType: mimeType,
+      contentId: previewCid,
     });
+
+    if (
+      inlinePreview &&
+      previewCid &&
+      !seenInlinePreviewContentIds.has(previewCid)
+    ) {
+      seenInlinePreviewContentIds.add(previewCid);
+      inlinePreviewAttachments.push({
+        filename: `preview-${normalizedFileName}`,
+        content: inlinePreview.content,
+        contentType: inlinePreview.mimeType,
+        contentId: previewCid,
+      });
+    }
 
     summaries.push({
       fileName: normalizedFileName,
@@ -327,6 +472,7 @@ async function buildAttachments({
       category,
       label,
       description,
+      previewCid,
     });
   };
 
@@ -432,7 +578,7 @@ async function buildAttachments({
 
       const safeCombinedSvg = getSafeSvgMarkup(configuration);
       if (safeCombinedSvg) {
-        const isSingleSvg = /^<svg[\s>]/i.test(safeCombinedSvg.trim());
+        const isSingleSvg = isSingleSvgMarkup(safeCombinedSvg);
         addAttachment({
           fileName: isSingleSvg
             ? "customized-layout.svg"
@@ -447,6 +593,7 @@ async function buildAttachments({
   } catch (error) {
     return {
       attachments: [],
+      inlinePreviewAttachments: [],
       summaries: [],
       errorMessage:
         error instanceof Error
@@ -457,6 +604,7 @@ async function buildAttachments({
 
   return {
     attachments,
+    inlinePreviewAttachments,
     summaries,
   };
 }
@@ -522,6 +670,7 @@ export async function sendQuoteEmail(
   const safeSvgViews = getSafeSvgViews(configuration);
   const safeSvgMarkup =
     getSafeSvgMarkup(configuration) ?? safeSvgViews[0] ?? null;
+  const appUrl = resolveAppUrl();
 
   const configuredUploadedFileSummaries =
     getConfiguredUploadedFileSummaries(configuration);
@@ -543,6 +692,10 @@ export async function sendQuoteEmail(
     configuredUploadedFileSummaries,
     attachmentBuildResult.summaries,
   );
+  const safeSvgPreviewCid =
+    attachmentSummaries.find(
+      (entry) => entry.category === "svg-snapshot" && Boolean(entry.previewCid),
+    )?.previewCid ?? null;
 
   const sendEmail = async ({
     to,
@@ -565,8 +718,9 @@ export async function sendQuoteEmail(
       attachments: attachments?.length ? attachments : undefined,
       react: createElement(QuoteEmailTemplate, {
         payload,
-        appUrl: process.env.NEXT_PUBLIC_APP_URL,
+        appUrl,
         safeSvgMarkup,
+        safeSvgPreviewCid,
         attachmentSummaries,
         variant,
       }),
@@ -593,6 +747,7 @@ export async function sendQuoteEmail(
       replyTo: configuredVendorRecipient ?? undefined,
       subject: "We received your quote inquiry - Kayns Shop",
       variant: "user",
+      attachments: attachmentBuildResult.inlinePreviewAttachments,
     });
 
     void sendEmailToVendor;

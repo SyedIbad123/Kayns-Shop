@@ -57,7 +57,7 @@ export default function Hero() {
   );
 
   return (
-    <section className="bg-[#143D59] text-white" aria-label="Hero">
+    <section className="bg-[#f3f6fc] text-white" aria-label="Hero">
       {/* Marquee-style tagline */}
       <div className="overflow-hidden bg-[#143D59] py-2">
         <div className="marquee-track-right flex w-max items-center">
@@ -100,7 +100,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Arrows */}
+          {/* Arrows
           <button
             onClick={scrollPrev}
             className="absolute cursor-pointer left-3 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-2 transition hover:bg-black/60"
@@ -114,8 +114,7 @@ export default function Hero() {
             aria-label="Next slide"
           >
             <ChevronRight size={24} />
-          </button>
-
+          </button> */}
           {/* Dots */}
           {/* <div className="mt-4 flex justify-center gap-2">
             {slides.map((_, i) => (

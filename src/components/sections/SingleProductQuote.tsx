@@ -123,7 +123,7 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
 
   return (
     <section
-      className="bg-[#143D59] px-6 py-12 text-white"
+      className="bg-[#f3f6fc] px-6 py-12 text-[#143d59]"
       aria-label="Get a Quote"
     >
       <div className="mx-auto flex max-w-3xl flex-col gap-8 sm:flex-row sm:items-center">
@@ -132,7 +132,7 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
           <h2 className="text-3xl font-extrabold uppercase tracking-widest sm:text-5xl lg:text-7xl">
             Get a Quote
           </h2>
-          <p className="text-sm leading-relaxed text-gray-400">
+          <p className="text-sm leading-relaxed text-[#143d59]">
             Send your customization brief and our team will provide pricing,
             production details, and delivery timelines for your product.
           </p>

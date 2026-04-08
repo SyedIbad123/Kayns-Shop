@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
 
@@ -74,9 +74,13 @@ export default function BookingSteps() {
               </div>
 
               {i < steps.length - 1 ? (
-                <ArrowRight
-                  className="h-10 w-16 text-[#143d59]"
-                  strokeWidth={2.3}
+                <Image
+                  src="/right-arrow.png"
+                  alt=""
+                  aria-hidden
+                  width={64}
+                  height={40}
+                  className="h-10 w-16 object-contain"
                 />
               ) : null}
             </motion.div>

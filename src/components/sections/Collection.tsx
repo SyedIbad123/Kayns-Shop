@@ -49,7 +49,9 @@ export default function Collection() {
       aria-label="KAYNS Collection"
     >
       <Container>
-        <SectionTitle title="KAYNS COLLECTION" light className="mb-10" />
+        <div className="mb-8 text-center text-3xl font-bold text-white sm:text-4xl lg:mb-12 lg:text-7xl">
+          <h1>KAYNS COLLECTION</h1>
+        </div>
 
         <div className="space-y-8 md:space-y-10">
           {collectionSections.map((section) => (

@@ -14,18 +14,18 @@ export default function BookOrder({ item }: { item: CollectionItem }) {
 
   return (
     <section
-      className="bg-[#143D59] px-6 py-12 text-white"
+      className="bg-[#F3F6FC] px-6 py-12 text-[#143D59]"
       aria-label="Book Your Order"
     >
       <div className="mx-auto flex max-w-3xl flex-col items-start gap-8 sm:flex-row sm:items-center">
         {/* Left — heading + input */}
         <div className="flex flex-1 flex-col gap-5">
-          <h2 className="text-3xl font-extrabold text-white sm:text-5xl lg:text-7xl">
+          <h2 className="text-3xl font-extrabold text-[#143D59] sm:text-5xl lg:text-7xl">
             Book Your Order
           </h2>
           <Link
             href={bookOrderHref}
-            className="site-btn inline-flex w-fit rounded-full px-5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-white/40 sm:text-sm"
+            className="site-btn inline-flex w-fit rounded-full px-5 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-[#143D59]/35 sm:text-sm"
             aria-label="Book your order"
           >
             Book Your Order

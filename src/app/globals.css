@@ -53,51 +53,33 @@ button:not(.no-global-button),
   --btn-border: var(--button-dark-bg);
   --btn-fill: var(--button-dark-bg);
   --btn-hover-fg: var(--button-light-bg);
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   border: 1px solid var(--btn-border);
   background-color: var(--btn-bg);
+  background-image: linear-gradient(var(--btn-fill), var(--btn-fill));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
   color: var(--btn-fg);
   transition:
+    background-size 280ms ease,
     color 220ms ease,
     border-color 220ms ease,
     transform 220ms ease,
     box-shadow 220ms ease;
 }
 
-button:not(.no-global-button)::before,
-.site-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: var(--btn-fill);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 280ms ease;
-  pointer-events: none;
-}
-
 button:not(.no-global-button):is(:hover, :focus-visible),
 .site-btn:is(:hover, :focus-visible) {
+  background-size: 100% 100%;
   color: var(--btn-hover-fg);
   transform: translateY(-1px) scale(1.02);
-}
-
-button:not(.no-global-button):is(:hover, :focus-visible)::before,
-.site-btn:is(:hover, :focus-visible)::before {
-  transform: scaleX(1);
 }
 
 button:not(.no-global-button):disabled {
   cursor: not-allowed;
   opacity: 0.65;
+  background-size: 0% 100%;
   transform: none;
-}
-
-button:not(.no-global-button):disabled::before {
-  transform: scaleX(0);
 }
 
 [class*="bg-[#143D59"] button:not(.no-global-button),
@@ -129,37 +111,24 @@ button:not(.no-global-button):disabled::before {
   --nav-border: transparent;
   --nav-fill: #143d59;
   --nav-hover-text: #f3f6fc;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   border: 1px solid var(--nav-border);
   background-color: var(--nav-bg);
+  background-image: linear-gradient(var(--nav-fill), var(--nav-fill));
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 0% 100%;
   color: var(--nav-text);
   transition:
+    background-size 260ms ease,
     color 220ms ease,
     border-color 220ms ease,
     transform 220ms ease;
 }
 
-.nav-link::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background-color: var(--nav-fill);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 260ms ease;
-  pointer-events: none;
-}
-
 .nav-link:is(:hover, :focus-visible) {
+  background-size: 100% 100%;
   color: var(--nav-hover-text);
   transform: scale(1.03);
-}
-
-.nav-link:is(:hover, :focus-visible)::before {
-  transform: scaleX(1);
 }
 
 .nav-link-active {
