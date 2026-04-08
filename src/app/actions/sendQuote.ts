@@ -50,6 +50,7 @@ const MAX_ATTACHMENT_COUNT = 24;
 const MAX_INLINE_PREVIEW_BYTES = 512 * 1024;
 const SAFE_IMAGE_DATA_URL_REGEX =
   /^data:image\/(png|jpeg|jpg|webp|svg\+xml);base64,[a-zA-Z0-9+/=\s]+$/i;
+const SIMPLE_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ALLOWED_ATTACHMENT_EXTENSIONS = new Set([
   ".jpg",
@@ -185,6 +186,23 @@ function normalizeEnvValue(value: string | undefined) {
 
   const trimmed = value.trim();
   return trimmed.length > 0 ? trimmed : null;
+}
+
+function extractEmailAddress(address: string) {
+  const trimmed = address.trim();
+  const bracketMatch = trimmed.match(/<([^<>]+)>/);
+  const candidate = bracketMatch?.[1]?.trim() ?? trimmed;
+
+  return candidate.replace(/^mailto:/i, "").trim();
+}
+
+function isLikelyValidEmailAddress(address: string | null | undefined) {
+  if (!address) {
+    return false;
+  }
+
+  const candidate = extractEmailAddress(address);
+  return SIMPLE_EMAIL_REGEX.test(candidate);
 }
 
 function getSafeInlineContentId(value: unknown) {
@@ -715,6 +733,11 @@ export async function sendQuoteEmail(
   const vendorRecipient =
     testVendorRecipientOverride ?? configuredVendorRecipient;
 
+  const fromAddressEmail = extractEmailAddress(fromAddress);
+  const safeUserReplyTo = isLikelyValidEmailAddress(configuredVendorRecipient)
+    ? configuredVendorRecipient
+    : undefined;
+
   if (!resendApiKey || !vendorRecipient) {
     console.error("Missing required quote email environment variables.");
 
@@ -723,6 +746,28 @@ export async function sendQuoteEmail(
       message:
         "Quote service is not configured right now. Please try again shortly.",
     };
+  }
+
+  if (!isLikelyValidEmailAddress(fromAddressEmail)) {
+    return {
+      success: false,
+      message:
+        "QUOTE_FROM_EMAIL format is invalid in Vercel. Use a valid sender address, for example: Kayns Shop Quotes <quotes@yourdomain.com>",
+    };
+  }
+
+  if (!isLikelyValidEmailAddress(vendorRecipient)) {
+    return {
+      success: false,
+      message:
+        "The internal destination email is invalid. Check QUOTE_TEST_RECIPIENT_EMAIL (if set) or QUOTE_VENDOR_EMAIL in Vercel.",
+    };
+  }
+
+  if (configuredVendorRecipient && !safeUserReplyTo) {
+    console.warn(
+      "QUOTE_VENDOR_EMAIL appears invalid and will be ignored as reply-to for user confirmation.",
+    );
   }
 
   const resend = new Resend(resendApiKey);
@@ -825,7 +870,7 @@ export async function sendQuoteEmail(
       await sendEmail({
         target: "user",
         to: userRecipient,
-        replyTo: configuredVendorRecipient ?? undefined,
+        replyTo: safeUserReplyTo,
         subject: "We received your quote inquiry - Kayns Shop",
         variant: "user",
         attachments: attachmentBuildResult.inlinePreviewAttachments,
@@ -895,10 +940,16 @@ export async function sendQuoteEmail(
     }
 
     if (isResendInvalidRecipientError(errorMessage)) {
+      const invalidAddressHint =
+        sendError.target === "vendor"
+          ? testVendorRecipientOverride
+            ? "QUOTE_TEST_RECIPIENT_EMAIL or QUOTE_FROM_EMAIL"
+            : "QUOTE_VENDOR_EMAIL or QUOTE_FROM_EMAIL"
+          : "the submitted emailAddress or QUOTE_VENDOR_EMAIL";
+
       return {
         success: false,
-        message:
-          "One of the configured quote email addresses is invalid. Check QUOTE_FROM_EMAIL, QUOTE_VENDOR_EMAIL, and QUOTE_TEST_RECIPIENT_EMAIL in Vercel environment variables.",
+        message: `Resend rejected an email address as invalid during ${sendError.target === "vendor" ? "vendor notification" : "customer confirmation"}. Check ${invalidAddressHint} in Vercel.`,
       };
     }
 
