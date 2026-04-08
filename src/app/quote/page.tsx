@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function QuotePage() {
   return (
-    <main className="min-h-screen bg-[#F8FAFC] py-6 sm:py-8">
+    <main className="min-h-screen bg-[#F3F6FC] py-6 sm:py-8">
       <QuoteForm />
     </main>
   );

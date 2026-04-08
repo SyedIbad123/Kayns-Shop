@@ -57,9 +57,9 @@ export default function Hero() {
   );
 
   return (
-    <section className="bg-dark-blue text-white" aria-label="Hero">
+    <section className="bg-[#143D59] text-white" aria-label="Hero">
       {/* Marquee-style tagline */}
-      <div className="overflow-hidden bg-brand-red py-2">
+      <div className="overflow-hidden bg-[#143D59] py-2">
         <div className="marquee-track-right flex w-max items-center">
           {[0, 1].map((set) => (
             <div

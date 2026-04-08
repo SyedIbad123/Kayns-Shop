@@ -35,7 +35,7 @@ export default function SingleProductOption({ title, description }: Props) {
       </div>
 
       {/* Red background form */}
-      <div className="relative bg-brand-red px-4 pb-16 pt-4">
+      <div className="relative bg-[#143D59] px-4 pb-16 pt-4">
         <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,520px)] lg:items-start">
           {/* Left preview image */}
           <div className="mx-auto w-full max-w-md lg:max-w-xl">
@@ -107,7 +107,7 @@ export default function SingleProductOption({ title, description }: Props) {
                   type="checkbox"
                   checked={hasCord}
                   onChange={(e) => setHasCord(e.target.checked)}
-                  className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-brand-red"
+                  className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#143D59]"
                   aria-label="Option checkbox"
                 />
               </div>
@@ -126,7 +126,7 @@ export default function SingleProductOption({ title, description }: Props) {
                     style={{ backgroundColor: color }}
                     className={`h-12 rounded-xl border-2 transition hover:opacity-80 ${
                       shirtStyle === color
-                        ? "border-brand-red"
+                        ? "border-[#143D59]"
                         : "border-transparent"
                     }`}
                     aria-label={`Shirt style ${i + 1}`}
@@ -148,7 +148,7 @@ export default function SingleProductOption({ title, description }: Props) {
                     style={{ backgroundColor: color }}
                     className={`h-12 rounded-xl border-2 transition hover:opacity-80 ${
                       collarStyle === color
-                        ? "border-brand-red"
+                        ? "border-[#143D59]"
                         : "border-transparent"
                     }`}
                     aria-label={`Collar style ${i + 1}`}

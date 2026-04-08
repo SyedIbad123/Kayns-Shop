@@ -18,9 +18,9 @@ export default function Button({
       className={cn(
         "inline-flex cursor-pointer items-center justify-center rounded-full font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
         {
-          "bg-brand-red text-white hover:bg-red-700 focus:ring-red-500":
+          "bg-[#143D59] text-white hover:bg-[#143D59]/90 focus:ring-[#143D59]/35":
             variant === "primary",
-          "bg-white text-dark-blue hover:bg-gray-100 focus:ring-gray-300":
+          "bg-white text-[#143D59] hover:bg-[#F3F6FC] focus:ring-[#143D59]/25":
             variant === "secondary",
           "border-2 border-white text-white hover:bg-white/10 focus:ring-white":
             variant === "outline",

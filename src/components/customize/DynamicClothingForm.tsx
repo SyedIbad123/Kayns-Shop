@@ -584,7 +584,7 @@ export default function DynamicClothingForm({
               />
               {field.id === "needTrousers" &&
               watchedValues.needTrousers === "yes" ? (
-                <p className="rounded-lg border border-[#F7A0A8] bg-[#FFF0F1] px-3 py-2 text-sm text-[#7F1D1D]">
+                <p className="rounded-lg border border-[#143D59]/20 bg-[#F3F6FC] px-3 py-2 text-sm text-[#143D59]">
                   Our team will contact you to customize your matching trousers
                 </p>
               ) : null}
@@ -719,7 +719,7 @@ export default function DynamicClothingForm({
       className="relative rounded-2xl border border-[#E5E7EB] bg-white px-5 py-3 shadow-sm sm:px-8 sm:py-5"
     >
       {showErrorBanner ? (
-        <div className="mb-6 rounded-[10px] bg-[#DC2626] px-4 py-3 text-sm font-medium text-white">
+        <div className="mb-6 rounded-[10px] bg-[#143D59] px-4 py-3 text-sm font-medium text-white">
           {submitError ?? ERROR_BANNER_TEXT}
         </div>
       ) : null}
@@ -729,15 +729,15 @@ export default function DynamicClothingForm({
           key={field.id}
           data-field-section={field.id}
           className={cn(
-            "border-b border-(--section-divider,#F3F4F6) py-6",
+            "border-b border-[#F3F6FC] py-6",
             index === config.fields.length - 1 && "border-b-0",
           )}
         >
           <div className="mb-4 flex items-center gap-2">
-            <span className="inline-flex h-6 min-h-6 min-w-6 items-center justify-center rounded-full bg-[#E63946] px-1 text-xs font-semibold text-white">
+            <span className="inline-flex h-6 min-h-6 min-w-6 items-center justify-center rounded-full bg-[#143D59] px-1 text-xs font-semibold text-white">
               {index + 1}
             </span>
-            <h3 className="text-base font-semibold text-(--label-text,#111827)">
+            <h3 className="text-base font-semibold text-[#111827]">
               {field.label}
             </h3>
           </div>
@@ -751,7 +751,7 @@ export default function DynamicClothingForm({
           type="submit"
           data-intent="request-quote"
           disabled={isSubmitting}
-          className="inline-flex h-13 min-h-11 items-center gap-2 rounded-[10px] border border-[#D1D5DB] bg-white px-6 text-sm font-semibold text-label-text transition hover:bg-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex h-13 min-h-11 items-center gap-2 rounded-[10px] border border-[#D1D5DB] bg-white px-6 text-sm font-semibold text-[#111827] transition hover:bg-[#F3F6FC] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting && activeIntent === "request-quote" ? (
             <Spinner />
@@ -765,7 +765,7 @@ export default function DynamicClothingForm({
           type="submit"
           data-intent="add-to-cart"
           disabled={isSubmitting}
-          className="inline-flex h-13 min-h-11 items-center gap-2 rounded-[10px] bg-[#E63946] px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-[#D62839] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
+          className="inline-flex h-13 min-h-11 items-center gap-2 rounded-[10px] bg-[#143D59] px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-[#143D59]/90 hover:shadow-md disabled:cursor-not-allowed disabled:opacity-70"
         >
           {isSubmitting && activeIntent === "add-to-cart" ? <Spinner /> : null}
           {isSubmitting && activeIntent === "add-to-cart"
@@ -782,7 +782,7 @@ export default function DynamicClothingForm({
             type="submit"
             data-intent="request-quote"
             disabled={isSubmitting}
-            className="inline-flex h-13 min-h-11 w-1/2 items-center justify-center gap-2 rounded-[10px] border border-[#D1D5DB] bg-white px-3 text-sm font-semibold text-label-text disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-13 min-h-11 w-1/2 items-center justify-center gap-2 rounded-[10px] border border-[#D1D5DB] bg-white px-3 text-sm font-semibold text-[#111827] disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isSubmitting && activeIntent === "request-quote" ? (
               <Spinner />
@@ -796,7 +796,7 @@ export default function DynamicClothingForm({
             type="submit"
             data-intent="add-to-cart"
             disabled={isSubmitting}
-            className="inline-flex h-13 min-h-11 w-1/2 items-center justify-center gap-2 rounded-[10px] bg-[#E63946] px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
+            className="inline-flex h-13 min-h-11 w-1/2 items-center justify-center gap-2 rounded-[10px] bg-[#143D59] px-3 text-sm font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isSubmitting && activeIntent === "add-to-cart" ? (
               <Spinner />

@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function GetAQuote() {
   return (
     <section
-      className="bg-dark-blue px-6 py-10 text-white"
+      className="bg-[#143D59] px-6 py-10 text-white"
       aria-label="Get a Quote"
     >
       <div className="mx-auto flex max-w-2xl flex-col gap-6 sm:flex-row sm:items-center">

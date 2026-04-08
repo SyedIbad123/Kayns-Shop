@@ -6,7 +6,7 @@ import type { CapColors } from "@/types/cap.types";
 export const DEFAULT_SUN_CRICKET_HAT_COLORS: CapColors = {
   id_1: "#1D4ED8",
   id_2: "#374151",
-  id_3: "#DC2626",
+  id_3: "#143D59",
 };
 
 // ─── component ───────────────────────────────

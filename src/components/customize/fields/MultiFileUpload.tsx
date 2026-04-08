@@ -174,7 +174,7 @@ export default function MultiFileUpload({
   return (
     <div className="space-y-3">
       {!hideLabel ? (
-        <label className="text-base font-semibold text-label-text">
+        <label className="text-base font-semibold text-[#111827]">
           {label}
         </label>
       ) : null}
@@ -205,17 +205,17 @@ export default function MultiFileUpload({
         onDragLeave={() => setIsDragging(false)}
         onDrop={onDrop}
         className={cn(
-          "rounded-xl border-2 border-dashed border-[#D1D5DB] bg-white px-4 py-8 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E63946]/30",
-          isDragging && "border-[#E63946] bg-[#FFF0F1]",
+          "rounded-xl border-2 border-dashed border-[#D1D5DB] bg-white px-4 py-8 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#143D59]/30",
+          isDragging && "border-[#143D59] bg-[#F3F6FC]",
           isMaxReached && "cursor-not-allowed opacity-70",
         )}
         aria-label={`${label} upload area`}
       >
         <div className="mx-auto flex max-w-sm flex-col items-center gap-2">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#FFF0F1] text-[#E63946]">
+          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#F3F6FC] text-[#143D59]">
             <Upload className="h-5 w-5" />
           </span>
-          <p className="text-sm font-medium text-label-text">
+          <p className="text-sm font-medium text-[#111827]">
             Drag files here or click to browse
           </p>
           <p className="text-xs text-[#6B7280]">
@@ -233,7 +233,7 @@ export default function MultiFileUpload({
         {acceptedList.map((extension) => (
           <span
             key={extension}
-            className="rounded-full border border-[#E5E7EB] bg-[#F9FAFB] px-2 py-1 text-xs text-[#6B7280]"
+            className="rounded-full border border-[#E5E7EB] bg-[#F3F6FC] px-2 py-1 text-xs text-[#6B7280]"
           >
             {extension}
           </span>
@@ -247,7 +247,7 @@ export default function MultiFileUpload({
               key={`${preview.file.name}-${index}`}
               className="flex min-h-16 items-center gap-3 rounded-lg border border-[#E5E7EB] bg-white px-3 py-2"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#F3F4F6]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#F3F6FC]">
                 {preview.previewUrl ? (
                   <img
                     src={preview.previewUrl}
@@ -262,7 +262,7 @@ export default function MultiFileUpload({
               </div>
 
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-label-text">
+                <p className="truncate text-sm font-medium text-[#111827]">
                   {preview.file.name}
                 </p>
                 <p className="text-xs text-[#6B7280]">
@@ -272,7 +272,7 @@ export default function MultiFileUpload({
 
               <button
                 type="button"
-                className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#6B7280] transition hover:bg-[#F3F4F6] hover:text-label-text"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full text-[#6B7280] transition hover:bg-[#F3F6FC] hover:text-[#111827]"
                 onClick={() => removeFile(index)}
                 aria-label={`Remove ${preview.file.name}`}
               >
@@ -285,17 +285,17 @@ export default function MultiFileUpload({
 
       {showPositionComment ? (
         <div className="space-y-2">
-          <label className="text-sm font-medium text-label-text">
+          <label className="text-sm font-medium text-[#111827]">
             Logo Position Comment
           </label>
           <textarea
             value={positionComment ?? ""}
             onChange={(event) => onPositionCommentChange?.(event.target.value)}
             placeholder="Please describe logo position in comment"
-            className="min-h-27 w-full rounded-xl border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-label-text outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+            className="min-h-27 w-full rounded-xl border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
           />
           {positionCommentError ? (
-            <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+            <p className="text-[13px] text-[#143D59]" aria-live="polite">
               {positionCommentError}
             </p>
           ) : null}
@@ -303,7 +303,7 @@ export default function MultiFileUpload({
       ) : null}
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}
@@ -311,7 +311,7 @@ export default function MultiFileUpload({
       {clientErrors.length > 0 ? (
         <div aria-live="polite" className="space-y-1">
           {clientErrors.map((clientError) => (
-            <p key={clientError} className="text-[13px] text-[#DC2626]">
+            <p key={clientError} className="text-[13px] text-[#143D59]">
               {clientError}
             </p>
           ))}

@@ -20,7 +20,7 @@ export default function DesignsIntro() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-3xl font-bold tracking-wide text-dark-blue md:text-4xl"
+          className="text-3xl font-bold tracking-wide text-[#143D59] md:text-4xl"
         >
           Where Sport Meets Street And Quality Never Compromises
         </motion.h2>

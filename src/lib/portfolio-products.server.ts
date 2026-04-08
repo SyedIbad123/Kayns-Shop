@@ -2,9 +2,11 @@ import "server-only";
 
 import path from "node:path";
 import { cache } from "react";
+import { portfolioImageByteSize } from "@/data/portfolioImageBytes";
 import type { Product, ProductSize } from "@/lib/products";
 
 const IMAGE_EXTENSIONS = new Set([".jpg", ".jpeg", ".png", ".webp"]);
+const MAX_PORTFOLIO_IMAGE_SIZE_BYTES = 10 * 1024 * 1024;
 
 const CATEGORY_CONFIG = [
   { folder: "basketball", label: "Basketball" },
@@ -314,9 +316,25 @@ function makeDescription(categoryLabel: string) {
   return `Custom ${categoryLabel.toLowerCase()} sample from the Kayns Shop portfolio.`;
 }
 
+function getPortfolioImageSize(folder: CategoryFolder, fileName: string) {
+  return portfolioImageByteSize[`${folder}/${fileName}`];
+}
+
+function isAllowedPortfolioImageSize(folder: CategoryFolder, fileName: string) {
+  const fileSize = getPortfolioImageSize(folder, fileName);
+
+  // Keep unknown files to avoid accidental content drops if manifest is stale.
+  if (typeof fileSize !== "number") {
+    return true;
+  }
+
+  return fileSize <= MAX_PORTFOLIO_IMAGE_SIZE_BYTES;
+}
+
 function getCategoryImageFiles(folder: CategoryFolder) {
-  return (portfolioImageManifest[folder] ?? []).filter((fileName) =>
-    isImageFile(fileName),
+  return (portfolioImageManifest[folder] ?? []).filter(
+    (fileName) =>
+      isImageFile(fileName) && isAllowedPortfolioImageSize(folder, fileName),
   );
 }
 

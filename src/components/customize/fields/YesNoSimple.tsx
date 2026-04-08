@@ -27,9 +27,7 @@ export default function YesNoSimple({
   return (
     <div className="space-y-3">
       {!hideLabel ? (
-        <p className="text-base font-semibold text-(--label-text,#111827)">
-          {label}
-        </p>
+        <p className="text-base font-semibold text-[#111827]">{label}</p>
       ) : null}
 
       <div
@@ -48,10 +46,10 @@ export default function YesNoSimple({
               aria-checked={isActive}
               onClick={() => onChange(option)}
               className={cn(
-                "h-10 min-h-11 w-20 min-w-20 rounded-full border text-sm font-semibold uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E63946]/30",
+                "h-10 min-h-11 w-20 min-w-20 rounded-full border text-sm font-semibold uppercase tracking-wide transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#143D59]/30",
                 isActive
-                  ? "border-[#E63946] bg-[#E63946] text-white"
-                  : "border-[#D1D5DB] bg-white text-(--muted-text,#6B7280)",
+                  ? "border-[#143D59] bg-[#143D59] text-white"
+                  : "border-[#D1D5DB] bg-white text-[#6B7280]",
               )}
             >
               {option}
@@ -61,7 +59,7 @@ export default function YesNoSimple({
       </div>
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}

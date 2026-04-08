@@ -148,12 +148,12 @@ export default function SingleProductDetail({
         </div>
 
         {/* Center — large product card */}
-        <div className="relative w-52 shrink-0 overflow-hidden rounded-3xl bg-gray-300 shadow-xl sm:w-60">
+        <div className="relative w-52 shrink-0 overflow-hidden rounded-3xl  sm:w-90 sm:h-100">
           <Image
             src={centerImage}
             alt={item.title}
             fill
-            className="object-contain"
+            className="object-cover"
           />
         </div>
 

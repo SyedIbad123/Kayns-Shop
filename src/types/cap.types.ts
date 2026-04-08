@@ -7,7 +7,7 @@ import type { ComponentType } from "react";
 /**
  * Generic color map.
  * Solid cap  → { solid: "#201E1E" }
- * Panel cap  → { crown: "#1D4ED8", brim: "#374151", panel: "#DC2626", ... }
+ * Panel cap  → { crown: "#1D4ED8", brim: "#374151", panel: "#143D59", ... }
  */
 export type CapColors = Record<string, string>;
 

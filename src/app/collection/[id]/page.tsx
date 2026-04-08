@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { getCollectionById, allCollections } from "@/data/collection";
 import CollectionHero from "@/components/sections/CollectionHero";
 import CollectionProductList from "@/components/sections/CollectionProductList";
-import GetAQuote from "@/components/sections/GetAQuote";
 import ProductShowcase from "@/components/sections/ProductShowcase";
 import ProductGridRow from "@/components/sections/ProductGridRow";
 import BookOrder from "@/components/sections/BookOrder";
@@ -42,10 +41,9 @@ export default async function CollectionPage({ params }: Props) {
   return (
     <main className="min-h-screen">
       <CollectionHero item={collection} />
-      <CollectionProductList item={collection} />
-      <GetAQuote />
+      {/* <CollectionProductList item={collection} /> */}
       <ProductShowcase item={collection} />
-      <ProductGridRow />
+      <ProductGridRow selectedCap={collection.title} />
       <BookOrder item={collection} />
     </main>
   );

@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import type { CollectionItem } from "@/data/collection";
+import { getCapImageDimensions } from "@/lib/utils";
 
 interface ExpandCardProps {
   item: CollectionItem;
@@ -18,6 +19,7 @@ export default function ExpandCard({
   onHover,
   height,
 }: ExpandCardProps) {
+  const capDimensions = getCapImageDimensions(item.image);
   const isActive = activeId === item.id;
   const someActive = activeId !== null;
   const flexGrow = isActive
@@ -55,12 +57,24 @@ export default function ExpandCard({
         </div>
 
         <div className="absolute inset-2 overflow-hidden ">
-          <Image
-            src={item.image}
-            alt={item.title}
-            fill
-            className="object-contain"
-          />
+          {capDimensions ? (
+            <div className="flex h-full w-full items-center justify-center p-3">
+              <Image
+                src={item.image}
+                alt={item.title}
+                width={capDimensions.width}
+                height={capDimensions.height}
+                className="h-auto w-auto max-h-full max-w-full object-contain"
+              />
+            </div>
+          ) : (
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              className="object-contain"
+            />
+          )}
         </div>
       </Link>
 

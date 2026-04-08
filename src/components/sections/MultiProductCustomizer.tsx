@@ -694,7 +694,7 @@ export default function MultiProductCustomizer() {
 
   return (
     <section
-      className="relative min-h-screen bg-gray-100 px-4 py-12"
+      className="relative min-h-screen bg-[#F3F6FC] px-4 py-12"
       aria-label="Customize product"
     >
       <div className="mx-auto flex max-w-6xl flex-col gap-6">
@@ -776,7 +776,7 @@ export default function MultiProductCustomizer() {
         </div>
 
         <div className="rounded-2xl border border-[#E5E7EB] bg-white px-4 py-4 sm:px-5">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#E63946]">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#143D59]">
             Step 1 of 2
           </p>
           <p className="mt-1 text-sm text-[#4B5563]">
@@ -787,7 +787,7 @@ export default function MultiProductCustomizer() {
             type="button"
             onClick={handleRequestQuote}
             disabled={isRoutingToQuote}
-            className="mt-3 inline-flex h-11 min-h-11 w-full items-center justify-center rounded-xl bg-[#E63946] px-5 text-sm font-semibold text-white transition hover:bg-[#D62839] disabled:cursor-not-allowed disabled:opacity-70"
+            className="mt-3 inline-flex h-11 min-h-11 w-full items-center justify-center rounded-xl bg-[#143D59] px-5 text-sm font-semibold text-white transition hover:bg-[#143D59]/90 disabled:cursor-not-allowed disabled:opacity-70"
           >
             {isRoutingToQuote ? "Continuing..." : "Request a Quote"}
           </button>

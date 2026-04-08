@@ -7,6 +7,7 @@ import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { collectionSections } from "@/data/collection";
 import ExpandCard from "@/components/sections/collection/ExpandCard";
+import { getCapImageDimensions } from "@/lib/utils";
 
 type SectionKey = (typeof collectionSections)[number]["key"];
 
@@ -44,7 +45,7 @@ export default function Collection() {
   return (
     <section
       id="services"
-      className="bg-brand-red py-10"
+      className="bg-[#143D59] py-10"
       aria-label="KAYNS Collection"
     >
       <Container>
@@ -53,43 +54,59 @@ export default function Collection() {
         <div className="space-y-8 md:space-y-10">
           {collectionSections.map((section) => (
             <div key={section.key}>
-              <h3 className="mb-4 text-center text-xl font-bold uppercase tracking-[0.2em] text-white md:text-left md:text-2xl">
+              <h3 className="mb-4 text-center text-2xl font-bold uppercase tracking-[0.2em] text-white sm:text-3xl md:text-left lg:text-4xl">
                 {section.title}
               </h3>
 
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:hidden">
-                {section.items.map((item) => (
-                  <div key={item.id} className="flex min-w-0 flex-col">
-                    <Link
-                      href={`/collection/${item.id}`}
-                      className="relative h-48 overflow-hidden rounded-2xl"
-                    >
-                      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                        <Image
-                          src="/Product_Bg.svg"
-                          alt=""
-                          width={540}
-                          height={540}
-                          aria-hidden
-                          className="h-135 w-135 max-w-none object-contain"
-                        />
-                      </div>
+                {section.items.map((item) => {
+                  const capDimensions = getCapImageDimensions(item.image);
 
-                      <div className="absolute inset-2 overflow-hidden rounded-xl">
-                        <Image
-                          src={item.image}
-                          alt={item.title}
-                          fill
-                          className="object-contain p-2"
-                        />
-                      </div>
-                    </Link>
+                  return (
+                    <div key={item.id} className="flex min-w-0 flex-col">
+                      <Link
+                        href={`/collection/${item.id}`}
+                        className="relative h-48 overflow-hidden rounded-2xl"
+                      >
+                        <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                          <Image
+                            src="/Product_Bg.svg"
+                            alt=""
+                            width={540}
+                            height={540}
+                            aria-hidden
+                            className="h-135 w-135 max-w-none object-contain"
+                          />
+                        </div>
 
-                    <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-white">
-                      {item.title}
-                    </p>
-                  </div>
-                ))}
+                        <div className="absolute inset-2 overflow-hidden rounded-xl">
+                          {capDimensions ? (
+                            <div className="flex h-full w-full items-center justify-center p-3">
+                              <Image
+                                src={item.image}
+                                alt={item.title}
+                                width={capDimensions.width}
+                                height={capDimensions.height}
+                                className="h-auto w-auto max-h-full max-w-full object-contain"
+                              />
+                            </div>
+                          ) : (
+                            <Image
+                              src={item.image}
+                              alt={item.title}
+                              fill
+                              className="object-contain p-2"
+                            />
+                          )}
+                        </div>
+                      </Link>
+
+                      <p className="mt-2 text-center text-xs font-semibold uppercase tracking-wide text-white">
+                        {item.title}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="hidden md:block">

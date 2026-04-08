@@ -3,8 +3,11 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { hotProducts } from "@/data/products";
+import { getCapImageDimensions } from "@/lib/utils";
 
 export default function HotProducts() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -21,9 +24,9 @@ export default function HotProducts() {
   }, [emblaApi, isPaused]);
 
   return (
-    <section className="bg-brand-red py-12" aria-label="Hot products">
+    <section className="bg-[#143D59] pb-20 pt-12" aria-label="Hot products">
       <Container className="mx-0 max-w-none px-0">
-        <div className="mb-8 text-center text-3xl font-bold text-white sm:text-4xl lg:mb-12 lg:text-5xl">
+        <div className="mb-8 text-center text-3xl font-bold text-white sm:text-4xl lg:mb-12 lg:text-7xl">
           <h1>Hot Products</h1>
         </div>
 
@@ -51,29 +54,69 @@ export default function HotProducts() {
             onMouseLeave={() => setIsPaused(false)}
           >
             <div className="flex gap-4 px-4">
-              {hotProducts.map((product) => (
-                <div
-                  key={product.id}
-                  className="relative min-w-0 flex-[0_0_70%] overflow-hidden rounded-2xl sm:flex-[0_0_45%] lg:flex-[0_0_30%]"
-                  style={{ height: "370px" }}
-                  onMouseEnter={() => setIsPaused(true)}
-                  onMouseLeave={() => setIsPaused(false)}
-                >
-                  <Image
-                    src={product.image}
-                    alt={product.title}
-                    fill
-                    className="object-cover"
-                  />
+              {hotProducts.map((product) => {
+                const capDimensions = getCapImageDimensions(product.image);
 
-                  <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 via-black/60 to-transparent px-4 py-3">
-                    <h3 className="truncate text-sm text-center font-semibold uppercase tracking-[0.12em] text-white sm:text-base">
-                      {product.title}
-                    </h3>
-                  </div>
-                </div>
-              ))}
+                return (
+                  <Link
+                    key={product.id}
+                    href={`/collection/${product.collectionId}`}
+                    className="group relative min-w-0 flex-[0_0_70%] overflow-hidden rounded-3xl border border-white/45 bg-white/12 shadow-[0_16px_30px_-18px_rgba(0,0,0,0.9)] sm:flex-[0_0_45%] lg:flex-[0_0_30%]"
+                    style={{ height: "370px" }}
+                    onMouseEnter={() => setIsPaused(true)}
+                    onMouseLeave={() => setIsPaused(false)}
+                  >
+                    {capDimensions ? (
+                      <div className="flex h-full w-full items-center justify-center p-4">
+                        <Image
+                          src={product.image}
+                          alt={product.title}
+                          width={capDimensions.width}
+                          height={capDimensions.height}
+                          className="h-auto w-auto max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                    ) : (
+                      <Image
+                        src={product.image}
+                        alt={product.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    )}
+
+                    <div className="pointer-events-none absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/30" />
+
+                    <div className="absolute inset-x-0 bottom-0  px-4 py-4">
+                      <h3 className="truncate text-sm text-center font-semibold uppercase tracking-[0.12em] text-white sm:text-base">
+                        {product.title}
+                      </h3>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
+          </div>
+        </div>
+
+        <div className="mt-5 flex justify-end px-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => emblaApi?.scrollPrev()}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
+              aria-label="Previous hot product"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              onClick={() => emblaApi?.scrollNext()}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
+              aria-label="Next hot product"
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
       </Container>

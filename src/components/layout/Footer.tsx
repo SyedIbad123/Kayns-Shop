@@ -18,7 +18,7 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0a1e36] text-gray-300">
+    <footer className="bg-[#F3F6FC] text-[#143D59]">
       <Container className="grid gap-10 py-16 md:grid-cols-3">
         {/* Brand */}
         <div>
@@ -28,7 +28,7 @@ export default function Footer() {
               alt="Kayns Shop"
               width={140}
               height={56}
-              className="h-12 w-auto rounded-sm bg-white p-1 object-contain"
+              className="h-12 w-auto rounded-sm p-1 object-contain"
             />
           </div>
           <p className="text-sm leading-relaxed">
@@ -39,13 +39,15 @@ export default function Footer() {
 
         {/* Quick Links */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-white">Quick Links</h4>
+          <h4 className="mb-4 text-lg font-semibold text-[#143D59]">
+            Quick Links
+          </h4>
           <ul className="space-y-2">
             {quickLinks.map((link) => (
               <li key={link.label}>
                 <a
                   href={link.href}
-                  className="text-sm transition-colors hover:text-white"
+                  className="text-sm transition-colors hover:text-[#0f2e45]"
                 >
                   {link.label}
                 </a>
@@ -56,7 +58,7 @@ export default function Footer() {
 
         {/* Contact & Social */}
         <div>
-          <h4 className="mb-4 text-lg font-semibold text-white">
+          <h4 className="mb-4 text-lg font-semibold text-[#143D59]">
             Contact Info
           </h4>
           <address className="space-y-2 text-sm not-italic">
@@ -70,7 +72,7 @@ export default function Footer() {
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-[#D7262E]"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#143D59]/10 transition-colors hover:bg-[#143D59]/20"
               >
                 <social.icon size={16} />
               </a>
@@ -80,7 +82,7 @@ export default function Footer() {
       </Container>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/10 py-4 text-center text-xs text-gray-500">
+      <div className="border-t border-[#143D59]/20 py-4 text-center text-xs text-[#143D59]/70">
         &copy; {new Date().getFullYear()} Kayns Shop. All rights reserved.
       </div>
     </footer>

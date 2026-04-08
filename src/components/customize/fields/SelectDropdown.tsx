@@ -37,13 +37,13 @@ export default function SelectDropdown({
   return (
     <div className="space-y-3">
       {!hideLabel ? (
-        <p className="text-base font-semibold text-label-text">{label}</p>
+        <p className="text-base font-semibold text-[#111827]">{label}</p>
       ) : null}
 
       <Select value={value ?? undefined} onValueChange={onChange}>
         <SelectTrigger
           aria-label={label}
-          className={error ? "border-[#DC2626] focus:ring-[#DC2626]/25" : ""}
+          className={error ? "border-[#143D59] focus:ring-[#143D59]/25" : ""}
         >
           <SelectValue placeholder={placeholder ?? "Select an option"} />
         </SelectTrigger>
@@ -57,7 +57,7 @@ export default function SelectDropdown({
       </Select>
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}

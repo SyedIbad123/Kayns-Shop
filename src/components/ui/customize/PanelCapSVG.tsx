@@ -6,7 +6,7 @@ import type { CapColors } from "@/types/cap.types";
 export const DEFAULT_PANEL_COLORS: CapColors = {
   crown: "#1D4ED8", // top / main crown panels
   brim: "#374151", // front peak / brim
-  side: "#DC2626", // left & right side panels
+  side: "#143D59", // left & right side panels
   back: "#16A34A", // rear panel
   button: "#D97706", // top button
 };

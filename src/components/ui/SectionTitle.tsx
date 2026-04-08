@@ -6,13 +6,17 @@ interface SectionTitleProps {
   light?: boolean;
 }
 
-export default function SectionTitle({ title, className, light }: SectionTitleProps) {
+export default function SectionTitle({
+  title,
+  className,
+  light,
+}: SectionTitleProps) {
   return (
     <h2
       className={cn(
-        "text-2xl font-bold tracking-wide md:text-3xl lg:text-4xl",
-        light ? "text-white" : "text-gray-900",
-        className
+        "text-3xl font-bold tracking-wide sm:text-4xl md:text-5xl lg:text-7xl",
+        light ? "text-[#143d59]" : "text-gray-900",
+        className,
       )}
     >
       {title}

@@ -1,29 +1,31 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-dark-blue: #0f2b4c;
-  --color-brand-red: #d7262e;
-  --color-light-gray: #f3f4f6;
-  --color-primary: #e63946;
+  --color-dark-blue: #143d59;
+  --color-brand-red: #143d59;
+  --color-light-gray: #f3f6fc;
+  --color-primary: #143d59;
   --color-primary-foreground: #ffffff;
-  --color-selected-bg: #fff0f1;
+  --color-selected-bg: #f3f6fc;
   --color-card-border: #e5e7eb;
-  --color-selected-border: #e63946;
+  --color-selected-border: #143d59;
   --color-label-text: #111827;
   --color-muted-text: #6b7280;
-  --color-section-divider: #f3f4f6;
+  --color-section-divider: #f3f6fc;
   --font-sans: var(--font-inter);
 }
 
 :root {
-  --primary: #e63946;
+  --primary: #143d59;
   --primary-foreground: #ffffff;
-  --selected-bg: #fff0f1;
+  --selected-bg: #f3f6fc;
   --card-border: #e5e7eb;
-  --selected-border: #e63946;
+  --selected-border: #143d59;
   --label-text: #111827;
   --muted-text: #6b7280;
-  --section-divider: #f3f4f6;
+  --section-divider: #f3f6fc;
+  --button-light-bg: #f3f6fc;
+  --button-dark-bg: #143d59;
 }
 
 /* Reset */
@@ -42,6 +44,130 @@ body {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+button:not(.no-global-button),
+.site-btn {
+  --btn-bg: var(--button-light-bg);
+  --btn-fg: var(--button-dark-bg);
+  --btn-border: var(--button-dark-bg);
+  --btn-fill: var(--button-dark-bg);
+  --btn-hover-fg: var(--button-light-bg);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--btn-border);
+  background-color: var(--btn-bg);
+  color: var(--btn-fg);
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease,
+    box-shadow 220ms ease;
+}
+
+button:not(.no-global-button)::before,
+.site-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--btn-fill);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 280ms ease;
+  pointer-events: none;
+}
+
+button:not(.no-global-button):is(:hover, :focus-visible),
+.site-btn:is(:hover, :focus-visible) {
+  color: var(--btn-hover-fg);
+  transform: translateY(-1px) scale(1.02);
+}
+
+button:not(.no-global-button):is(:hover, :focus-visible)::before,
+.site-btn:is(:hover, :focus-visible)::before {
+  transform: scaleX(1);
+}
+
+button:not(.no-global-button):disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+  transform: none;
+}
+
+button:not(.no-global-button):disabled::before {
+  transform: scaleX(0);
+}
+
+[class*="bg-[#143D59"] button:not(.no-global-button),
+[class*="bg-[#143d59"] button:not(.no-global-button),
+[class*="bg-dark-blue"] button:not(.no-global-button),
+[class*="bg-primary"] button:not(.no-global-button),
+[class*="bg-[#143D59"] .site-btn,
+[class*="bg-[#143d59"] .site-btn,
+[class*="bg-dark-blue"] .site-btn,
+[class*="bg-primary"] .site-btn {
+  --btn-bg: var(--button-dark-bg);
+  --btn-fg: var(--button-light-bg);
+  --btn-border: var(--button-light-bg);
+  --btn-fill: var(--button-light-bg);
+  --btn-hover-fg: var(--button-dark-bg);
+}
+
+.site-btn.site-btn-active {
+  --btn-bg: var(--button-dark-bg);
+  --btn-fg: var(--button-light-bg);
+  --btn-border: var(--button-dark-bg);
+  --btn-fill: var(--button-light-bg);
+  --btn-hover-fg: var(--button-dark-bg);
+}
+
+.nav-link {
+  --nav-bg: transparent;
+  --nav-text: #143d59;
+  --nav-border: transparent;
+  --nav-fill: #143d59;
+  --nav-hover-text: #f3f6fc;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--nav-border);
+  background-color: var(--nav-bg);
+  color: var(--nav-text);
+  transition:
+    color 220ms ease,
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+.nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: var(--nav-fill);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 260ms ease;
+  pointer-events: none;
+}
+
+.nav-link:is(:hover, :focus-visible) {
+  color: var(--nav-hover-text);
+  transform: scale(1.03);
+}
+
+.nav-link:is(:hover, :focus-visible)::before {
+  transform: scaleX(1);
+}
+
+.nav-link-active {
+  --nav-bg: #143d59;
+  --nav-text: #f3f6fc;
+  --nav-border: #143d59;
+  --nav-fill: #f3f6fc;
+  --nav-hover-text: #143d59;
 }
 
 @keyframes marquee-left {

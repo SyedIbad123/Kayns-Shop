@@ -215,7 +215,7 @@ const tableStyle: CSSProperties = {
 
 const headerCellStyle: CSSProperties = {
   border: "1px solid #BFC0C2",
-  backgroundColor: "#F3F4F6",
+  backgroundColor: "#F3F6FC",
   padding: "6px 8px",
   textAlign: "left",
   color: "#111827",
@@ -669,7 +669,7 @@ export default function QuoteEmailTemplate({
                       marginTop: "10px",
                       border: "1px solid #D1D5DB",
                       padding: "8px",
-                      backgroundColor: "#F9FAFB",
+                      backgroundColor: "#F3F6FC",
                     }}
                     dangerouslySetInnerHTML={{ __html: safeSvgMarkup }}
                   />
@@ -744,7 +744,7 @@ export default function QuoteEmailTemplate({
                         objectFit: "contain",
                         border: "1px solid #D1D5DB",
                         padding: "5px",
-                        backgroundColor: "#F9FAFB",
+                        backgroundColor: "#F3F6FC",
                       }}
                     />
                   </div>
@@ -778,7 +778,7 @@ export default function QuoteEmailTemplate({
                       key={preview.id}
                       style={{
                         border: "1px solid #D1D5DB",
-                        backgroundColor: "#F9FAFB",
+                        backgroundColor: "#F3F6FC",
                         padding: "6px",
                         width: "180px",
                       }}
@@ -823,7 +823,7 @@ export default function QuoteEmailTemplate({
             ) : null}
           </div>
 
-          <div style={{ ...sectionStyle, backgroundColor: "#F9FAFB" }}>
+          <div style={{ ...sectionStyle, backgroundColor: "#F3F6FC" }}>
             <p style={{ margin: "0", fontSize: "11px", color: "#6B7280" }}>
               {isUserTemplate
                 ? "This is an automatic confirmation that your quote inquiry is in our queue."

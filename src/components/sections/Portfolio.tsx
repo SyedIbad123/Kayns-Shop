@@ -6,6 +6,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
 import { portfolioItems } from "@/data/portfolio";
+import { getCapImageDimensions } from "@/lib/utils";
 
 const cardVariant = {
   hidden: { opacity: 0, y: 30 },
@@ -17,18 +18,42 @@ const cardVariant = {
 };
 
 export default function Portfolio() {
+  const renderPortfolioImage = (index: number) => {
+    const portfolioItem = portfolioItems[index];
+    const capDimensions = getCapImageDimensions(portfolioItem.image);
+
+    if (capDimensions) {
+      return (
+        <div className="flex h-full w-full items-center justify-center p-3">
+          <Image
+            src={portfolioItem.image}
+            alt={portfolioItem.title}
+            width={capDimensions.width}
+            height={capDimensions.height}
+            className="h-auto w-auto max-h-full max-w-full object-contain"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Image
+        src={portfolioItem.image}
+        alt={portfolioItem.title}
+        fill
+        className="object-cover"
+      />
+    );
+  };
+
   return (
     <section
       id="portfolio"
-      className="bg-dark-blue py-16"
+      className="bg-[#F3F6FC] py-16"
       aria-label="Portfolio"
     >
       <Container>
-        <SectionTitle
-          title="KAYNS PORTFOLIO"
-          light
-          className="mb-10 text-center"
-        />
+        <SectionTitle title="KAYNS PORTFOLIO" className="mb-10 text-center" />
 
         {/* Portfolio grid — 1 col mobile, 2 col tablet, 3 col desktop with explicit placement */}
         <div className="grid grid-cols-1 gap-4 auto-rows-[200px] sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-auto lg:grid-rows-[200px_220px_200px]">
@@ -39,7 +64,7 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl bg-[#0B3A75] p-6 lg:col-start-1 lg:row-start-1"
+            className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-1 lg:row-start-1"
           >
             <div className="flex h-full flex-col justify-end text-white">
               <p className="text-xs uppercase tracking-[0.18em] opacity-85">
@@ -60,12 +85,7 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl lg:col-start-2 lg:row-start-1"
           >
-            <Image
-              src={portfolioItems[1].image}
-              alt={portfolioItems[1].title}
-              fill
-              className="object-cover"
-            />
+            {renderPortfolioImage(1)}
           </motion.div>
 
           {/* Item 3 — col 3, rows 1–2 (tall right) */}
@@ -77,12 +97,7 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl sm:row-span-2 lg:col-start-3 lg:row-start-1 lg:row-span-2"
           >
-            <Image
-              src={portfolioItems[2].image}
-              alt={portfolioItems[2].title}
-              fill
-              className="object-cover"
-            />
+            {renderPortfolioImage(2)}
           </motion.div>
 
           {/* Item 4 — col 1, rows 2–3 (tall left) */}
@@ -94,12 +109,7 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl sm:row-span-2 lg:col-start-1 lg:row-start-2 lg:row-span-2"
           >
-            <Image
-              src={portfolioItems[3].image}
-              alt={portfolioItems[3].title}
-              fill
-              className="object-cover"
-            />
+            {renderPortfolioImage(3)}
           </motion.div>
 
           {/* Item 5 — col 2, row 2 */}
@@ -109,7 +119,7 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl bg-[#0E5A4B] p-6 lg:col-start-2 lg:row-start-2"
+            className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-2 lg:row-start-2"
           >
             <div className="flex h-full flex-col justify-end text-white">
               <p className="text-xs uppercase tracking-[0.18em] opacity-85">
@@ -130,12 +140,7 @@ export default function Portfolio() {
             variants={cardVariant}
             className="relative overflow-hidden rounded-2xl lg:col-start-2 lg:row-start-3"
           >
-            <Image
-              src={portfolioItems[5].image}
-              alt={portfolioItems[5].title}
-              fill
-              className="object-cover"
-            />
+            {renderPortfolioImage(5)}
           </motion.div>
 
           {/* Item 7 — col 3, row 3 */}
@@ -145,7 +150,7 @@ export default function Portfolio() {
             whileInView="visible"
             viewport={{ once: true }}
             variants={cardVariant}
-            className="relative overflow-hidden rounded-2xl bg-[#7C2D12] p-6 lg:col-start-3 lg:row-start-3"
+            className="relative overflow-hidden rounded-2xl bg-[#143D59] p-6 lg:col-start-3 lg:row-start-3"
           >
             <div className="flex h-full flex-col justify-end text-white">
               <p className="text-xs uppercase tracking-[0.18em] opacity-85">
@@ -162,7 +167,7 @@ export default function Portfolio() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/portfolio"
-            className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-lg font-semibold text-dark-blue transition-colors hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300"
+            className="site-btn inline-flex items-center justify-center rounded-full px-8 py-3 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-[#143D59]/30"
           >
             View All Products
           </Link>

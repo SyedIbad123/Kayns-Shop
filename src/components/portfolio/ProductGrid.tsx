@@ -27,7 +27,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
   }, [activeCategory, products]);
 
   return (
-    <section className="bg-zinc-950 px-4 pb-20 pt-8 sm:px-6 lg:px-8">
+    <section className="bg-white px-4 pb-24 pt-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <FilterBar
           categories={categories}
@@ -35,20 +35,20 @@ export default function ProductGrid({ products }: ProductGridProps) {
           onChange={setActiveCategory}
         />
 
-        <div className="grid grid-cols-1 gap-4 auto-rows-[200px] sm:grid-cols-2 lg:grid-cols-3 lg:auto-rows-auto lg:grid-rows-[200px_220px_200px]">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {visibleProducts.map((product, index) => (
               <motion.div
                 key={product.id}
-                className="min-h-50"
+                className="h-full"
                 layout
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 12 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{
-                  duration: 0.45,
-                  delay: 0.2 + index * 0.05,
+                  duration: 0.28,
+                  delay: 0.06 + index * 0.025,
                   ease: [0.22, 1, 0.36, 1],
                 }}
               >

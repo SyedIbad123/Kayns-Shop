@@ -90,13 +90,13 @@ const uniformSections: UniformSection[] = [
 
 export default function UniformPage() {
   return (
-    <main className="min-h-screen bg-slate-50 py-14 sm:py-16">
+    <main className="min-h-screen bg-[#F3F6FC] py-14 sm:py-16">
       <Container className="space-y-10">
         <header className="space-y-3">
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-red-600">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#143D59]">
             Uniform Collection
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-7xl">
             Choose Your Uniform Style
           </h1>
           <p className="max-w-2xl text-sm text-slate-600 sm:text-base">
@@ -118,7 +118,7 @@ export default function UniformPage() {
                   href={`/collection/${card.collectionId}`}
                   className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition-shadow hover:shadow-lg"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+                  <div className="relative aspect-4/3 overflow-hidden bg-[#F3F6FC]">
                     <Image
                       src={card.image}
                       alt={card.label}
@@ -130,14 +130,14 @@ export default function UniformPage() {
 
                   <div className="flex items-center justify-between px-4 py-4">
                     <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-red-600">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#143D59]">
                         {card.variant}
                       </p>
                       <h3 className="mt-1 text-base font-semibold text-slate-900">
                         {card.label}
                       </h3>
                     </div>
-                    <span className="text-sm font-medium text-slate-700 transition-colors group-hover:text-red-600">
+                    <span className="text-sm font-medium text-slate-700 transition-colors group-hover:text-[#143D59]">
                       View
                     </span>
                   </div>

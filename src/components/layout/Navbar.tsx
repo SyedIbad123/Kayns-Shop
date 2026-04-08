@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import Container from "@/components/ui/Container";
 import { cn } from "@/lib/utils";
@@ -13,11 +14,41 @@ const navLinks = [
   { label: "Portfolio", href: "/portfolio" },
   { label: "Uniform", href: "/uniform" },
   { label: "Contact Us", href: "/quote" },
-  { label: "About Us", href: "/#about" },
 ];
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeHash, setActiveHash] = useState("");
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const syncHash = () => {
+      setActiveHash(window.location.hash || "");
+    };
+
+    syncHash();
+    window.addEventListener("hashchange", syncHash);
+
+    return () => {
+      window.removeEventListener("hashchange", syncHash);
+    };
+  }, []);
+
+  const isNavLinkActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    if (href.startsWith("/#")) {
+      const targetHash = href.slice(1);
+      return pathname === "/" && activeHash === targetHash;
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const customizeActive =
+    pathname === "/customize/7" || pathname.startsWith("/customize/");
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -31,10 +62,10 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="Kayns Shop"
-            width={120}
-            height={108}
+            width={156}
+            height={140}
             priority
-            className="h-10 w-auto object-cover"
+            className="h-12 w-auto object-cover sm:h-14"
           />
         </Link>
 
@@ -47,11 +78,24 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-gray-700 transition-colors hover:text-[#D7262E]"
+              className={cn(
+                "nav-link inline-flex items-center justify-center rounded-full px-3 py-1.5 text-sm font-medium",
+                isNavLinkActive(link.href) ? "nav-link-active" : null,
+              )}
             >
               {link.label}
             </Link>
           ))}
+
+          <Link
+            href="/customize/7"
+            className={cn(
+              "site-btn inline-flex items-center justify-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em]",
+              customizeActive ? "site-btn-active" : null,
+            )}
+          >
+            Customize Now
+          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -80,12 +124,26 @@ export default function Navbar() {
             <Link
               key={link.label}
               href={link.href}
-              className="text-sm font-medium text-gray-700 transition-colors hover:text-[#D7262E]"
+              className={cn(
+                "nav-link inline-flex w-fit items-center justify-center rounded-full px-3 py-1.5 text-sm font-medium",
+                isNavLinkActive(link.href) ? "nav-link-active" : null,
+              )}
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
+
+          <Link
+            href="/customize/7"
+            className={cn(
+              "site-btn inline-flex w-fit items-center justify-center rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em]",
+              customizeActive ? "site-btn-active" : null,
+            )}
+            onClick={() => setMobileOpen(false)}
+          >
+            Customize Now
+          </Link>
         </nav>
       </div>
     </header>

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
@@ -21,6 +24,7 @@ const namedImageByTitle: Record<string, string> = {
 };
 
 export default function SingleProductHero({ item }: { item: CollectionItem }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const heroImage = namedImageByTitle[item.title] ?? item.image;
 
   return (
@@ -38,23 +42,36 @@ export default function SingleProductHero({ item }: { item: CollectionItem }) {
 
       {/* Title + description bar */}
       <div className="bg-white px-6 py-10 text-center">
-        <h1 className="text-3xl font-extrabold uppercase tracking-widest text-gray-900 sm:text-4xl">
+        <h1 className="text-3xl font-extrabold uppercase tracking-widest text-gray-900 sm:text-5xl lg:text-7xl">
           KAYNS
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-gray-600">
+        <p
+          className="mx-auto mt-4 max-w-3xl text-sm leading-relaxed text-gray-600 sm:text-base"
+          style={
+            isExpanded
+              ? undefined
+              : {
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }
+          }
+        >
           {item.description ??
             "Where sport meets street and quality never compromises."}
         </p>
         <div className="mt-6 flex items-center justify-center gap-3">
-          <Link
-            href={`/collection/${item.id}#details`}
-            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          <button
+            type="button"
+            onClick={() => setIsExpanded((prev) => !prev)}
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#143D59] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#143D59]/90 focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
           >
-            Read More &darr;
-          </Link>
+            {isExpanded ? "View Less \u2191" : "Read More \u2193"}
+          </button>
           <Link
             href={`/customize/single/${item.id}`}
-            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-brand-red px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+            className="site-btn inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
           >
             Customize
           </Link>

@@ -461,6 +461,11 @@ async function buildAttachments({
   };
 }
 
+function getResendSandboxRecipient(errorMessage: string) {
+  const match = errorMessage.match(/own email address \(([^)]+)\)/i);
+  return match ? match[1]?.trim() || null : null;
+}
+
 export async function sendQuoteEmail(
   rawPayload: unknown,
 ): Promise<SendQuoteEmailResult> {
@@ -487,17 +492,21 @@ export async function sendQuoteEmail(
   const configuredVendorRecipient =
     normalizeEnvValue(process.env.QUOTE_VENDOR_EMAIL) ??
     normalizeEnvValue(process.env.QUOTE_RECIPIENT_EMAIL);
-  const testRecipientOverride = normalizeEnvValue(
+  const testVendorRecipientOverride = normalizeEnvValue(
     process.env.QUOTE_TEST_RECIPIENT_EMAIL,
   );
   const fromAddress =
     normalizeEnvValue(process.env.QUOTE_FROM_EMAIL) ?? DEFAULT_QUOTE_FROM_EMAIL;
 
-  const vendorRecipient = testRecipientOverride ?? configuredVendorRecipient;
-  const userRecipient = testRecipientOverride ?? payload.emailAddress;
+  // Keep customer confirmation dynamic so each submitter receives their own email.
+  const userRecipient = payload.emailAddress;
+  // Optional test override only for internal/vendor mailbox.
+  const vendorRecipient =
+    testVendorRecipientOverride ?? configuredVendorRecipient;
 
   if (!resendApiKey || !vendorRecipient) {
     console.error("Missing required quote email environment variables.");
+
     return {
       success: false,
       message:
@@ -571,7 +580,7 @@ export async function sendQuoteEmail(
   };
 
   try {
-    await sendEmail({
+    const sendEmailToVendor = await sendEmail({
       to: vendorRecipient,
       replyTo: payload.emailAddress,
       subject: `New Quote Request from ${payload.fullName}`,
@@ -579,12 +588,15 @@ export async function sendQuoteEmail(
       attachments: attachmentBuildResult.attachments,
     });
 
-    await sendEmail({
+    const sendEmailToRecipient = await sendEmail({
       to: userRecipient,
       replyTo: configuredVendorRecipient ?? undefined,
       subject: "We received your quote inquiry - Kayns Shop",
       variant: "user",
     });
+
+    void sendEmailToVendor;
+    void sendEmailToRecipient;
 
     return {
       success: true,
@@ -592,6 +604,16 @@ export async function sendQuoteEmail(
     };
   } catch (error) {
     console.error("Failed to send quote email", error);
+
+    const errorMessage = error instanceof Error ? error.message : "";
+    const sandboxRecipient = getResendSandboxRecipient(errorMessage);
+
+    if (sandboxRecipient) {
+      return {
+        success: false,
+        message: `Resend testing mode currently allows sending only to ${sandboxRecipient}. Vendor notification will go to the configured receiver, but customer confirmation to ${payload.emailAddress} requires a verified Resend domain and a domain-based QUOTE_FROM_EMAIL address.`,
+      };
+    }
 
     return {
       success: false,

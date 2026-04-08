@@ -13,56 +13,38 @@ export default function ProductCard({
   product,
   priority = false,
 }: ProductCardProps) {
-  const compact = product.size === "small";
-  const isLocalPortfolioImage = product.image.startsWith("/portfolio_Images/");
-
   const imageSizes =
-    product.size === "large" || product.size === "wide"
-      ? "(max-width: 767px) 100vw, (max-width: 1279px) 100vw, 34vw"
-      : "(max-width: 767px) 100vw, (max-width: 1279px) 50vw, 17vw";
+    "(max-width: 639px) 100vw, (max-width: 1023px) 50vw, (max-width: 1279px) 33vw, 25vw";
 
   return (
     <Link
       href={`/portfolio/${product.slug}`}
-      className="group relative isolate block h-full overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 shadow-[0_12px_35px_-16px_rgba(0,0,0,0.75)] transition-all duration-400 ease-out hover:scale-[1.03] hover:shadow-[0_22px_55px_-18px_rgba(0,0,0,0.95)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-[0_12px_28px_-18px_rgba(15,43,76,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-[#143D59]/35 hover:shadow-[0_20px_36px_-20px_rgba(20,61,89,0.45)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#143D59]/60"
       aria-label={`View details for ${product.name}`}
     >
-      <Image
-        src={product.image}
-        alt={product.name}
-        fill
-        sizes={imageSizes}
-        priority={priority}
-        unoptimized={isLocalPortfolioImage}
-        className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
-      />
+      <div className="relative aspect-4/3 overflow-hidden bg-[#F3F6FC]">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          sizes={imageSizes}
+          priority={priority}
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+        />
+      </div>
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent" />
-
-      <div
-        className={`absolute inset-x-0 bottom-0 z-10 text-white ${
-          compact ? "p-4" : "p-5 md:p-6"
-        }`}
-      >
-        <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-200">
+      <div className="flex flex-1 flex-col border-t border-[#143D59]/15 px-4 py-4 sm:px-5">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#143D59] sm:text-[11px]">
           {product.category}
         </p>
-        <h3
-          className={`mt-2 font-semibold leading-tight ${
-            compact ? "text-base" : "text-lg md:text-xl"
-          }`}
-        >
+        <h3 className="mt-2 text-lg font-bold leading-tight text-[#143D59] sm:text-xl">
           {product.name}
         </h3>
-        <p className={`mt-2 text-zinc-200 ${compact ? "text-xs" : "text-sm"}`}>
+        <p className="mt-2 line-clamp-2 text-sm text-[#6B7280]">
           {product.description}
         </p>
-        <span
-          className={`mt-3 inline-flex items-center gap-1 font-medium ${
-            compact ? "text-xs" : "text-sm"
-          }`}
-        >
-          View Details <span aria-hidden="true">-&gt;</span>
+        <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#143D59] transition-colors group-hover:text-[#143D59]">
+          View Details <span aria-hidden="true">-&rarr;</span>
         </span>
       </div>
     </Link>

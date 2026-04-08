@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { CollectionItem } from "@/data/collection";
+import { getCapImageDimensions } from "@/lib/utils";
 
 export default function CollectionProductList({
   item,
@@ -17,6 +18,30 @@ export default function CollectionProductList({
     );
   };
 
+  const renderProductImage = (
+    imageSrc: string,
+    imageAlt: string,
+    dimensions: ReturnType<typeof getCapImageDimensions>,
+  ) => {
+    if (dimensions) {
+      return (
+        <div className="flex h-full w-full items-center justify-center p-2">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            width={dimensions.width}
+            height={dimensions.height}
+            className="h-auto w-auto max-h-full max-w-full object-contain"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <Image src={imageSrc} alt={imageAlt} fill className="object-cover" />
+    );
+  };
+
   return (
     <section
       id="products"
@@ -30,6 +55,8 @@ export default function CollectionProductList({
       <div className="mx-auto max-w-xl space-y-5">
         {products.map((product, i) => {
           const isEven = i % 2 === 1;
+          const capDimensions = getCapImageDimensions(product.image);
+
           return (
             <div key={product.id}>
               {/* Zigzag row */}
@@ -42,14 +69,13 @@ export default function CollectionProductList({
                     </div>
                     <div className="relative h-52 w-52 shrink-0 overflow-hidden ">
                       {isImageSource(product.image) ? (
-                        <Image
-                          src={product.image}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                        />
+                        renderProductImage(
+                          product.image,
+                          product.name,
+                          capDimensions,
+                        )
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-2xl">
+                        <div className="flex h-full w-full items-center justify-center bg-[#F3F6FC] text-2xl">
                           {product.image || "🧢"}
                         </div>
                       )}
@@ -69,12 +95,11 @@ export default function CollectionProductList({
                       </div>
                     </div>
                     <div className="relative h-52 w-52 shrink-0 overflow-hidden">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        fill
-                        className="object-cover"
-                      />
+                      {renderProductImage(
+                        product.image,
+                        product.name,
+                        capDimensions,
+                      )}
                     </div>
                     <div className="flex flex-1 items-center">
                       <div className="h-px flex-1 border-t-2 border-dashed border-gray-300" />

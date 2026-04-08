@@ -1,5 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
+import { cn } from "@/lib/utils";
 
 const namedImageByTitle: Record<string, string> = {
   Beanie: "/benni_.png",
@@ -29,6 +31,74 @@ const namedImageByTitle: Record<string, string> = {
 export default function ProductShowcase({ item }: { item: CollectionItem }) {
   const showcaseImage = namedImageByTitle[item.title] ?? item.image;
   const bgImage = "/bg_Image.png";
+  const capProducts = item.products ?? [];
+  const hasCapGrid = capProducts.length > 1;
+
+  if (hasCapGrid) {
+    return (
+      <section
+        aria-label="Product showcase"
+        className="bg-white py-12 sm:py-14"
+      >
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 className="text-center text-xl font-extrabold uppercase tracking-[0.12em] text-gray-900 sm:text-2xl">
+            Explore Cap Styles
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-gray-600 sm:text-base">
+            Pick a cap style to switch page. Current style is subtly
+            highlighted.
+          </p>
+
+          <div className="mt-8 grid grid-cols-2 gap-4 sm:gap-6">
+            {capProducts.map((product) => {
+              const isActiveCap =
+                product.id === item.id || product.name === item.title;
+
+              return (
+                <Link
+                  key={product.id}
+                  href={`/collection/${product.id}`}
+                  aria-current={isActiveCap ? "page" : undefined}
+                  className={cn(
+                    "group rounded-2xl border px-3 py-4 text-center transition-all duration-200 sm:px-4 sm:py-5",
+                    isActiveCap ? " border-none" : "border-none",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "relative mx-auto h-24 w-24 overflow-hidden rounded-full border bg-gray-50 sm:h-28 sm:w-28",
+                      isActiveCap
+                        ? "border-[#143D59]/35 bg-[#143d59]"
+                        : "border-gray-200",
+                    )}
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 640px) 96px, 112px"
+                      className="object-contain p-3 transition-transform duration-200 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <p
+                    className={cn(
+                      "mt-3 text-sm font-semibold leading-tight sm:text-base",
+                      isActiveCap
+                        ? "text-[#143D59]"
+                        : "text-gray-700 group-hover:text-gray-900",
+                    )}
+                  >
+                    {product.name}
+                  </p>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section aria-label="Product showcase">
@@ -45,7 +115,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
             />
           </div>
           {/* Product image shown inline on mobile */}
-          <div className="relative mx-auto h-56 w-4/5 max-w-xs overflow-hidden rounded-xl shadow-2xl sm:h-64 sm:max-w-sm bg-gray-900 z-9999">
+          <div className="relative mx-auto z-9999 h-56 w-4/5 max-w-xs overflow-hidden rounded-xl bg-[#F3F6FC] shadow-2xl sm:h-64 sm:max-w-sm">
             <Image
               src={showcaseImage}
               alt={item.title}
@@ -55,7 +125,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
           </div>
         </div>
         {/* Red panel */}
-        <div className="flex flex-col justify-center bg-brand-red px-6 py-10 text-white sm:px-10">
+        <div className="flex flex-col justify-center bg-[#143D59] px-6 py-10 text-white sm:px-10">
           <h2 className="text-xl font-extrabold leading-snug sm:text-2xl">
             Where Sport Meets Street
           </h2>
@@ -80,8 +150,8 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
           </div>
         </div>
 
-        {/* Right — brand-red panel with text */}
-        <div className="flex w-1/2 flex-col justify-center bg-brand-red px-28 py-12 text-white">
+        {/* Right — [#143D59] panel with text */}
+        <div className="flex w-1/2 flex-col justify-center bg-[#143D59] px-28 py-12 text-white">
           <h2 className="text-xl font-extrabold leading-snug sm:text-2xl">
             Where Sport Meets Street
           </h2>
@@ -92,7 +162,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
         </div>
 
         {/* Overlapping card — absolutely centered across both panels */}
-        <div className="absolute left-130 top-1/2 z-20 h-64 w-56 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl lg:h-88 lg:w-88 bg-gray-100">
+        <div className="absolute left-130 top-1/2 z-20 h-64 w-56 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl shadow-2xl lg:h-88 lg:w-88 bg-[#F3F6FC]">
           <Image
             src={showcaseImage}
             alt={item.title}

@@ -41,7 +41,7 @@ export default function NumberInput({
       {!hideLabel ? (
         <label
           htmlFor="order-quantity"
-          className="text-base font-semibold text-label-text"
+          className="text-base font-semibold text-[#111827]"
         >
           {label}
         </label>
@@ -50,7 +50,7 @@ export default function NumberInput({
       <div className="flex max-w-sm items-center gap-2">
         <button
           type="button"
-          className="inline-flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D1D5DB] bg-white text-label-text transition hover:bg-[#F9FAFB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E63946]/30"
+          className="inline-flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D1D5DB] bg-white text-[#111827] transition hover:bg-[#F3F6FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#143D59]/30"
           onClick={() => setNextValue(currentValue - 1)}
           aria-label="Decrease quantity"
         >
@@ -74,14 +74,14 @@ export default function NumberInput({
             setNextValue(parsedValue);
           }}
           className={cn(
-            "h-11 w-full rounded-lg border border-[#D1D5DB] bg-white px-3 text-sm text-label-text outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20",
-            error && "border-[#DC2626]",
+            "h-11 w-full rounded-lg border border-[#D1D5DB] bg-white px-3 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20",
+            error && "border-[#143D59]",
           )}
         />
 
         <button
           type="button"
-          className="inline-flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D1D5DB] bg-white text-label-text transition hover:bg-[#F9FAFB] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E63946]/30"
+          className="inline-flex h-11 w-11 min-h-11 min-w-11 items-center justify-center rounded-lg border border-[#D1D5DB] bg-white text-[#111827] transition hover:bg-[#F3F6FC] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#143D59]/30"
           onClick={() => setNextValue(currentValue + 1)}
           aria-label="Increase quantity"
         >
@@ -92,7 +92,7 @@ export default function NumberInput({
       <p className="text-xs text-[#6B7280]">Minimum 1 unit</p>
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}

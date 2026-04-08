@@ -142,7 +142,7 @@ function ColorRow({
               <li key={opt.value}>
                 <button
                   type="button"
-                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-gray-100"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-[#F3F6FC]"
                   onClick={() => {
                     onColorChange(opt.value, colorKey);
                     setIsOpen(false);
@@ -264,7 +264,7 @@ export default function CustomizePanel({
         </div>
 
         {logoError ? (
-          <p className="mt-2 rounded-md border border-red-200 bg-red-50 px-2.5 py-2 text-xs text-red-700">
+          <p className="mt-2 rounded-md border border-[#143D59]/20 bg-[#F3F6FC] px-2.5 py-2 text-xs text-[#143D59]">
             {logoError}
           </p>
         ) : null}
@@ -293,7 +293,7 @@ export default function CustomizePanel({
               <button
                 type="button"
                 onClick={onLogoClear}
-                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-[11px] font-medium text-gray-700 transition hover:bg-gray-100"
+                className="rounded-md border border-gray-300 bg-white px-2 py-1 text-[11px] font-medium text-gray-700 transition hover:bg-[#F3F6FC]"
               >
                 Remove
               </button>
@@ -314,14 +314,14 @@ export default function CustomizePanel({
                   onLogoDescriptionChange?.(event.target.value)
                 }
                 placeholder="e.g. Club crest for front panel"
-                className="w-full rounded-md border border-gray-300 bg-white px-2.5 py-2 text-xs text-gray-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-md border border-gray-300 bg-white px-2.5 py-2 text-xs text-gray-800 outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
               />
             </div>
           </div>
         ) : null}
       </div>
 
-      <div className="rounded-xl border border-[#F59E0B] bg-[#FFF9EF] px-4 py-3 shadow-sm">
+      <div className="rounded-xl border border-[#143D59]/20 bg-[#F3F6FC] px-4 py-3 shadow-sm">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-[#1F2937]">
@@ -337,7 +337,7 @@ export default function CustomizePanel({
             type="button"
             onClick={onAddExtraMotif}
             disabled={extraMotifs.length >= extraMotifLimit}
-            className="inline-flex items-center justify-center rounded-lg border border-[#F59E0B] bg-white px-3 py-2 text-xs font-semibold text-[#9A3412] transition hover:bg-[#FFF1D6] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex items-center justify-center rounded-lg border border-[#143D59]/35 bg-white px-3 py-2 text-xs font-semibold text-[#143D59] transition hover:bg-[#F3F6FC] disabled:cursor-not-allowed disabled:opacity-60"
           >
             + Add Motif
           </button>
@@ -357,16 +357,16 @@ export default function CustomizePanel({
               return (
                 <div
                   key={motif.id}
-                  className="rounded-lg border border-[#FDBA74] bg-white/90 p-3"
+                  className="rounded-lg border border-[#143D59]/20 bg-white/90 p-3"
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-[#9A3412]">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-[#143D59]">
                       Motif {index + 1}
                     </p>
                     <button
                       type="button"
                       onClick={() => onRemoveExtraMotif?.(motif.id)}
-                      className="rounded-md border border-[#FCA5A5] bg-white px-2 py-1 text-[11px] font-semibold text-[#B91C1C] transition hover:bg-[#FEF2F2]"
+                      className="rounded-md border border-[#143D59]/35 bg-white px-2 py-1 text-[11px] font-semibold text-[#143D59] transition hover:bg-[#F3F6FC]"
                     >
                       Remove
                     </button>
@@ -389,7 +389,7 @@ export default function CustomizePanel({
                             event.target.value as StoredExtraMotif["type"],
                           )
                         }
-                        className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                        className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                       >
                         <option value="text">Text</option>
                         <option value="logo">Logo</option>
@@ -415,7 +415,7 @@ export default function CustomizePanel({
                             )
                           }
                           placeholder="Type text"
-                          className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                          className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                         />
                       </div>
                     ) : (
@@ -449,7 +449,7 @@ export default function CustomizePanel({
                             <button
                               type="button"
                               onClick={() => onExtraMotifLogoClear?.(motif.id)}
-                              className="rounded-md border border-gray-300 bg-white px-2 py-1 text-[11px] font-medium text-gray-700 transition hover:bg-gray-100"
+                              className="rounded-md border border-gray-300 bg-white px-2 py-1 text-[11px] font-medium text-gray-700 transition hover:bg-[#F3F6FC]"
                             >
                               Clear
                             </button>
@@ -500,7 +500,7 @@ export default function CustomizePanel({
                               event.target.value,
                             )
                           }
-                          className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                          className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                         >
                           {!motifColorExists ? (
                             <option value={motif.color}>{motif.color}</option>
@@ -530,7 +530,7 @@ export default function CustomizePanel({
                             event.target.value,
                           )
                         }
-                        className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                        className="h-10 w-full rounded-md border border-gray-300 bg-white px-2.5 text-sm text-gray-800 outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                       >
                         {!motifPanelExists ? (
                           <option value={motif.panelKey}>
@@ -547,7 +547,7 @@ export default function CustomizePanel({
                   </div>
 
                   {extraMotifErrors[motif.id] ? (
-                    <p className="mt-2 rounded-md border border-red-200 bg-red-50 px-2.5 py-2 text-xs text-red-700">
+                    <p className="mt-2 rounded-md border border-[#143D59]/20 bg-[#F3F6FC] px-2.5 py-2 text-xs text-[#143D59]">
                       {extraMotifErrors[motif.id]}
                     </p>
                   ) : null}
@@ -556,7 +556,7 @@ export default function CustomizePanel({
             })}
           </div>
         ) : (
-          <p className="mt-3 rounded-md border border-dashed border-[#FDBA74] bg-white px-3 py-2 text-xs text-[#9A3412]">
+          <p className="mt-3 rounded-md border border-dashed border-[#143D59]/35 bg-white px-3 py-2 text-xs text-[#143D59]">
             No extra motifs added yet.
           </p>
         )}

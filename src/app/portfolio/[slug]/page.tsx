@@ -43,19 +43,20 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const isLocalPortfolioImage = product.image.startsWith("/portfolio_Images/");
-
   return (
-    <main className="min-h-screen bg-zinc-950 px-4 pb-20 pt-14 text-zinc-100 sm:px-6 lg:px-8">
+    <main
+      className="min-h-screen bg-white px-4 pb-20 pt-14 sm:px-6 lg:px-8"
+      style={{ color: "#111827" }}
+    >
       <div className="mx-auto max-w-5xl">
         <Link
           href="/portfolio"
-          className="inline-flex items-center text-sm text-zinc-300 transition-colors hover:text-white"
+          className="inline-flex items-center text-sm font-medium text-[#143D59] transition-colors hover:text-[#143D59]"
         >
           &larr; Back to Collections
         </Link>
 
-        <div className="mt-8 grid gap-8 overflow-hidden rounded-3xl border border-white/10 bg-zinc-900/70 p-4 shadow-[0_20px_50px_-24px_rgba(0,0,0,0.8)] md:grid-cols-2 md:p-6">
+        <div className="mt-8 grid gap-8 overflow-hidden rounded-3xl border border-[#E5E7EB] bg-white p-4 shadow-[0_20px_42px_-28px_rgba(15,43,76,0.35)] md:grid-cols-2 md:p-6">
           <div className="relative min-h-80 overflow-hidden rounded-2xl md:min-h-125">
             <Image
               src={product.image}
@@ -63,20 +64,19 @@ export default async function ProductDetailPage({
               fill
               priority
               sizes="(max-width: 767px) 100vw, 50vw"
-              unoptimized={isLocalPortfolioImage}
               className="h-full w-full object-cover"
             />
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-xs uppercase tracking-[0.22em] text-zinc-400">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#143D59]">
               {product.category}
             </p>
-            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-white md:text-4xl">
+            <h1 className="mt-3 text-3xl font-semibold tracking-tight text-[#143D59] md:text-5xl lg:text-7xl">
               {product.name}
             </h1>
-            <p className="mt-4 text-zinc-300">{product.description}</p>
-            <p className="mt-6 text-sm text-zinc-400">
+            <p className="mt-4 text-[#6B7280]">{product.description}</p>
+            <p className="mt-6 text-sm text-[#6B7280]">
               Detailed product pages are coming soon. This route is now ready
               for your future collection detail content.
             </p>

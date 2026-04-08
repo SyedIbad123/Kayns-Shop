@@ -210,7 +210,7 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
           Source: Standard Product Configurator
         </p>
 
-        <div className="mt-4 rounded-xl border border-[#F3F4F6] bg-[#FCFCFD] p-4">
+        <div className="mt-4 rounded-xl border border-[#F3F6FC] bg-[#FCFCFD] p-4">
           <div className="grid gap-2 text-sm sm:grid-cols-2">
             <p>
               <span className="font-semibold text-[#374151]">
@@ -259,7 +259,7 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
         Source: SVG Panel Configurator
       </p>
 
-      <div className="mt-4 rounded-xl border border-[#F3F4F6] bg-[#FCFCFD] p-4">
+      <div className="mt-4 rounded-xl border border-[#F3F6FC] bg-[#FCFCFD] p-4">
         <div className="grid gap-2 text-sm sm:grid-cols-2">
           <p>
             <span className="font-semibold text-[#374151]">Cap:</span>{" "}

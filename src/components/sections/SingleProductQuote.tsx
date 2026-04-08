@@ -123,13 +123,13 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
 
   return (
     <section
-      className="bg-neutral-900 px-6 py-12 text-white"
+      className="bg-[#143D59] px-6 py-12 text-white"
       aria-label="Get a Quote"
     >
       <div className="mx-auto flex max-w-3xl flex-col gap-8 sm:flex-row sm:items-center">
         {/* Left — heading, filters, input */}
         <div className="flex flex-1 flex-col gap-4">
-          <h2 className="text-3xl font-extrabold uppercase tracking-widest">
+          <h2 className="text-3xl font-extrabold uppercase tracking-widest sm:text-5xl lg:text-7xl">
             Get a Quote
           </h2>
           <p className="text-sm leading-relaxed text-gray-400">
@@ -154,7 +154,7 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
           {/* Quote action */}
           <Link
             href={`/customize/single/${item.id}`}
-            className="w-full rounded-full bg-white px-5 py-3 text-sm font-semibold text-gray-900 outline-none transition hover:bg-gray-100 focus:ring-2 focus:ring-brand-red"
+            className="site-btn inline-flex w-fit rounded-full px-4 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-[#143D59] sm:text-sm"
             aria-label="Quote details"
           >
             Quote Details

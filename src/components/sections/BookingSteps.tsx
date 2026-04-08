@@ -26,7 +26,7 @@ const steps = [
 
 export default function BookingSteps() {
   return (
-    <section className="bg-dark-blue py-16" aria-label="Steps to book">
+    <section className="bg-[#f3f6fc] py-16" aria-label="Steps to book">
       <Container className="text-center">
         <SectionTitle
           title="4 STEPS TO COMPLETE ORDER"
@@ -34,7 +34,7 @@ export default function BookingSteps() {
           className="mb-10"
         />
 
-        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+        <div className="mx-auto grid max-w-3xl grid-cols-2 gap-x-5 gap-y-10 lg:hidden">
           {steps.map((step, i) => (
             <motion.div
               key={step.id}
@@ -42,22 +42,43 @@ export default function BookingSteps() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15, duration: 0.4 }}
-              className="flex items-center gap-4 sm:gap-8"
+              className="flex flex-col items-center gap-2"
             >
-              {/* Step badge + label */}
-              <div className="flex w-40 flex-col items-center gap-2 sm:w-44">
-                <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white text-lg font-bold text-white sm:h-18 sm:w-18 sm:text-xl">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-[#143d59] text-lg font-bold text-[#143d59] sm:h-16 sm:w-16 sm:text-xl">
+                {step.id}
+              </div>
+              <p className="whitespace-nowrap text-[11px] font-semibold uppercase tracking-[0.07em] text-[#143d59] sm:text-sm">
+                {step.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mx-auto hidden max-w-6xl grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] items-center gap-3 lg:grid">
+          {steps.map((step, i) => (
+            <motion.div
+              key={step.id}
+              initial={{ opacity: 0, scale: 0.7 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.15, duration: 0.4 }}
+              className="contents"
+            >
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex h-18 w-18 items-center justify-center rounded-full border-2 border-[#143d59] text-xl font-bold text-[#143d59]">
                   {step.id}
                 </div>
-                <p className="text-xs font-semibold uppercase tracking-[0.08em] text-white/90 sm:text-sm">
+                <p className="whitespace-nowrap text-sm font-semibold uppercase tracking-[0.08em] text-[#143d59]">
                   {step.label}
                 </p>
               </div>
 
-              {/* Arrow (not after last) */}
-              {i < steps.length - 1 && (
-                <ArrowRight size={24} className="text-white sm:w-9" />
-              )}
+              {i < steps.length - 1 ? (
+                <ArrowRight
+                  className="h-10 w-16 text-[#143d59]"
+                  strokeWidth={2.3}
+                />
+              ) : null}
             </motion.div>
           ))}
         </div>

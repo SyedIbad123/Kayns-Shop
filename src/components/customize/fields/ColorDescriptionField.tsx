@@ -13,7 +13,7 @@ interface ColorDescriptionFieldProps {
 }
 
 const COLOR_SWATCHES = [
-  "#E63946",
+  "#143D59",
   "#2563EB",
   "#059669",
   "#F59E0B",
@@ -37,7 +37,7 @@ export default function ColorDescriptionField({
       {!hideLabel ? (
         <label
           htmlFor="colors-description"
-          className="text-base font-semibold text-label-text"
+          className="text-base font-semibold text-[#111827]"
         >
           Colors
         </label>
@@ -48,7 +48,7 @@ export default function ColorDescriptionField({
         value={currentValue}
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholderText}
-        className="min-h-32 w-full rounded-xl border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-label-text outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+        className="min-h-32 w-full rounded-xl border border-[#D1D5DB] bg-white px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
       />
 
       <div className="flex items-center justify-between gap-3">
@@ -73,7 +73,7 @@ export default function ColorDescriptionField({
       </div>
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}

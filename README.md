@@ -12,18 +12,19 @@ Required variables:
 
 ```env
 RESEND_API_KEY=re_xxxxxxxxxxxx
-QUOTE_FROM_EMAIL=Kayns Shop Quotes <onboarding@resend.dev>
-QUOTE_VENDOR_EMAIL=ibad1657@gmail
-QUOTE_TEST_RECIPIENT_EMAIL=ibad1657@gmail
+QUOTE_FROM_EMAIL=Kayns Shop Quotes <quotes@kayns.co.uk>
+QUOTE_VENDOR_EMAIL=quotes@yourcompany.com
+QUOTE_TEST_RECIPIENT_EMAIL=your-resend-account-email@example.com
 NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ```
 
 Notes:
 
 - `QUOTE_VENDOR_EMAIL` receives the internal/vendor notification.
-- The user confirmation email is sent to the submitted `emailAddress` by default.
-- `QUOTE_TEST_RECIPIENT_EMAIL` is optional and overrides both destinations (useful while testing).
+- The user confirmation email is always sent to the submitted `emailAddress` (dynamic per user).
+- `QUOTE_TEST_RECIPIENT_EMAIL` is optional and overrides only the internal/vendor destination (useful while testing).
 - `QUOTE_RECIPIENT_EMAIL` is still supported as a legacy fallback.
+- If you are using Resend sandbox/testing mode with `onboarding@resend.dev`, sending is restricted to your Resend account email until you verify a domain. After domain verification, switch `QUOTE_FROM_EMAIL` to that domain (for example `quotes@yourdomain.com`).
 
 First, run the development server:
 

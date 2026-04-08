@@ -90,7 +90,8 @@ export default function ImageRadioGroup({
       {!hideLabel ? (
         <h3
           id={groupId}
-          className="text-base font-semibold text-(--label-text,#111827)"
+          className="text-base font-semibold"
+          style={{ color: "#111827" }}
         >
           {label}
         </h3>
@@ -127,11 +128,11 @@ export default function ImageRadioGroup({
               onClick={() => onChange(option.value)}
               onKeyDown={(event) => onCardKeyDown(event, index)}
               className={cn(
-                "relative flex min-h-24 min-w-11 items-center gap-3 rounded-xl border bg-white p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#E63946]/35 focus-visible:outline-none",
-                "border-(--card-border,#E5E7EB)",
+                "relative flex min-h-24 min-w-11 items-center gap-3 rounded-xl border bg-white p-4 text-left transition-all duration-150 hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:ring-[#143D59]/35 focus-visible:outline-none",
+                "border-[#E5E7EB]",
                 isSelected &&
-                  "scale-[1.02] border-2 border-(--selected-border,#E63946) bg-(--selected-bg,#FFF0F1)",
-                error && "border-[#DC2626]",
+                  "scale-[1.02] border-2 border-[#143D59] bg-[#F3F6FC]",
+                error && "border-[#143D59]",
               )}
             >
               <span
@@ -142,18 +143,21 @@ export default function ImageRadioGroup({
               />
 
               <span className="min-w-0">
-                <span className="block text-sm font-medium text-(--label-text,#111827)">
+                <span
+                  className="block text-sm font-medium"
+                  style={{ color: "#111827" }}
+                >
                   {option.label}
                 </span>
                 {typeof option.priceModifier === "number" ? (
-                  <span className="mt-0.5 block text-xs text-(--muted-text,#6B7280)">
+                  <span className="mt-0.5 block text-xs text-[#6B7280]">
                     + £{option.priceModifier.toFixed(2)}
                   </span>
                 ) : null}
               </span>
 
               {isSelected ? (
-                <span className="absolute right-2 top-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#E63946] text-white">
+                <span className="absolute right-2 top-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#143D59] text-white">
                   <Check className="h-3.5 w-3.5" />
                 </span>
               ) : null}
@@ -163,7 +167,7 @@ export default function ImageRadioGroup({
       </div>
 
       {error ? (
-        <p className="text-[13px] text-[#DC2626]" aria-live="polite">
+        <p className="text-[13px] text-[#143D59]" aria-live="polite">
           {error}
         </p>
       ) : null}

@@ -215,9 +215,9 @@ export default function QuoteForm() {
 
   return (
     <section className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-3xl border border-[#E5E7EB] bg-gradient-to-br from-[#FFF6F6] via-[#FFFDFD] to-[#F6FAFF] p-6 shadow-sm sm:p-8">
-        <div className="mb-6 rounded-2xl border border-[#F1D3D6] bg-white/80 px-4 py-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#E63946]">
+      <div className="rounded-3xl border border-[#E5E7EB] bg-linear-to-br from-white via-[#F3F6FC] to-[#F3F6FC] p-6 shadow-sm sm:p-8">
+        <div className="mb-6 rounded-2xl border border-[#143D59]/20 bg-white/80 px-4 py-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#143D59]">
             Step 2 of 2
           </p>
           <h1 className="mt-1 text-2xl font-bold text-[#111827]">
@@ -226,8 +226,8 @@ export default function QuoteForm() {
           <p className="mt-1 text-sm text-[#6B7280]">
             Complete your contact details and we will email your custom quote.
           </p>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#F3F4F6]">
-            <span className="block h-full w-full rounded-full bg-[#E63946]" />
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#F3F6FC]">
+            <span className="block h-full w-full rounded-full bg-[#143D59]" />
           </div>
         </div>
 
@@ -255,10 +255,10 @@ export default function QuoteForm() {
                   id="fullName"
                   type="text"
                   {...register("fullName")}
-                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.fullName ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.fullName?.message ?? ""}
                 </span>
               </div>
@@ -275,10 +275,10 @@ export default function QuoteForm() {
                   type="tel"
                   {...register("phoneNumber")}
                   placeholder="+447700900123"
-                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.phoneNumber ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.phoneNumber?.message ?? ""}
                 </span>
               </div>
@@ -294,10 +294,10 @@ export default function QuoteForm() {
                   id="emailAddress"
                   type="email"
                   {...register("emailAddress")}
-                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.emailAddress ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.emailAddress?.message ?? ""}
                 </span>
               </div>
@@ -313,10 +313,10 @@ export default function QuoteForm() {
                   id="clubReference"
                   type="text"
                   {...register("clubReference")}
-                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="h-11 w-full rounded-xl border border-[#D1D5DB] px-3 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.clubReference ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.clubReference?.message ?? ""}
                 </span>
               </div>
@@ -332,10 +332,10 @@ export default function QuoteForm() {
                   id="fullAddress"
                   {...register("fullAddress")}
                   rows={3}
-                  className="w-full rounded-xl border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="w-full rounded-xl border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.fullAddress ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.fullAddress?.message ?? ""}
                 </span>
               </div>
@@ -351,29 +351,29 @@ export default function QuoteForm() {
                   id="comments"
                   {...register("comments")}
                   rows={3}
-                  className="w-full rounded-xl border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#E63946] focus:ring-2 focus:ring-[#E63946]/20"
+                  className="w-full rounded-xl border border-[#D1D5DB] px-3 py-2.5 text-sm text-[#111827] outline-none transition focus:border-[#143D59] focus:ring-2 focus:ring-[#143D59]/20"
                   aria-invalid={errors.comments ? "true" : "false"}
                 />
-                <span className="text-xs text-[#DC2626]">
+                <span className="text-xs text-[#143D59]">
                   {errors.comments?.message ?? ""}
                 </span>
               </div>
             </div>
 
             {submitError ? (
-              <p className="mt-4 rounded-lg border border-[#FECACA] bg-[#FEF2F2] px-3 py-2 text-sm text-[#B91C1C]">
+              <p className="mt-4 rounded-lg border border-[#143D59]/20 bg-[#F3F6FC] px-3 py-2 text-sm text-[#143D59]">
                 {submitError}
               </p>
             ) : null}
 
             {submitSuccess ? (
-              <p className="mt-4 rounded-lg border border-[#BBF7D0] bg-[#F0FDF4] px-3 py-2 text-sm text-[#166534]">
+              <p className="mt-4 rounded-lg border border-[#143D59]/20 bg-[#F3F6FC] px-3 py-2 text-sm text-[#143D59]">
                 {submitSuccess}
               </p>
             ) : null}
 
             {submitWarning ? (
-              <p className="mt-4 rounded-lg border border-[#FCD34D] bg-[#FFFBEB] px-3 py-2 text-sm text-[#92400E]">
+              <p className="mt-4 rounded-lg border border-[#143D59]/20 bg-[#F3F6FC] px-3 py-2 text-sm text-[#143D59]">
                 {submitWarning}
               </p>
             ) : null}
@@ -381,7 +381,7 @@ export default function QuoteForm() {
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <Link
                 href={backToConfiguratorHref}
-                className="text-sm font-medium text-[#1D4ED8] underline-offset-4 transition hover:underline"
+                className="text-sm font-medium text-[#143D59] underline-offset-4 transition hover:underline"
               >
                 {"Back to Configurator"}
               </Link>
@@ -389,7 +389,7 @@ export default function QuoteForm() {
               <button
                 type="submit"
                 disabled={isPending}
-                className="inline-flex h-11 min-h-11 items-center justify-center gap-2 rounded-xl bg-[#E63946] px-5 text-sm font-semibold text-white transition hover:bg-[#D62839] disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-11 min-h-11 items-center justify-center gap-2 rounded-xl bg-[#143D59] px-5 text-sm font-semibold text-white transition hover:bg-[#143D59]/90 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {isPending ? <Spinner /> : null}
                 {isPending ? "Sending..." : "Send Quote Request"}
