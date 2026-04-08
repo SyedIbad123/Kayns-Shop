@@ -14,7 +14,7 @@ export default function BookOrder({ item }: { item: CollectionItem }) {
 
   return (
     <section
-      className="bg-[#F3F6FC] px-6 py-12 text-[#143D59]"
+      className="bg-white px-6 py-12 text-[#143D59]"
       aria-label="Book Your Order"
     >
       <div className="mx-auto flex max-w-3xl flex-col items-start gap-8 sm:flex-row sm:items-center">

@@ -7,7 +7,7 @@ import type { CollectionItem } from "@/data/collection";
 
 export default function CollectionHero({ item }: { item: CollectionItem }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const heroImage = "/hero_Image_01.png";
+  const heroImage = "/Hero_Image_01.png";
 
   return (
     <>
@@ -24,12 +24,12 @@ export default function CollectionHero({ item }: { item: CollectionItem }) {
       </div>
 
       {/* Title + description bar */}
-      <div className="bg-[#143D59] text-center px-6 py-8 text-white">
-        <h1 className="text-3xl font-extrabold uppercase tracking-widest sm:text-5xl lg:text-7xl">
+      <div className="bg-white text-center px-6 py-8 text-white">
+        <h1 className="text-3xl text-[#143d59] font-extrabold uppercase tracking-widest sm:text-5xl lg:text-7xl">
           KAYNS
         </h1>
         <p
-          className="mx-auto mt-3 max-w-5xl text-center text-base leading-relaxed text-gray-300 sm:text-lg"
+          className="mx-auto mt-3 max-w-5xl text-center text-base leading-relaxed text-[#143d59] sm:text-lg"
           style={
             isExpanded
               ? undefined

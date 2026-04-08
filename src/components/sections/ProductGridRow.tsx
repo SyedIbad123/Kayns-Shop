@@ -166,7 +166,7 @@ export default function ProductGridRow({ selectedCap }: ProductGridRowProps) {
 
   return (
     <section
-      className="bg-[#F3F6FC] px-2 py-8 sm:px-4 sm:py-12"
+      className="bg-white px-2 py-8 sm:px-4 sm:py-12"
       aria-label="Cap configuration table"
     >
       <div className="mx-auto max-w-400 rounded-2xl bg-white shadow-[0_14px_36px_rgba(20,61,89,0.08)]">
