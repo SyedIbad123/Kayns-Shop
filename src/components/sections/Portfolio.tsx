@@ -171,7 +171,7 @@ export default function Portfolio() {
             href="/portfolio"
             className="site-btn inline-flex items-center justify-center rounded-full px-8 py-3 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-[#143D59]/30"
           >
-            View All Products
+            View Portfolio
           </Link>
         </div>
       </Container>

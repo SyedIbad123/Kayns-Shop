@@ -63,7 +63,7 @@ const BAGGY_MULTI_PANELS = Object.keys(DEFAULT_BAGGY_MULTI_COLORS).map(
   (key) => ({
     key,
     label: key.startsWith("id_")
-      ? `Path ${key.replace("id_", "")}`
+      ? `Panel ${key.replace("id_", "")}`
       : key
           .replace(/[_-]/g, " ")
           .replace(/\b\w/g, (char) => char.toUpperCase()),

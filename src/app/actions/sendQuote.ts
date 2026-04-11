@@ -870,7 +870,7 @@ export async function sendQuoteEmail(
       await sendEmail({
         target: "user",
         to: userRecipient,
-        replyTo: safeUserReplyTo,
+        replyTo: safeUserReplyTo ?? undefined,
         subject: "We received your quote inquiry - Kayns Shop",
         variant: "user",
         attachments: attachmentBuildResult.inlinePreviewAttachments,

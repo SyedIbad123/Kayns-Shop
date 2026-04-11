@@ -6,8 +6,22 @@ const DEFAULT_HONOURS_COLORS: CapColors = {
   solid: "#FFFFFF",
 };
 
-export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
+export default function HonoursCapSVG({
+  colors,
+  tasselColor,
+}: {
+  colors: CapColors;
+  tasselColor?: string;
+}) {
   const color = colors.solid || colors.main || DEFAULT_HONOURS_COLORS.solid;
+
+  const TASSEL_COLOR_HEX: Record<string, string> = {
+    "Metallic Gold": "#E7C91C",
+    "Metallic Silver": "#C0C0C0",
+  };
+  const tasselHex = tasselColor
+    ? (TASSEL_COLOR_HEX[tasselColor] ?? "#E7C91C")
+    : "#E7C91C";
 
   return (
     <svg
@@ -28,8 +42,8 @@ export default function HonoursCapSVG({ colors }: { colors: CapColors }) {
 	.st1{fill:${color};stroke:#000000;stroke-width:2.5;stroke-miterlimit:2.6131;}
 	.st2{fill:none;stroke:#000000;stroke-width:2.5;stroke-miterlimit:2.6131;}
 	.st3{fill:none; stroke:#000000; stroke-width:2.5;stroke-miterlimit:2.6131;}
-	.st4{fill-rule:evenodd;clip-rule:evenodd; }
-	.st5{fill:none;stroke-width:2.5;stroke-miterlimit:2.6131;}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;fill:${tasselHex}; }
+	.st5{fill:none;stroke:${tasselHex};stroke-width:2.5;stroke-miterlimit:2.6131;}
 	.st6{}
 	.st7{font-family:'ArialMT';}
 	.st8{font-size:11.1928px;}

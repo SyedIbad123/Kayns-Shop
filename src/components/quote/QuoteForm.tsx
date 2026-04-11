@@ -214,8 +214,8 @@ export default function QuoteForm() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-      <div className="rounded-3xl border border-[#E5E7EB] bg-linear-to-br from-white via-[#F3F6FC] to-[#F3F6FC] p-6 shadow-sm sm:p-8">
+    <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <div className="rounded-3xl p-6 sm:p-8">
         <div className="mb-6 rounded-2xl border border-[#143D59]/20 bg-white/80 px-4 py-4">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#143D59]">
             Step 2 of 2
@@ -378,7 +378,7 @@ export default function QuoteForm() {
               </p>
             ) : null}
 
-            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="mt-20 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <Link
                 href={backToConfiguratorHref}
                 className="text-sm font-medium text-[#143D59] underline-offset-4 transition hover:underline"

@@ -249,6 +249,9 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
   const logo = configuration.logo ?? null;
   const extraMotifs = configuration.extraMotifs ?? [];
   const safeMarkup = getSafeMarkup(configuration.svgMarkup);
+  const baggyCapType = configuration.baggyCapType ?? null;
+  const cord = configuration.cord ?? null;
+  const tasselColor = configuration.tasselColor ?? null;
 
   return (
     <section className="rounded-2xl border border-[#E5E7EB] bg-white px-5 py-5 shadow-sm">
@@ -269,7 +272,46 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
             <span className="font-semibold text-[#374151]">Type:</span>{" "}
             {formatValue(configuration.capType)}
           </p>
+          {baggyCapType ? (
+            <p>
+              <span className="font-semibold text-[#374151]">
+                Baggy Cap Type:
+              </span>{" "}
+              {baggyCapType}
+            </p>
+          ) : null}
+          {tasselColor ? (
+            <p>
+              <span className="font-semibold text-[#374151]">
+                Tassel / Braid / Cord Colour:
+              </span>{" "}
+              {tasselColor}
+            </p>
+          ) : null}
         </div>
+
+        {cord ? (
+          <div className="mt-3 rounded-lg border border-[#F3F6FC] bg-white p-3 text-sm">
+            <p className="font-semibold text-[#374151]">Cord Add-On</p>
+            <p className="mt-1 text-[#111827]">
+              {cord.enabled ? (
+                <>
+                  <span className="inline-block">Enabled — AUD $5.00</span>
+                  <span className="ml-2 inline-flex items-center gap-1.5">
+                    <span
+                      className="inline-block h-3.5 w-3.5 rounded-full border border-[#D1D5DB]"
+                      style={{ backgroundColor: cord.color }}
+                      aria-hidden="true"
+                    />
+                    {cord.color}
+                  </span>
+                </>
+              ) : (
+                "Not added"
+              )}
+            </p>
+          </div>
+        ) : null}
 
         <ul className="mt-3 space-y-2">
           {configuration.panels.map((panel) => (
@@ -300,7 +342,7 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
               SVG Snapshot
             </p>
             <div
-              className="max-h-[400px] overflow-auto"
+              className="max-h-[700px] overflow-auto"
               dangerouslySetInnerHTML={{ __html: safeMarkup }}
             />
           </div>

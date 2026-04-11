@@ -7,9 +7,11 @@ import ProductDropdown from "@/components/ui/customize/ProductDropdown";
 import CustomizePanel from "@/components/ui/customize/CustomizePanel";
 import {
   getCapByLabel,
+  getCapById,
   DEFAULT_CAP,
 } from "@/components/ui/customize/CapRegistry";
 import {
+  getSvgConfig,
   saveQuoteConfig,
   saveSvgConfig,
   type StoredExtraMotif,
@@ -18,6 +20,9 @@ import {
   type StoredUploadedFileSummary,
 } from "@/lib/storage";
 import type { CapColors, CapConfig } from "@/types/cap.types";
+import CustomCricketBaggyCapSingleColor from "@/components/SVG/Single-Color/CustomCricketBaggyCapSingleColor";
+import CustomCricketBaggyCapMultiColor from "@/components/SVG/Multi-Color/CustomCricketBaggyCapMultiColor";
+import HonoursCapSVG from "@/components/SVG/Single-Color/HonoursCapSVG";
 
 const MAX_LOGO_SIZE_BYTES = 1 * 1024 * 1024;
 
@@ -143,7 +148,7 @@ interface CapPanelOption {
 
 function formatPanelLabel(key: string) {
   return key.startsWith("id_")
-    ? `Path ${key.replace("id_", "")}`
+    ? `Panel ${key.replace("id_", "")}`
     : key.replace(/[_-]/g, " ").replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
@@ -196,7 +201,11 @@ function toUploadedFileSummary(
   };
 }
 
-export default function MultiProductCustomizer() {
+export default function MultiProductCustomizer({
+  initialCapLabel,
+}: {
+  initialCapLabel?: string;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -205,18 +214,63 @@ export default function MultiProductCustomizer() {
 
   const [isRoutingToQuote, setIsRoutingToQuote] = useState(false);
   const [svgMarkupList, setSvgMarkupList] = useState<string[]>([]);
-  const [logoUpload, setLogoUpload] = useState<StoredLogoUpload | null>(null);
   const [logoError, setLogoError] = useState<string | null>(null);
-  const [extraMotifs, setExtraMotifs] = useState<StoredExtraMotif[]>([]);
   const [extraMotifErrors, setExtraMotifErrors] = useState<
     Record<string, string>
   >({});
 
-  // ── active cap config ─────────────────────────────────────
-  const [capConfig, setCapConfig] = useState(DEFAULT_CAP);
+  // ── Lazy initialisers read localStorage once on client mount ──
+  // (getSvgConfig returns null on SSR; lazy fn runs per mount on client)
+  // initialCapLabel (from the collection route) always takes priority so
+  // navigating from /collection/4 always pre-selects the right cap type.
+  const [capConfig, setCapConfig] = useState<CapConfig>(() => {
+    if (initialCapLabel) return getCapByLabel(initialCapLabel) ?? DEFAULT_CAP;
+    const saved = getSvgConfig();
+    if (saved) return getCapById(saved.capId) ?? DEFAULT_CAP;
+    return DEFAULT_CAP;
+  });
 
-  // ── colours — re-seeded whenever cap changes ──────────────
-  const [colors, setColors] = useState<CapColors>(DEFAULT_CAP.defaultColors);
+  const [colors, setColors] = useState<CapColors>(() => {
+    if (initialCapLabel) {
+      const cap = getCapByLabel(initialCapLabel);
+      return cap ? cap.defaultColors : DEFAULT_CAP.defaultColors;
+    }
+    const saved = getSvgConfig();
+    if (saved?.colors) return saved.colors;
+    return DEFAULT_CAP.defaultColors;
+  });
+
+  const [extraMotifs, setExtraMotifs] = useState<StoredExtraMotif[]>(() => {
+    const saved = getSvgConfig();
+    return saved?.extraMotifs ?? [];
+  });
+
+  const [logoUpload, setLogoUpload] = useState<StoredLogoUpload | null>(() => {
+    const saved = getSvgConfig();
+    return saved?.logo ?? null;
+  });
+
+  // ── new fields ────────────────────────────────────────────
+  const [baggyCapType, setBaggyCapType] = useState<string>(() => {
+    const saved = getSvgConfig();
+    return saved?.baggyCapType ?? "";
+  });
+
+  const [cordEnabled, setCordEnabled] = useState<boolean>(() => {
+    const saved = getSvgConfig();
+    return saved?.cord?.enabled ?? false;
+  });
+
+  const [cordColor, setCordColor] = useState<string>(() => {
+    const saved = getSvgConfig();
+    return saved?.cord?.color ?? "#000000";
+  });
+
+  const [tasselColor, setTasselColor] = useState<string>(() => {
+    const saved = getSvgConfig();
+    return saved?.tasselColor ?? "";
+  });
+
   const panelOptions = useMemo(
     () => getCapPanelOptions(capConfig),
     [capConfig],
@@ -259,6 +313,11 @@ export default function MultiProductCustomizer() {
     setExtraMotifErrors({});
     setCapConfig(config);
     setColors(config.defaultColors); // reset colours to new cap defaults
+    // reset new cap-specific fields
+    setBaggyCapType("");
+    setCordEnabled(false);
+    setCordColor("#000000");
+    setTasselColor("");
   }
 
   // ─── CustomizePanel colour change ────────────────────────
@@ -268,21 +327,22 @@ export default function MultiProductCustomizer() {
   }
 
   const handleAddExtraMotif = useCallback(() => {
+    const limit =
+      capConfig.id === "baggy-single" || capConfig.id === "honours"
+        ? 10
+        : panelOptions.length;
     setExtraMotifs((currentMotifs) => {
-      if (
-        panelOptions.length === 0 ||
-        currentMotifs.length >= panelOptions.length
-      ) {
+      if (panelOptions.length === 0 || currentMotifs.length >= limit) {
         return currentMotifs;
       }
 
       const defaultPanel =
-        panelOptions[currentMotifs.length] ??
+        panelOptions[Math.min(currentMotifs.length, panelOptions.length - 1)] ??
         panelOptions[panelOptions.length - 1];
 
       return [...currentMotifs, createDefaultExtraMotif(defaultPanel)];
     });
-  }, [panelOptions]);
+  }, [capConfig.id, panelOptions]);
 
   const handleRemoveExtraMotif = useCallback((motifId: string) => {
     setExtraMotifs((currentMotifs) =>
@@ -543,7 +603,14 @@ export default function MultiProductCustomizer() {
     });
 
     return () => window.cancelAnimationFrame(frameId);
-  }, [capConfig.id, colors, extractSvgMarkupList]);
+  }, [
+    capConfig.id,
+    colors,
+    cordColor,
+    cordEnabled,
+    tasselColor,
+    extractSvgMarkupList,
+  ]);
 
   const captureSvgMarkup = useCallback(() => {
     const svgMarkups =
@@ -585,8 +652,12 @@ export default function MultiProductCustomizer() {
       color: colors[panel.key] ?? "#FFFFFF",
     }));
 
+    const motifLimit =
+      capConfig.id === "baggy-single" || capConfig.id === "honours"
+        ? 10
+        : panelOptions.length;
     const normalizedExtraMotifs = extraMotifs
-      .slice(0, panelOptions.length)
+      .slice(0, motifLimit)
       .map((motif, index) => {
         const fallbackPanel =
           panelOptions[Math.min(index, panelOptions.length - 1)] ??
@@ -649,6 +720,10 @@ export default function MultiProductCustomizer() {
       );
     });
 
+    const isBaggyCap =
+      capConfig.id === "baggy-single" || capConfig.id === "baggy-multi";
+    const isHonoursCap = capConfig.id === "honours";
+
     return {
       source: "svg",
       capId: capConfig.id,
@@ -663,16 +738,23 @@ export default function MultiProductCustomizer() {
       uploadedFiles,
       updatedAt: new Date().toISOString(),
       sourcePath: pathname,
+      baggyCapType: isBaggyCap ? baggyCapType || null : null,
+      cord: isBaggyCap ? { enabled: cordEnabled, color: cordColor } : null,
+      tasselColor: isHonoursCap ? tasselColor || null : null,
     };
   }, [
+    baggyCapType,
     capConfig,
     captureSvgMarkup,
     captureSvgViews,
     colors,
+    cordColor,
+    cordEnabled,
     extraMotifs,
     logoUpload,
     panelOptions,
     pathname,
+    tasselColor,
   ]);
 
   function handleRequestQuote() {
@@ -689,6 +771,12 @@ export default function MultiProductCustomizer() {
     saveSvgConfig(payload);
   }, [buildSvgConfigPayload]);
 
+  // ── motif limit: single baggy and honours caps get 10 motifs ──
+  const extraMotifLimit =
+    capConfig.id === "baggy-single" || capConfig.id === "honours"
+      ? 10
+      : panelOptions.length;
+
   // ─── dynamic SVG ─────────────────────────────────────────
   const { SVGComponent } = capConfig;
 
@@ -703,7 +791,26 @@ export default function MultiProductCustomizer() {
           aria-hidden="true"
           className="pointer-events-none absolute h-0 w-0 overflow-hidden opacity-0"
         >
-          <SVGComponent colors={colors} />
+          {capConfig.id === "baggy-single" ? (
+            <CustomCricketBaggyCapSingleColor
+              colors={colors}
+              cordEnabled={cordEnabled}
+              cordColor={cordColor}
+            />
+          ) : capConfig.id === "baggy-multi" ? (
+            <CustomCricketBaggyCapMultiColor
+              colors={colors}
+              cordEnabled={cordEnabled}
+              cordColor={cordColor}
+            />
+          ) : capConfig.id === "honours" ? (
+            <HonoursCapSVG
+              colors={colors}
+              tasselColor={tasselColor || undefined}
+            />
+          ) : (
+            <SVGComponent colors={colors} />
+          )}
         </div>
 
         {/* ── 1. Product Dropdown (top) ────────────────── */}
@@ -732,7 +839,7 @@ export default function MultiProductCustomizer() {
               onLogoDescriptionChange={handleLogoDescriptionChange}
               onLogoClear={handleLogoClear}
               extraMotifs={extraMotifs}
-              extraMotifLimit={panelOptions.length}
+              extraMotifLimit={extraMotifLimit}
               extraMotifErrors={extraMotifErrors}
               onAddExtraMotif={handleAddExtraMotif}
               onRemoveExtraMotif={handleRemoveExtraMotif}
@@ -742,6 +849,14 @@ export default function MultiProductCustomizer() {
               onExtraMotifColorChange={handleExtraMotifColorChange}
               onExtraMotifLogoSelect={handleExtraMotifLogoSelect}
               onExtraMotifLogoClear={handleExtraMotifLogoClear}
+              baggyCapType={baggyCapType}
+              onBaggyCapTypeChange={setBaggyCapType}
+              cordEnabled={cordEnabled}
+              cordColor={cordColor}
+              onCordToggle={setCordEnabled}
+              onCordColorChange={setCordColor}
+              tasselColor={tasselColor}
+              onTasselColorChange={setTasselColor}
             />
           </div>
 
@@ -768,6 +883,23 @@ export default function MultiProductCustomizer() {
                     </div>
                   ))}
                 </div>
+              ) : capConfig.id === "baggy-single" ? (
+                <CustomCricketBaggyCapSingleColor
+                  colors={colors}
+                  cordEnabled={cordEnabled}
+                  cordColor={cordColor}
+                />
+              ) : capConfig.id === "baggy-multi" ? (
+                <CustomCricketBaggyCapMultiColor
+                  colors={colors}
+                  cordEnabled={cordEnabled}
+                  cordColor={cordColor}
+                />
+              ) : capConfig.id === "honours" ? (
+                <HonoursCapSVG
+                  colors={colors}
+                  tasselColor={tasselColor || undefined}
+                />
               ) : (
                 <SVGComponent colors={colors} />
               )}

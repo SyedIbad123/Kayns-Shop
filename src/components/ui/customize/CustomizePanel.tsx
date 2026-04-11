@@ -56,6 +56,17 @@ interface Props {
   onExtraMotifColorChange?: (motifId: string, color: string) => void;
   onExtraMotifLogoSelect?: (motifId: string, file: File | null) => void;
   onExtraMotifLogoClear?: (motifId: string) => void;
+  // ── Baggy cap type (Australian / English) ──────────────
+  baggyCapType?: string | null;
+  onBaggyCapTypeChange?: (value: string) => void;
+  // ── Cord add-on (baggy caps only) ──────────────────────
+  cordEnabled?: boolean;
+  cordColor?: string;
+  onCordToggle?: (enabled: boolean) => void;
+  onCordColorChange?: (color: string) => void;
+  // ── Tassel/Braid/Cord colour (honours cap only) ─────────
+  tasselColor?: string | null;
+  onTasselColorChange?: (color: string) => void;
 }
 
 function formatBytes(sizeInBytes: number) {
@@ -163,6 +174,241 @@ function ColorRow({
   );
 }
 
+// ── Cord colour picker (reuses COLOR_OPTIONS, separate handler) ─
+function CordColorDropdown({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const selectedOption = COLOR_OPTIONS.find((opt) => opt.value === value) ?? {
+    value,
+    label: "Cord",
+  };
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  return (
+    <div>
+      <p className="mb-1 pl-4 block text-sm font-medium text-gray-700">
+        Cord Colour
+      </p>
+      <div ref={wrapperRef} className="relative rounded-xl px-4 py-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between rounded-xl border border-black bg-white px-4 py-3 text-base text-gray-900 outline-none transition"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label="Cord colour dropdown"
+        >
+          <span className="flex items-center gap-2">
+            <span
+              className={`inline-block h-4 w-4 rounded-full ${selectedOption.value === "#FFFFFF" || selectedOption.value === "#FFF" ? "border border-gray-300" : ""}`}
+              style={{ backgroundColor: selectedOption.value }}
+            />
+            <span>{selectedOption.label}</span>
+          </span>
+          <span className="text-xs text-gray-500">▼</span>
+        </button>
+
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute left-4 right-4 z-20 mt-1 max-h-60 overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
+          >
+            {COLOR_OPTIONS.map((opt) => (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-[#F3F6FC]"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 rounded-full ${opt.value === "#FFFFFF" || opt.value === "#FFF" ? "border border-gray-300" : ""}`}
+                    style={{ backgroundColor: opt.value }}
+                  />
+                  <span>{opt.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const BAGGY_CAP_TYPE_OPTIONS = [
+  { value: "Australian Baggy Cap", label: "Australian Baggy Cap" },
+  { value: "English Baggy Cap", label: "English Baggy Cap" },
+];
+
+// ── Baggy cap type selector dropdown (Australian / English) ─
+function BaggyCapTypeDropdown({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const selectedOption =
+    BAGGY_CAP_TYPE_OPTIONS.find((opt) => opt.value === value) ?? null;
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  return (
+    <div>
+      <p className="mb-1 pl-4 block text-sm font-medium text-gray-700">
+        Select Baggy Cap Type
+      </p>
+      <div ref={wrapperRef} className="relative rounded-xl px-4 py-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between rounded-xl border border-black bg-white px-4 py-3 text-base text-gray-900 outline-none transition"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label="Baggy cap type dropdown"
+        >
+          <span>{selectedOption?.label ?? "Select type…"}</span>
+          <span className="text-xs text-gray-500">▼</span>
+        </button>
+
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute left-4 right-4 z-20 mt-1 overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
+          >
+            {BAGGY_CAP_TYPE_OPTIONS.map((opt) => (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-[#F3F6FC]"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span>{opt.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const TASSEL_OPTIONS = [
+  { value: "Metallic Gold", label: "Metallic Gold" },
+  { value: "Metallic Silver", label: "Metallic Silver" },
+];
+
+// ── Tassel/Braid/Cord colour selector (honours cap only) ─
+function TasselDropdown({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const selectedOption =
+    TASSEL_OPTIONS.find((opt) => opt.value === value) ?? TASSEL_OPTIONS[0]!;
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
+
+  return (
+    <div>
+      <p className="mb-1 pl-4 block text-sm font-medium text-gray-700">
+        Choose Tassel, Braid and Cord Colour:
+      </p>
+      <div ref={wrapperRef} className="relative rounded-xl px-4 py-3">
+        <button
+          type="button"
+          className="flex w-full items-center justify-between rounded-xl border border-black bg-white px-4 py-3 text-base text-gray-900 outline-none transition"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-haspopup="listbox"
+          aria-expanded={isOpen}
+          aria-label="Tassel colour dropdown"
+        >
+          <span>{selectedOption.label}</span>
+          <span className="text-xs text-gray-500">▼</span>
+        </button>
+
+        {isOpen && (
+          <ul
+            role="listbox"
+            className="absolute left-4 right-4 z-20 mt-1 overflow-auto rounded border border-gray-200 bg-white py-1 shadow-lg"
+          >
+            {TASSEL_OPTIONS.map((opt) => (
+              <li key={opt.value}>
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-[#F3F6FC]"
+                  onClick={() => {
+                    onChange(opt.value);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span>{opt.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function CustomizePanel({
   capConfig,
   panelOptions,
@@ -184,7 +430,19 @@ export default function CustomizePanel({
   onExtraMotifColorChange,
   onExtraMotifLogoSelect,
   onExtraMotifLogoClear,
+  baggyCapType,
+  onBaggyCapTypeChange,
+  cordEnabled = false,
+  cordColor,
+  onCordToggle,
+  onCordColorChange,
+  tasselColor,
+  onTasselColorChange,
 }: Props) {
+  const isBaggyCap =
+    capConfig.id === "baggy-single" || capConfig.id === "baggy-multi";
+  const isHonoursCap = capConfig.id === "honours";
+
   const dynamicPanelRows = capConfig.type === "panel" ? panelOptions : [];
 
   const useTwoColumnPanelLayout =
@@ -199,9 +457,17 @@ export default function CustomizePanel({
         </p>
       </div>
 
-      <div className="flex flex-col p-4 gap-3 rounded-xl bg-white px-4 py-3 shadow-sm">
-        {/* Product name */}
+      {/* ── BAGGY CAP TYPE SELECTOR ──────────────────────── */}
+      {isBaggyCap && (
+        <div className="rounded-xl bg-white px-4 py-4 shadow-sm">
+          <BaggyCapTypeDropdown
+            value={baggyCapType ?? ""}
+            onChange={(value) => onBaggyCapTypeChange?.(value)}
+          />
+        </div>
+      )}
 
+      <div className="flex flex-col p-4 gap-3 rounded-xl bg-white px-4 py-3 shadow-sm">
         {/* ── SOLID: single colour picker ─────── */}
         {capConfig.type === "solid" && (
           <ColorRow
@@ -233,6 +499,50 @@ export default function CustomizePanel({
           </div>
         )}
       </div>
+
+      {/* ── CORD ADD-ON (baggy caps only) ──────────────────── */}
+      {isBaggyCap && (
+        <div className="rounded-xl  bg-white px-4 py-4 shadow-sm">
+          <p className="mb-3 text-sm font-bold uppercase tracking-wide text-[#143D59]">
+            Do You Want To Have A Cord?
+          </p>
+          <label className="flex cursor-pointer items-center gap-2">
+            <input
+              type="checkbox"
+              checked={cordEnabled}
+              onChange={(e) => onCordToggle?.(e.target.checked)}
+              className="h-4 w-4 cursor-pointer rounded border-gray-300 accent-[#143D59]"
+            />
+            <span className="text-sm font-semibold text-gray-800">
+              Click To Add Cord For
+            </span>
+            {/* <span className="text-sm font-semibold text-red-500">
+              AUD $5.00
+            </span> */}
+          </label>
+
+          {cordEnabled && (
+            <div className="mt-3">
+              <CordColorDropdown
+                value={cordColor ?? COLOR_OPTIONS[0]!.value}
+                onChange={(value) => onCordColorChange?.(value)}
+              />
+            </div>
+          )}
+          {/* TODO: Update Baggy Cap SVG component to show cord when enabled using cordColor value */}
+        </div>
+      )}
+
+      {/* ── TASSEL / BRAID / CORD COLOUR (honours cap only) ── */}
+      {isHonoursCap && (
+        <div className="rounded-xl bg-white px-4 py-4 shadow-sm">
+          <TasselDropdown
+            value={tasselColor ?? ""}
+            onChange={(value) => onTasselColorChange?.(value)}
+          />
+          {/* TODO: Update HonoursCapSVG to reflect selected tasselColor when design assets are ready */}
+        </div>
+      )}
 
       <div className="rounded-xl bg-white px-4 py-3 shadow-sm">
         <p className="text-sm font-medium text-gray-800">

@@ -69,6 +69,12 @@ export interface StoredSvgConfig {
   uploadedFiles?: StoredUploadedFileSummary[];
   updatedAt: string;
   sourcePath?: string;
+  /** Baggy cap only: "Australian Baggy Cap" | "English Baggy Cap" */
+  baggyCapType?: string | null;
+  /** Baggy cap only: optional cord add-on */
+  cord?: { enabled: boolean; color: string } | null;
+  /** Honours cap only: "Metallic Gold" | "Metallic Silver" */
+  tasselColor?: string | null;
 }
 
 export type StoredQuoteConfig = StoredStandardConfig | StoredSvgConfig;
