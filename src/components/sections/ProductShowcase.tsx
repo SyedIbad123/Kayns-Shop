@@ -26,6 +26,12 @@ const namedImageByTitle: Record<string, string> = {
   "Half Sleeves Puffer Jacket": "/puffer_h_.png",
   "Track Jacket": "/zipper_jacket_.png",
   "Zip Top Jacket": "/ziptop.png",
+  "Netball T-Shirt": "/netball_tshirt.png",
+};
+
+const showcaseDescriptionByTitle: Record<string, string> = {
+  "Netball T-Shirt":
+    "Elevate your game with our premium Netball T-Shirt, designed for performance and style on the court. Crafted from lightweight, breathable fabric, it keeps you cool and comfortable during intense matches. Whether you\u2019re training or competing, this shirt moves with you \u2014 built to handle every sprint, jump, and pivot with ease.",
 };
 
 export default function ProductShowcase({ item }: { item: CollectionItem }) {
@@ -33,6 +39,10 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
   const bgImage = "/bg_Image.png";
   const capProducts = item.products ?? [];
   const hasCapGrid = capProducts.length > 1;
+  const showcaseDescription =
+    showcaseDescriptionByTitle[item.title] ??
+    item.description ??
+    "KAYNS is where performance meets street culture and every piece is built with purpose.";
 
   if (hasCapGrid) {
     return (
@@ -40,7 +50,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
         aria-label="Product showcase"
         className="bg-white py-12 sm:py-14"
       >
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 ">
           <h2 className="text-center text-xl font-extrabold uppercase tracking-[0.12em] text-gray-900 sm:text-2xl">
             Explore Cap Styles
           </h2>
@@ -95,6 +105,13 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
               );
             })}
           </div>
+          <Link
+            href={`/customize/${item.id}`}
+            className="mt-20 site-btn flex w-full items-center justify-center bg-transparent! rounded-full px-2 py-2.5 text-xs font-semibold outline-none sm:text-sm"
+            aria-label="Book your order"
+          >
+            Customize Your Cap
+          </Link>
         </div>
       </section>
     );
@@ -130,8 +147,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
             Where Sport Meets Street
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/85">
-            {item.description ??
-              "KAYNS is where performance meets street culture and every piece is built with purpose."}
+            {showcaseDescription}
           </p>
         </div>
       </div>
@@ -156,8 +172,7 @@ export default function ProductShowcase({ item }: { item: CollectionItem }) {
             Where Sport Meets Street
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-white/85">
-            {item.description ??
-              "KAYNS is where performance meets street culture and every piece is built with purpose."}
+            {showcaseDescription}
           </p>
         </div>
 

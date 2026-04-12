@@ -48,13 +48,13 @@ export default function CollectionHero({ item }: { item: CollectionItem }) {
           <button
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#143D59] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#143D59]/90 focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#143D59] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#143D59]/90 focus:outline-none "
           >
             {isExpanded ? "View Less \u2191" : "Read More \u2193"}
           </button>
           <Link
             href={`/customize/${item.id}`}
-            className="site-btn inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
+            className="site-btn inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold focus:outline-none  "
           >
             Customize
           </Link>

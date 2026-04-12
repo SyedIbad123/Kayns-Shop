@@ -42,8 +42,8 @@ export default async function CollectionPage({ params }: Props) {
     <main className="min-h-screen">
       <CollectionHero item={collection} />
       <BookOrder item={collection} />
-      <ProductShowcase item={collection} />
       <ProductGridRow selectedCap={collection.title} />
+      <ProductShowcase item={collection} />
     </main>
   );
 }

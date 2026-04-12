@@ -50,6 +50,9 @@ const HALF_SLEEVES_PUFFER_COPY =
 const TRACK_JACKET_COPY =
   "Speed meets style in every stitch. Our track jacket is engineered for athletes who demand performance and aesthetics in equal measure. Lightweight, breathable, and built with a streamlined fit — it transitions effortlessly from warm-up sessions to post-match street style without missing a beat. KAYNS crafts track jackets that carry your brand with confidence — custom panels, embroidered logos, and signature color combinations that make your squad unmistakable from warm-up to podium.";
 
+const NETBALL_TSHIRT_COPY =
+  "At Kayns, we believe every athlete deserves gear that matches their passion. Our Netball T-Shirt is fully customizable — choose your colors, add your team name, number, or logo, and place your order effortlessly through our platform. We deliver high-quality, personalized sportswear tailored exactly to your needs, because great performance starts with the right kit.";
+
 const ZIP_TOP_JACKET_COPY =
   "Versatility is the name of the game. Our zip top jacket gives you full control over your comfort — zip up for warmth, open for airflow, layer it over anything and look sharp doing it. Built from durable performance fabric with a clean athletic silhouette that works for every occasion. At KAYNS every zip top is a branding opportunity — your logo, your palette, your identity executed with the kind of custom craftsmanship that separates serious brands from the rest.";
 
@@ -110,6 +113,16 @@ const capProducts: CollectionProduct[] = [
     name: "Visor",
     image: "/visor.png",
   },
+  {
+    id: 23,
+    name: "Performance Cap",
+    image: "/flat_peak_cap.png",
+  },
+  {
+    id: 24,
+    name: "Honour Cap",
+    image: "/honour_cap.png",
+  },
 ];
 
 const capsCollection: CollectionItem[] = [
@@ -162,6 +175,20 @@ const capsCollection: CollectionItem[] = [
     image: "/visor.png",
     products: capProducts,
   },
+  {
+    id: 23,
+    title: "Performance Cap",
+    description: CAPS_COLLECTION_COPY,
+    image: "/flat_peak_cap.png",
+    products: capProducts,
+  },
+  {
+    id: 24,
+    title: "Honour Cap",
+    description: CAPS_COLLECTION_COPY,
+    image: "/honour_cap.png",
+    products: capProducts,
+  },
 ];
 
 const tshirtsCollection: CollectionItem[] = [
@@ -174,7 +201,7 @@ const tshirtsCollection: CollectionItem[] = [
   },
   {
     id: 9,
-    title: "Soccer T-Shirt",
+    title: "Football T-Shirt",
     description: SOCCER_TSHIRT_COPY,
     image: "/frame_2.png",
     productType: "t-shirt",
@@ -199,6 +226,13 @@ const tshirtsCollection: CollectionItem[] = [
     description: POLO_TSHIRT_COPY,
     image: "/frame_17.png",
     productType: "polo-shirt",
+  },
+  {
+    id: 25,
+    title: "Netball T-Shirt",
+    description: NETBALL_TSHIRT_COPY,
+    image: "/netball_tshirt.png",
+    productType: "t-shirt",
   },
 ];
 

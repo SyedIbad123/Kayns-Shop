@@ -99,23 +99,23 @@ export default function HotProducts() {
           </div>
         </div>
 
-        <div className="mt-5 flex justify-end px-4">
-          <div className="flex items-center gap-2">
+        <div className="mt-5 flex justify-center px-4">
+          <div className="flex items-center gap-4">
             <button
               type="button"
               onClick={() => emblaApi?.scrollPrev()}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
+              className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
               aria-label="Previous hot product"
             >
-              <ChevronLeft size={20} />
+              <ChevronLeft size={28} />
             </button>
             <button
               type="button"
               onClick={() => emblaApi?.scrollNext()}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
+              className="inline-flex h-14 w-14 items-center justify-center rounded-full border border-white/50 bg-white/10 text-white transition hover:bg-white/20"
               aria-label="Next hot product"
             >
-              <ChevronRight size={20} />
+              <ChevronRight size={28} />
             </button>
           </div>
         </div>

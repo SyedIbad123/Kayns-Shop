@@ -133,6 +133,19 @@ const capConfigurations: CapConfiguration[] = [
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
   },
+  {
+    style: "Performance Cap",
+    features: [
+      "6-panel cap",
+      "Perfect for warmer summer",
+      "Adjustable snapback strap for a comfortable fit",
+      "Mesh for breathability",
+    ],
+    price: "$29.00 for performance cap",
+    minOrder: "Minimum order: 10 caps",
+    turnaround: commonTurnaround,
+    sizing: ["Single size fit for all"],
+  },
 ];
 
 function normalizeCapName(value: string) {
@@ -164,72 +177,81 @@ interface ProductGridRowProps {
 export default function ProductGridRow({ selectedCap }: ProductGridRowProps) {
   const visibleConfigurations = getVisibleCapConfigurations(selectedCap);
 
+  console.log(selectedCap);
+  const honourCap = selectedCap == "Honour Cap";
+
   return (
-    <section
-      className="bg-white px-2 py-8 sm:px-4 sm:py-12"
-      aria-label="Cap configuration table"
-    >
-      <div className="mx-auto max-w-400 rounded-2xl bg-white shadow-[0_14px_36px_rgba(20,61,89,0.08)]">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-4xl border-collapse">
-            <thead>
-              <tr className="bg-[#143D59]/95 text-white">
-                <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
-                  Features
-                </th>
-                <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
-                  Pricing
-                </th>
-                <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
-                  Turnaround Time
-                </th>
-                <th className="px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
-                  Sizing
-                </th>
-              </tr>
-            </thead>
+    <>
+      {!honourCap && (
+        <section
+          className="bg-white px-2 py-8 sm:px-4 sm:py-12"
+          aria-label="Cap configuration table"
+        >
+          <div className="mx-auto max-w-400 rounded-2xl bg-white shadow-[0_14px_36px_rgba(20,61,89,0.08)]">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-4xl border-collapse">
+                <thead>
+                  <tr className="bg-[#143D59]/95 text-white">
+                    <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
+                      Features
+                    </th>
+                    <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
+                      Pricing
+                    </th>
+                    <th className="border-r border-[#F1A34B] px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
+                      Turnaround Time
+                    </th>
+                    <th className="px-4 py-4 text-left text-sm font-bold uppercase tracking-wide sm:px-6 sm:text-base">
+                      Sizing
+                    </th>
+                  </tr>
+                </thead>
 
-            <tbody>
-              {visibleConfigurations.map((cap, index) => (
-                <tr
-                  key={cap.style}
-                  className={`align-top text-slate-800 ${index % 2 === 0 ? "bg-[#F3F6FC]/60" : "bg-white"}`}
-                >
-                  <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
-                    <ul className="list-disc space-y-1.5 pl-5">
-                      {cap.features.map((feature) => (
-                        <li key={feature}>{feature}</li>
-                      ))}
-                    </ul>
-                  </td>
+                <tbody>
+                  {visibleConfigurations.map((cap, index) => (
+                    <tr
+                      key={cap.style}
+                      className={`align-top text-slate-800 ${index % 2 === 0 ? "bg-[#F3F6FC]/60" : "bg-white"}`}
+                    >
+                      <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
+                        <ul className="list-disc space-y-1.5 pl-5">
+                          {cap.features.map((feature) => (
+                            <li key={feature}>{feature}</li>
+                          ))}
+                        </ul>
+                      </td>
 
-                  <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
-                    <p className="font-semibold text-slate-900">{cap.price}</p>
-                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:text-sm">
-                      {cap.minOrder}
-                    </p>
-                    <p className="mt-3 text-sm text-slate-700">
-                      {commonPricingNote}
-                    </p>
-                  </td>
+                      <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
+                        <p className="font-semibold text-slate-900">
+                          {cap.price}
+                        </p>
+                        <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:text-sm">
+                          {cap.minOrder}
+                        </p>
+                        <p className="mt-3 text-sm text-slate-700">
+                          {commonPricingNote}
+                        </p>
+                      </td>
 
-                  <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
-                    {cap.turnaround}
-                  </td>
+                      <td className="border-r border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
+                        {cap.turnaround}
+                      </td>
 
-                  <td className="border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
-                    <ul className="list-disc space-y-1.5 pl-5">
-                      {cap.sizing.map((size) => (
-                        <li key={size}>{size}</li>
-                      ))}
-                    </ul>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+                      <td className="border-t border-[#F1A34B] px-4 py-5 text-sm leading-relaxed sm:px-6 sm:text-base">
+                        <ul className="list-disc space-y-1.5 pl-5">
+                          {cap.sizing.map((size) => (
+                            <li key={size}>{size}</li>
+                          ))}
+                        </ul>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
   );
 }

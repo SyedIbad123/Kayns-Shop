@@ -7,7 +7,7 @@ import type { CollectionItem } from "@/data/collection";
 
 const filterButtons = ["Size chart", "Available color", "Logo Location"];
 
-const SHIRTS_AND_JACKETS_SIZE_CHART = "/shirts_and_jacket_size_chart.png";
+const SHIRTS_AND_JACKETS_SIZE_CHART = "/shorts_size_chart.png";
 const SHORTS_SIZE_CHART = "/shorts_size_chart.png";
 
 const SIZE_CHART_BY_PRODUCT_TYPE: Partial<
@@ -129,9 +129,13 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
       <div className="mx-auto flex max-w-3xl flex-col gap-8 sm:flex-row sm:items-center">
         {/* Left — heading, filters, input */}
         <div className="flex flex-1 flex-col gap-4">
-          <h2 className="text-3xl font-extrabold uppercase tracking-widest sm:text-5xl lg:text-7xl">
+          <Link
+            href={`/customize/single/${item.id}`}
+            className="site-btn inline-flex w-fit rounded-full px-6 py-3 text-2xl font-extrabold uppercase tracking-widest outline-none focus:ring-2 focus:ring-[#143D59] sm:text-4xl lg:text-5xl"
+            aria-label="Get a quote"
+          >
             Get a Quote
-          </h2>
+          </Link>
           <p className="text-sm leading-relaxed text-[#143d59]">
             Send your customization brief and our team will provide pricing,
             production details, and delivery timelines for your product.
@@ -150,15 +154,6 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
               </button>
             ))}
           </div>
-
-          {/* Quote action */}
-          <Link
-            href={`/customize/single/${item.id}`}
-            className="site-btn inline-flex w-fit rounded-full px-4 py-2 text-xs font-semibold outline-none focus:ring-2 focus:ring-[#143D59] sm:text-sm"
-            aria-label="Quote details"
-          >
-            Quote Details
-          </Link>
         </div>
       </div>
 

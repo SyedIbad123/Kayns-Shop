@@ -497,7 +497,7 @@ export default function DynamicClothingForm({
               }
               onChange={controllerField.onChange}
               error={fieldError}
-              columns={(field.options?.length ?? 0) <= 2 ? 2 : 4}
+              columns={(field.options?.length ?? 0) <= 2 ? 2 : 3}
             />
           )}
         />

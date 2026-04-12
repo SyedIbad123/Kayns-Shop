@@ -24,6 +24,7 @@ const frameImageByTitle: Record<string, string> = {
   "Half Sleeves Puffer Jacket": "/frame_6.png",
   "Track Jacket": "/frame_7.png",
   "Zip Top Jacket": "/frame_8.png",
+  "Netball T-Shirt": "/netball_tshirt.png",
 };
 
 function getFeatures(title: string): DetailFeature[] {

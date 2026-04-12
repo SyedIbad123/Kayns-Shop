@@ -47,6 +47,7 @@ const CATEGORY_TO_PRODUCT_TYPE: Record<string, ClothingProductType> = {
   "basketball shorts": "basketball-shorts",
   "netball shorts": "netball-shorts",
   "rugby shorts": "rugby-shorts",
+  "netball t-shirt": "t-shirt",
 };
 
 function mapCategoryToProductType(category?: string | null) {
@@ -82,8 +83,8 @@ export default async function CustomizeSinglePage({ params }: Props) {
 
   return (
     <main className="min-h-screen bg-[#F3F6FC] pb-24 md:pb-12">
-      <section className="mx-auto flex w-[90vw] max-w-full flex-row gap-6 px-4 pb-10 pt-6 sm:px-6 lg:px-8">
-        <article className="overflow-hidden h-1/2 w-1/2 rounded-2xl border border-[#E5E7EB] bg-white shadow-sm">
+      <section className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 pb-10 pt-6 sm:px-6 lg:flex-row lg:px-8">
+        <article className="overflow-hidden w-full rounded-2xl border border-[#E5E7EB] bg-white shadow-sm lg:w-1/2 lg:self-start">
           <div className="relative h-52 w-full sm:h-96">
             <Image
               src={collection.image}

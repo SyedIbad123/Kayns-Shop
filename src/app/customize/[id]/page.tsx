@@ -15,6 +15,8 @@ const COLLECTION_TITLE_TO_CAP_LABEL: Record<string, string> = {
   "Sun Hat": "Custom Sun Cricket Hat",
   "Trucker Cap": "Custom Trucker Cap",
   Visor: "Custom Visor",
+  "Performance Cap": "Custom Cricket Performance Cap",
+  "Honour Cap": "Custom Cricket Honours Cap",
 };
 
 export async function generateStaticParams() {

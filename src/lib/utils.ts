@@ -9,6 +9,7 @@ const CAP_IMAGE_DIMENSIONS = {
   "/sun_hat.png": { width: 478, height: 319 },
   "/trucker_hat.png": { width: 356, height: 313 },
   "/visor.png": { width: 453, height: 251 },
+  "/honour_cap.png": { width: 539, height: 383 },
 } as const;
 
 type CapImagePath = keyof typeof CAP_IMAGE_DIMENSIONS;

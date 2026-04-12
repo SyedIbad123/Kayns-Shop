@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -55,6 +55,14 @@ export default function Hero() {
     (index: number) => emblaApi?.scrollTo(index),
     [emblaApi],
   );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const timer = setInterval(() => {
+      emblaApi.scrollNext();
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [emblaApi]);
 
   return (
     <section className="bg-[#f3f6fc] text-white" aria-label="Hero">

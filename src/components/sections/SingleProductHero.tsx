@@ -6,21 +6,22 @@ import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
 
 const namedImageByTitle: Record<string, string> = {
-  "Cricket T-Shirt": "/cricket_shirt.jpg",
-  "Soccer T-Shirt": "/soccer_shirt.jpg",
-  "Rugby T-Shirt": "/rugby_shirt.jpg",
+  "Cricket T-Shirt": "/tshirt.jpg",
+  "Football T-Shirt": "/cricket_shirt.jpg",
+  "Rugby T-Shirt": "/soccer_shirt.jpg",
   "Basketball Singlet": "/basketball_singlet.jpg",
   "Polo T-Shirt": "/polo_shirt.jpg",
   Trouser: "/trouser.jpg",
   "Netball Bummer": "/netball_short.jpg",
-  "Basketball Short": "/basketball_short.jpg",
-  "Soccer Short": "/soccer_short.jpg",
-  "Rugby Short": "/rugby_short.jpg",
+  "Basketball Short": "/rugby_short.jpg",
+  "Soccer Short": "/basketball_short.jpg",
+  "Rugby Short": "/soccer_short.jpg",
   Sweatshirt: "/sweat_shirt.jpg",
   "Full Sleeves Puffer Jacket": "/full_sleves_puffer.jpg",
   "Half Sleeves Puffer Jacket": "/half_sleves_puffer.jpg",
   "Track Jacket": "/track_jacket.jpg",
   "Zip Top Jacket": "/ziptop.jpg",
+  "Netball T-Shirt": "/netball_tshirt.jpg",
 };
 
 export default function SingleProductHero({ item }: { item: CollectionItem }) {
@@ -65,13 +66,13 @@ export default function SingleProductHero({ item }: { item: CollectionItem }) {
           <button
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
-            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#143D59] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#143D59]/90 focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
+            className="inline-flex cursor-pointer items-center justify-center rounded-full bg-[#143D59] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#143D59]/90 focus:outline-none"
           >
             {isExpanded ? "View Less \u2191" : "Read More \u2193"}
           </button>
           <Link
             href={`/customize/single/${item.id}`}
-            className="site-btn inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-[#143D59]/35 focus:ring-offset-2"
+            className="site-btn inline-flex cursor-pointer items-center justify-center rounded-full px-4 py-1.5 text-sm font-semibold focus:outline-none"
           >
             Customize
           </Link>
