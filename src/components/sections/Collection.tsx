@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
-import SectionTitle from "@/components/ui/SectionTitle";
 import { collectionSections } from "@/data/collection";
 import ExpandCard from "@/components/sections/collection/ExpandCard";
 import { getCapImageDimensions } from "@/lib/utils";

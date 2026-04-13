@@ -98,7 +98,7 @@ const ICONS = {
   round_collar: imageIcon("/round_collar.png", ""),
   v_plus_panel_collar: imageIcon("/v_plus_panel_collar.png", ""),
   v_shape_polo_collar: imageIcon("/v_shape_collar.png", ""),
-  v_shape_t_collar: imageIcon("/v_shape_collar.png", ""),
+  v_shape_t_collar: imageIcon("/v_shape_t_collar.png", ""),
   zip_collar: imageIcon("/zip_collar.png", ""),
 
   // Cuff Images

@@ -147,7 +147,13 @@ export default function SingleProductQuote({ item }: { item: CollectionItem }) {
               <button
                 key={label}
                 type="button"
-                onClick={() => setActiveFilter(label)}
+                onClick={() => {
+                  if (label === "Available color") {
+                    window.open("/Color Chart.pdf", "_blank");
+                  } else {
+                    setActiveFilter(label);
+                  }
+                }}
                 className="rounded-full border border-white/30 px-4 py-1 text-xs font-medium text-white transition hover:bg-white/10"
               >
                 {label}
