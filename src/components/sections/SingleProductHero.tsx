@@ -6,16 +6,18 @@ import Link from "next/link";
 import type { CollectionItem } from "@/data/collection";
 
 const namedImageByTitle: Record<string, string> = {
-  "Cricket T-Shirt": "/tshirt.jpg",
-  "Football T-Shirt": "/cricket_shirt.jpg",
-  "Rugby T-Shirt": "/soccer_shirt.jpg",
+  "T-Shirt": "/tshirt.jpg",
+  "Cricket T-Shirt": "/cricket_shirt.jpg",
+  "Football T-Shirt": "/soccer_shirt.jpg",
+  "Rugby T-Shirt": "/rugby_shirt.jpg",
   "Basketball Singlet": "/basketball_singlet.jpg",
   "Polo T-Shirt": "/polo_shirt.jpg",
   Trouser: "/trouser.jpg",
   "Netball Bummer": "/netball_short.jpg",
-  "Basketball Short": "/rugby_short.jpg",
-  "Soccer Short": "/basketball_short.jpg",
-  "Rugby Short": "/soccer_short.jpg",
+
+  "Basketball Short": "/basketball_short.jpg",
+  "Soccer Short": "/soccer_short.jpg",
+  "Rugby Short": "/rugby_short.jpg",
   Sweatshirt: "/sweat_shirt.jpg",
   "Full Sleeves Puffer Jacket": "/full_sleves_puffer.jpg",
   "Half Sleeves Puffer Jacket": "/half_sleves_puffer.jpg",

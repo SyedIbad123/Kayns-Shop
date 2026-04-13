@@ -8,8 +8,11 @@ const CAPS_COLLECTION_BRANDING =
 
 const CAPS_COLLECTION_COPY = `${CAPS_COLLECTION_INTRO} ${CAPS_COLLECTION_BRANDING}`;
 
+const TSHIRT_COPY =
+  "Built for the pitch, loved beyond it. Our t-shirts combine lightweight performance fabric with a sharp, athletic cut that moves with you through every over. Sweat-wicking, durable, and designed to handle the heat of match day without compromising on style. KAYNS brings your team's identity to life on every shirt — custom n umbers, logos, and colorways that make your squad look as sharp as they play.";
+
 const CRICKET_TSHIRT_COPY =
-  "Built for the pitch, loved beyond it. Our cricket t-shirts combine lightweight performance fabric with a sharp, athletic cut that moves with you through every over. Sweat-wicking, durable, and designed to handle the heat of match day without compromising on style. KAYNS brings your team's identity to life on every cricket shirt — custom numbers, logos, and colorways that make your squad look as sharp as they play.";
+  "Built for the pitch, loved beyond it. Our Cricket t-shirts combine lightweight performance fabric with a sharp, athletic cut that moves with you through every over. Sweat-wicking, durable, and designed to handle the heat of match day without compromising on style. KAYNS brings your team's identity to life on every cricket shirt — custom n umbers, logos, and colorways that make your squad look as sharp as they play.";
 
 const SOCCER_TSHIRT_COPY =
   "From kickoff to the final whistle, our soccer t-shirts are engineered for full-match performance. Lightweight mesh construction ensures maximum airflow while the tailored athletic fit keeps you moving freely. Sharp on the field, clean off it — a jersey built for players who take the game seriously. At KAYNS we craft soccer jerseys that represent your club with pride — fully customized with crests, player names, numbers, and sponsor logos done with professional precision.";
@@ -194,41 +197,48 @@ const capsCollection: CollectionItem[] = [
 const tshirtsCollection: CollectionItem[] = [
   {
     id: 8,
-    title: "Cricket T-Shirt",
-    description: CRICKET_TSHIRT_COPY,
+    title: "T-Shirt",
+    description: TSHIRT_COPY,
     image: "/frame_1.png",
     productType: "t-shirt",
   },
   {
     id: 9,
-    title: "Football T-Shirt",
-    description: SOCCER_TSHIRT_COPY,
+    title: "Cricket T-Shirt",
+    description: CRICKET_TSHIRT_COPY,
     image: "/frame_2.png",
     productType: "t-shirt",
   },
   {
     id: 10,
-    title: "Rugby T-Shirt",
-    description: RUGBY_TSHIRT_COPY,
+    title: "Football T-Shirt",
+    description: SOCCER_TSHIRT_COPY,
     image: "/frame_3.png",
     productType: "t-shirt",
   },
   {
     id: 11,
+    title: "Rugby T-Shirt",
+    description: RUGBY_TSHIRT_COPY,
+    image: "/frame_10.png",
+    productType: "t-shirt",
+  },
+  {
+    id: 12,
     title: "Basketball Singlet",
     description: BASKETBALL_SINGLET_COPY,
     image: "/frame_9.png",
     productType: "t-shirt",
   },
   {
-    id: 12,
+    id: 13,
     title: "Polo T-Shirt",
     description: POLO_TSHIRT_COPY,
     image: "/frame_17.png",
     productType: "polo-shirt",
   },
   {
-    id: 25,
+    id: 26,
     title: "Netball T-Shirt",
     description: NETBALL_TSHIRT_COPY,
     image: "/netball_tshirt.png",
@@ -238,7 +248,7 @@ const tshirtsCollection: CollectionItem[] = [
 
 const bottomCollection: CollectionItem[] = [
   {
-    id: 13,
+    id: 25,
     title: "Trouser",
     description: TROUSER_COPY,
     image: "/frame_11.png",
@@ -255,21 +265,21 @@ const bottomCollection: CollectionItem[] = [
     id: 15,
     title: "Basketball Short",
     description: BASKETBALL_SHORT_COPY,
-    image: "/frame_14.png",
+    image: "/frame_15.png",
     productType: "basketball-shorts",
   },
   {
     id: 16,
     title: "Soccer Short",
     description: SOCCER_SHORT_COPY,
-    image: "/frame_15.png",
+    image: "/frame_16.png",
     productType: "football-shorts",
   },
   {
     id: 17,
     title: "Rugby Short",
     description: RUGBY_SHORT_COPY,
-    image: "/frame_16.png",
+    image: "/frame_14.png",
     productType: "rugby-shorts",
   },
 ];
