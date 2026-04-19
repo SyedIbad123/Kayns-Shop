@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "KAYNS — Where Sport Meets Street",
   description:
     "KAYNS crafts premium custom sportswear and streetwear with uncompromising quality and style.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
