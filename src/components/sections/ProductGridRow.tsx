@@ -9,7 +9,7 @@ type CapConfiguration = {
 };
 
 const commonTurnaround =
-  "Orders will be dispatched from our warehouse (Brisbane, QLD) within three weeks of the day of order confirmation.";
+  "Orders will be dispatched from our warehouse within three weeks of the day of order confirmation.";
 
 const commonPricingNote =
   "Above prices include all designing costs and one embroidery.";
@@ -23,7 +23,7 @@ const capConfigurations: CapConfiguration[] = [
       "Premium lining for moisture absorption and comfort",
       "Elasticated for a perfect fit",
     ],
-    price: "$29.00 for single color panels",
+    price: "£12.00 for single color panels",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -36,7 +36,7 @@ const capConfigurations: CapConfiguration[] = [
       "Protection from sun",
       "Color of your choice",
     ],
-    price: "$29.00 for sun/cricket hat",
+    price: "£14.00 for sun/cricket hat",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: [
@@ -55,7 +55,7 @@ const capConfigurations: CapConfiguration[] = [
       "Protection from sun",
       "Choice of your sizes",
     ],
-    price: "$28.00 for bucket hat",
+    price: "£14.00 for bucket hat",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: [
@@ -74,7 +74,7 @@ const capConfigurations: CapConfiguration[] = [
       "Adjustable snapback strap for a comfortable fit",
       "Mesh for breathability",
     ],
-    price: "$29.00 for trucker cap",
+    price: "£14.00 for trucker cap",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -87,7 +87,7 @@ const capConfigurations: CapConfiguration[] = [
       "Adjustable snapback strap for a comfortable fit",
       "Extra sun protection",
     ],
-    price: "$28.00 for visor",
+    price: "£14.00 for visor",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -100,7 +100,7 @@ const capConfigurations: CapConfiguration[] = [
       "Skin-friendly",
       "Lightweight",
     ],
-    price: "$28.00 for single color beanies",
+    price: "£12.00 for single color beanies",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -114,7 +114,7 @@ const capConfigurations: CapConfiguration[] = [
       "Adjustable snapback for a comfortable fit",
       "Eyelets for breathability",
     ],
-    price: "$28.00 for 6-panel flat peak cap",
+    price: "£14.00 for 6-panel flat peak cap",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -128,7 +128,7 @@ const capConfigurations: CapConfiguration[] = [
       "Adjustable snapback strap for a comfortable fit",
       "Eyelets for breathability",
     ],
-    price: "$29.00 for baseball cap",
+    price: "£14.00 for baseball cap",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],
@@ -141,7 +141,7 @@ const capConfigurations: CapConfiguration[] = [
       "Adjustable snapback strap for a comfortable fit",
       "Mesh for breathability",
     ],
-    price: "$29.00 for performance cap",
+    price: "£14.00 for performance cap",
     minOrder: "Minimum order: 10 caps",
     turnaround: commonTurnaround,
     sizing: ["Single size fit for all"],

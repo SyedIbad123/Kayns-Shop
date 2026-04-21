@@ -296,7 +296,7 @@ export default function ConfigSummary({ configuration }: ConfigSummaryProps) {
             <p className="mt-1 text-[#111827]">
               {cord.enabled ? (
                 <>
-                  <span className="inline-block">Enabled — AUD $5.00</span>
+                  <span className="inline-block">Enabled — £2.00</span>
                   <span className="ml-2 inline-flex items-center gap-1.5">
                     <span
                       className="inline-block h-3.5 w-3.5 rounded-full border border-[#D1D5DB]"

@@ -1,19 +1,25 @@
 import Image from "next/image";
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import Container from "@/components/ui/Container";
 
 const quickLinks = [
-  { label: "Home", href: "#" },
-  { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#portfolio" },
-  { label: "About Us", href: "#about" },
+  { label: "Home", href: "/" },
+  { label: "Uniform", href: "/uniform" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Contact Us", href: "/quote" },
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "#", label: "Facebook" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Linkedin, href: "#", label: "LinkedIn" },
+  {
+    icon: Facebook,
+    href: "https://web.facebook.com/profile.php?id=61576106605297",
+    label: "Facebook",
+  },
+  {
+    icon: Instagram,
+    href: "https://www.instagram.com/kaynsinternational1/",
+    label: "Instagram",
+  },
 ];
 
 export default function Footer() {
@@ -62,9 +68,10 @@ export default function Footer() {
             Contact Info
           </h4>
           <address className="space-y-2 text-sm not-italic">
-            <p>123 Design Street, Creative City</p>
-            <p>Email: ibad1657@gmail.com</p>
-            <p>Phone: +1 (555) 123-4567</p>
+            <p>
+              Flat 22 Barons Court Church Lane, NW9 8AD, London, United Kingdom
+            </p>
+            <p>Email: kaynsintl44@gmail.com</p>
           </address>
           <div className="mt-6 flex gap-4">
             {socialLinks.map((social) => (

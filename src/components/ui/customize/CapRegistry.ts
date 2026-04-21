@@ -41,6 +41,39 @@ const BUCKET_PANELS = [
   { key: "id_2", label: "Brim Color" },
 ];
 
+// ── Motif panel options (independent of colour panels) ────────
+
+/** Panels 1–10 for baggy caps */
+const BAGGY_MOTIF_PANELS = Array.from({ length: 10 }, (_, i) => ({
+  key: `motif_p${i + 1}`,
+  label: `Panel ${i + 1}`,
+}));
+
+const TRUCKER_MOTIF_PANELS = [
+  { key: "motif_p1", label: "Panel 1" },
+  { key: "motif_p2", label: "Panel 2" },
+  { key: "motif_p4", label: "Panel 4" },
+];
+
+const BUCKET_MOTIF_PANELS = [{ key: "motif_p2", label: "Panel 2" }];
+
+const SUN_MOTIF_PANELS = [{ key: "motif_p1", label: "Panel 1" }];
+
+const BASEBALL_MOTIF_PANELS = [
+  { key: "motif_p1", label: "Panel 1" },
+  { key: "motif_p4", label: "Panel 4" },
+  { key: "motif_p5", label: "Panel 5" },
+];
+
+const VISOR_MOTIF_PANELS = [{ key: "motif_p2", label: "Panel 2" }];
+
+const BEANIE_MOTIF_PANELS = [
+  { key: "motif_p1", label: "Panel 1" },
+  { key: "motif_p2", label: "Panel 2" },
+];
+
+const HONOURS_MOTIF_PANELS = [{ key: "motif_p1", label: "Panel 1" }];
+
 const SIX_ZONE_PANELS = [
   { key: "id_1", label: "Front Color" },
   { key: "id_2", label: "Peak Color" },
@@ -101,6 +134,7 @@ const CAP_REGISTRY: CapConfig[] = [
     label: "Custom Cricket Baggy Caps (Single Color)",
     type: "solid",
     defaultColors: DEFAULT_SOLID_COLORS,
+    motifPanels: BAGGY_MOTIF_PANELS,
     SVGComponent: CustomCricketBaggyCapSingleColor,
   },
 
@@ -110,6 +144,7 @@ const CAP_REGISTRY: CapConfig[] = [
     type: "panel",
     panels: BAGGY_MULTI_PANELS,
     defaultColors: DEFAULT_BAGGY_MULTI_COLORS,
+    motifPanels: BAGGY_MOTIF_PANELS,
     SVGComponent: CustomCricketBaggyCapMultiColor,
   },
 
@@ -118,11 +153,12 @@ const CAP_REGISTRY: CapConfig[] = [
     label: "Custom Sun Cricket Hat",
     type: "panel",
     panels: [
-      { key: "id_1", label: "Top Surface" },
-      { key: "id_2", label: "Base Surface" },
-      { key: "id_3", label: "Vent" },
+      { key: "id_1", label: "Head Color" },
+      { key: "id_2", label: "Brim Color" },
+      { key: "id_3", label: "Eyelet Color" },
     ],
     defaultColors: DEFAULT_SUN_CRICKET_HAT_COLORS,
+    motifPanels: SUN_MOTIF_PANELS,
     SVGComponent: SunCricketHat,
   },
   {
@@ -132,6 +168,7 @@ const CAP_REGISTRY: CapConfig[] = [
     defaultColors: {
       solid: "#FFFFFF",
     },
+    motifPanels: HONOURS_MOTIF_PANELS,
     SVGComponent: HonoursCapSVG,
   },
   {
@@ -162,6 +199,7 @@ const CAP_REGISTRY: CapConfig[] = [
       id_5: "#FA8805",
       id_6: "#EF4444",
     },
+    motifPanels: BASEBALL_MOTIF_PANELS,
     SVGComponent: BaseballSVG,
   },
   {
@@ -174,6 +212,7 @@ const CAP_REGISTRY: CapConfig[] = [
       id_2: "#FFFF66",
       id_3: "#088008",
     },
+    motifPanels: VISOR_MOTIF_PANELS,
     SVGComponent: VisorSVG,
   },
   {
@@ -185,6 +224,7 @@ const CAP_REGISTRY: CapConfig[] = [
       id_1: "#523233",
       id_2: "#FFFF66",
     },
+    motifPanels: BUCKET_MOTIF_PANELS,
     SVGComponent: CustomBucketHat,
   },
   {
@@ -192,6 +232,7 @@ const CAP_REGISTRY: CapConfig[] = [
     label: "Custom Beanies",
     type: "solid",
     defaultColors: BEANIE_PANEL,
+    motifPanels: BEANIE_MOTIF_PANELS,
     SVGComponent: CustomBeanies,
   },
 
@@ -203,6 +244,7 @@ const CAP_REGISTRY: CapConfig[] = [
     type: "panel",
     panels: TRUCKER_PANELS,
     defaultColors: DEFAULT_PANEL_COLORS,
+    motifPanels: TRUCKER_MOTIF_PANELS,
     SVGComponent: TruckerCapSVG,
   },
   {
@@ -218,6 +260,7 @@ const CAP_REGISTRY: CapConfig[] = [
       id_5: "#660818",
       id_6: "#111111",
     },
+    motifPanels: BASEBALL_MOTIF_PANELS,
     SVGComponent: FlatPeak5SVG,
   },
   {
@@ -233,6 +276,7 @@ const CAP_REGISTRY: CapConfig[] = [
       id_5: "#FC92EA",
       id_6: "#111111",
     },
+    motifPanels: BASEBALL_MOTIF_PANELS,
     SVGComponent: FlatPeak6SVG,
   },
 ];

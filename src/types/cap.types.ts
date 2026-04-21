@@ -41,6 +41,13 @@ export interface CapConfig {
   /** Only required for type === "panel". Lists every colourable section. */
   panels?: PanelConfig[];
 
+  /**
+   * Optional override for panels shown in the motif panel dropdown.
+   * Completely independent from the colour panels above.
+   * When omitted, falls back to the colour panel list.
+   */
+  motifPanels?: PanelConfig[];
+
   /** Starting colors shown when the cap is first selected */
   defaultColors: CapColors;
 

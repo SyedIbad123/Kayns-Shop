@@ -170,6 +170,18 @@ function getCapPanelOptions(capConfig: CapConfig): CapPanelOption[] {
   return [{ key: "solid", label: "Cap Colour" }];
 }
 
+/** Returns the panel options shown in the motif panel dropdown.
+ *  These are independent of the colour-picker panels. */
+function getCapMotifPanelOptions(capConfig: CapConfig): CapPanelOption[] {
+  if (capConfig.motifPanels && capConfig.motifPanels.length > 0) {
+    return capConfig.motifPanels.map((panel) => ({
+      key: panel.key,
+      label: panel.label,
+    }));
+  }
+  return getCapPanelOptions(capConfig);
+}
+
 function createMotifId() {
   return `motif-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`;
 }
@@ -276,36 +288,42 @@ export default function MultiProductCustomizer({
     [capConfig],
   );
 
+  const motifPanelOptions = useMemo(
+    () => getCapMotifPanelOptions(capConfig),
+    [capConfig],
+  );
+
   // ─── ProductDropdown selection ───────────────────────────
   function handleProductSelect(label: string) {
     const config = getCapByLabel(label);
     if (!config) return; // label not registered — do nothing
 
-    const nextPanelOptions = getCapPanelOptions(config);
-    const panelLookup = new Map(
-      nextPanelOptions.map((panel) => [panel.key, panel.label]),
+    const nextMotifPanelOptions = getCapMotifPanelOptions(config);
+    const motifPanelLookup = new Map(
+      nextMotifPanelOptions.map((panel) => [panel.key, panel.label]),
     );
 
     setExtraMotifs((currentMotifs) => {
-      if (nextPanelOptions.length === 0) {
+      if (nextMotifPanelOptions.length === 0) {
         return [];
       }
 
       return currentMotifs
-        .slice(0, nextPanelOptions.length)
+        .slice(0, nextMotifPanelOptions.length)
         .map((motif, index) => {
           const fallbackPanel =
-            nextPanelOptions[Math.min(index, nextPanelOptions.length - 1)] ??
-            nextPanelOptions[0];
+            nextMotifPanelOptions[
+              Math.min(index, nextMotifPanelOptions.length - 1)
+            ] ?? nextMotifPanelOptions[0];
 
-          const panelKey = panelLookup.has(motif.panelKey)
+          const panelKey = motifPanelLookup.has(motif.panelKey)
             ? motif.panelKey
             : fallbackPanel.key;
 
           return {
             ...motif,
             panelKey,
-            panelLabel: panelLookup.get(panelKey) ?? fallbackPanel.label,
+            panelLabel: motifPanelLookup.get(panelKey) ?? fallbackPanel.label,
           };
         });
     });
@@ -328,21 +346,24 @@ export default function MultiProductCustomizer({
 
   const handleAddExtraMotif = useCallback(() => {
     const limit =
-      capConfig.id === "baggy-single" || capConfig.id === "honours"
+      capConfig.id === "baggy-single" ||
+      capConfig.id === "baggy-multi" ||
+      capConfig.id === "honours"
         ? 10
-        : panelOptions.length;
+        : motifPanelOptions.length;
     setExtraMotifs((currentMotifs) => {
-      if (panelOptions.length === 0 || currentMotifs.length >= limit) {
+      if (motifPanelOptions.length === 0 || currentMotifs.length >= limit) {
         return currentMotifs;
       }
 
       const defaultPanel =
-        panelOptions[Math.min(currentMotifs.length, panelOptions.length - 1)] ??
-        panelOptions[panelOptions.length - 1];
+        motifPanelOptions[
+          Math.min(currentMotifs.length, motifPanelOptions.length - 1)
+        ] ?? motifPanelOptions[motifPanelOptions.length - 1];
 
       return [...currentMotifs, createDefaultExtraMotif(defaultPanel)];
     });
-  }, [capConfig.id, panelOptions]);
+  }, [capConfig.id, motifPanelOptions]);
 
   const handleRemoveExtraMotif = useCallback((motifId: string) => {
     setExtraMotifs((currentMotifs) =>
@@ -402,8 +423,8 @@ export default function MultiProductCustomizer({
 
   const handleExtraMotifPanelChange = useCallback(
     (motifId: string, panelKey: string) => {
-      const panelLookup = new Map(
-        panelOptions.map((panel) => [panel.key, panel.label]),
+      const motifPanelLookup = new Map(
+        motifPanelOptions.map((panel) => [panel.key, panel.label]),
       );
 
       setExtraMotifs((currentMotifs) =>
@@ -412,13 +433,13 @@ export default function MultiProductCustomizer({
             ? {
                 ...motif,
                 panelKey,
-                panelLabel: panelLookup.get(panelKey) ?? motif.panelLabel,
+                panelLabel: motifPanelLookup.get(panelKey) ?? motif.panelLabel,
               }
             : motif,
         ),
       );
     },
-    [panelOptions],
+    [motifPanelOptions],
   );
 
   const handleExtraMotifColorChange = useCallback(
@@ -646,6 +667,11 @@ export default function MultiProductCustomizer({
       panelOptions.map((panel) => [panel.key, panel.label]),
     );
 
+    // Separate lookup for motif panels (independent of colour panels)
+    const motifPanelLookup = new Map(
+      motifPanelOptions.map((panel) => [panel.key, panel.label]),
+    );
+
     const panels = panelOptions.map((panel) => ({
       key: panel.key,
       label: panel.label,
@@ -653,28 +679,30 @@ export default function MultiProductCustomizer({
     }));
 
     const motifLimit =
-      capConfig.id === "baggy-single" || capConfig.id === "honours"
+      capConfig.id === "baggy-single" ||
+      capConfig.id === "baggy-multi" ||
+      capConfig.id === "honours"
         ? 10
-        : panelOptions.length;
+        : motifPanelOptions.length;
     const normalizedExtraMotifs = extraMotifs
       .slice(0, motifLimit)
       .map((motif, index) => {
         const fallbackPanel =
-          panelOptions[Math.min(index, panelOptions.length - 1)] ??
-          panelOptions[0];
+          motifPanelOptions[Math.min(index, motifPanelOptions.length - 1)] ??
+          motifPanelOptions[0];
 
         if (!fallbackPanel) {
           return null;
         }
 
-        const panelKey = panelLookup.has(motif.panelKey)
+        const panelKey = motifPanelLookup.has(motif.panelKey)
           ? motif.panelKey
           : fallbackPanel.key;
 
         return {
           ...motif,
           panelKey,
-          panelLabel: panelLookup.get(panelKey) ?? fallbackPanel.label,
+          panelLabel: motifPanelLookup.get(panelKey) ?? fallbackPanel.label,
           color: motif.color || "#000000",
           text: motif.text.trim(),
           logo: motif.logo ?? null,
@@ -752,6 +780,7 @@ export default function MultiProductCustomizer({
     cordEnabled,
     extraMotifs,
     logoUpload,
+    motifPanelOptions,
     panelOptions,
     pathname,
     tasselColor,
@@ -771,11 +800,13 @@ export default function MultiProductCustomizer({
     saveSvgConfig(payload);
   }, [buildSvgConfigPayload]);
 
-  // ── motif limit: single baggy and honours caps get 10 motifs ──
+  // ── motif limit: baggy caps and honours get 10 motifs ──
   const extraMotifLimit =
-    capConfig.id === "baggy-single" || capConfig.id === "honours"
+    capConfig.id === "baggy-single" ||
+    capConfig.id === "baggy-multi" ||
+    capConfig.id === "honours"
       ? 10
-      : panelOptions.length;
+      : motifPanelOptions.length;
 
   // ─── dynamic SVG ─────────────────────────────────────────
   const { SVGComponent } = capConfig;
@@ -831,6 +862,7 @@ export default function MultiProductCustomizer({
             <CustomizePanel
               capConfig={capConfig}
               panelOptions={panelOptions}
+              motifPanelOptions={motifPanelOptions}
               colors={colors}
               onColorChange={handleColorChange}
               logoUpload={logoUpload}

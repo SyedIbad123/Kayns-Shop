@@ -33,6 +33,8 @@ const COLOR_OPTIONS = [
 interface Props {
   capConfig: CapConfig;
   panelOptions: PanelOption[];
+  /** Panel options shown in the motif panel dropdown (independent of colour panels) */
+  motifPanelOptions?: PanelOption[];
   colors: CapColors;
   /** For solid caps: called with (value) — key is always "solid"   */
   /** For panel caps: called with (value, panelKey)                 */
@@ -412,6 +414,7 @@ function TasselDropdown({
 export default function CustomizePanel({
   capConfig,
   panelOptions,
+  motifPanelOptions,
   colors,
   onColorChange,
   logoUpload,
@@ -660,7 +663,7 @@ export default function CustomizePanel({
               const motifColorExists = COLOR_OPTIONS.some(
                 (option) => option.value === motif.color,
               );
-              const motifPanelExists = panelOptions.some(
+              const motifPanelExists = (motifPanelOptions ?? panelOptions).some(
                 (panel) => panel.key === motif.panelKey,
               );
 
@@ -847,7 +850,7 @@ export default function CustomizePanel({
                             {motif.panelLabel}
                           </option>
                         ) : null}
-                        {panelOptions.map((panel) => (
+                        {(motifPanelOptions ?? panelOptions).map((panel) => (
                           <option key={panel.key} value={panel.key}>
                             {panel.label}
                           </option>
