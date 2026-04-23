@@ -89,8 +89,24 @@ export default function Footer() {
       </Container>
 
       {/* Bottom bar */}
-      <div className="border-t border-[#143D59]/20 py-4 text-center text-xs text-[#143D59]/70">
-        &copy; {new Date().getFullYear()} Kayns Shop. All rights reserved.
+      <div className="border-t border-[#143D59]/20 py-4 text-xs text-[#143D59]/70">
+        <Container className="flex flex-col items-center justify-between gap-2 sm:flex-row">
+          <p>
+            &copy; {new Date().getFullYear()} Kayns Shop. All rights reserved.
+          </p>
+          <div className="flex items-center gap-2">
+            <span className="font-medium text-[#143D59]/80">
+              Powered By Quantas Tech
+            </span>
+            <Image
+              src="/quantastech_logo.png"
+              alt="Quantas Tech"
+              width={24}
+              height={24}
+              className="h-6 w-auto object-contain"
+            />
+          </div>
+        </Container>
       </div>
     </footer>
   );

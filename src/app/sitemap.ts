@@ -3,7 +3,7 @@ import { allCollections } from "@/data/collection";
 import { sportUniforms } from "@/data/uniformSports";
 import { getPortfolioProducts } from "@/lib/portfolio-products.server";
 
-const BASE_URL = "https://kayns.co.uk";
+const BASE_URL = "https://www.kayns.co.uk";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -26,12 +26,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/quote/success`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
       url: `${BASE_URL}/uniform`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -47,13 +41,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     }),
   );
-
-  const customizeRoutes: MetadataRoute.Sitemap = allCollections.map((item) => ({
-    url: `${BASE_URL}/customize/${item.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly",
-    priority: 0.6,
-  }));
 
   const uniformSportRoutes: MetadataRoute.Sitemap = sportUniforms.map(
     (sport) => ({
@@ -75,7 +62,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes,
     ...collectionRoutes,
-    ...customizeRoutes,
     ...uniformSportRoutes,
     ...portfolioProductRoutes,
   ];

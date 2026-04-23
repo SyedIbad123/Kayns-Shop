@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://kayns.co.uk/sitemap.xml",
+    sitemap: "https://www.kayns.co.uk/sitemap.xml",
+    host: "https://www.kayns.co.uk",
   };
 }

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCollectionById, allCollections } from "@/data/collection";
 import MultiProductCustomizer from "@/components/sections/MultiProductCustomizer";
@@ -5,6 +6,13 @@ import MultiProductCustomizer from "@/components/sections/MultiProductCustomizer
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 /** Maps collection title to the matching cap registry label */
 const COLLECTION_TITLE_TO_CAP_LABEL: Record<string, string> = {

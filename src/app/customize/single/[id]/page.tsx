@@ -3,6 +3,7 @@
  * Dependencies: collection data lookup and DynamicClothingForm client renderer.
  */
 
+import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
@@ -13,6 +14,13 @@ import { allCollections, getCollectionById } from "@/data/collection";
 interface Props {
   params: Promise<{ id: string }>;
 }
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export async function generateStaticParams() {
   return allCollections
