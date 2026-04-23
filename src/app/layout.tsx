@@ -16,7 +16,9 @@ export const metadata: Metadata = {
     "KAYNS crafts premium custom sportswear and streetwear with uncompromising quality and style.",
   metadataBase: new URL("https://www.kayns.co.uk"),
   icons: {
-    icon: "/logo.png",
+    icon: [{ url: "/logo.png", type: "image/png" }],
+    shortcut: ["/logo.png"],
+    apple: ["/logo.png"],
   },
 };
 

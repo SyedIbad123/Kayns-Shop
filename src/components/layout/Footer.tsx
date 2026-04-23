@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Facebook, Instagram } from "lucide-react";
 import Container from "@/components/ui/Container";
 
@@ -22,10 +23,16 @@ const socialLinks = [
   },
 ];
 
+const informationLinks = [
+  { label: "Delivery Information", href: "/delivery-information" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+];
+
 export default function Footer() {
   return (
     <footer className="border-t border-[#143D59] bg-[#F3F6FC] text-[#143D59]">
-      <Container className="grid gap-10 py-16 md:grid-cols-3">
+      <Container className="grid gap-10 py-16 md:grid-cols-4">
         {/* Brand */}
         <div>
           <div className="mb-4 flex items-center gap-3">
@@ -51,12 +58,31 @@ export default function Footer() {
           <ul className="space-y-2">
             {quickLinks.map((link) => (
               <li key={link.label}>
-                <a
+                <Link
                   href={link.href}
                   className="text-sm transition-colors hover:text-[#0f2e45]"
                 >
                   {link.label}
-                </a>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Information */}
+        <div>
+          <h4 className="mb-4 text-lg font-semibold text-[#143D59]">
+            Information
+          </h4>
+          <ul className="space-y-2">
+            {informationLinks.map((link) => (
+              <li key={link.label}>
+                <Link
+                  href={link.href}
+                  className="text-sm transition-colors hover:text-[#0f2e45]"
+                >
+                  {link.label}
+                </Link>
               </li>
             ))}
           </ul>
